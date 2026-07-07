@@ -1,18 +1,10 @@
 'use client'
 
-import { use, useEffect, useState } from 'react'
+import { use } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { searchAlbums } from '@/lib/spotify/actions'
-import type { AlbumSearchResult } from '@/lib/spotify/types'
-import { searchProfiles, type ProfileSearchResult } from '@/lib/profiles/actions'
+import { useSearch, isSearchMode } from '@/hooks/use-search'
 import { cn } from '@/lib/utils'
-
-type Mode = 'albums' | 'people'
-
-function isMode(value: string | undefined): value is Mode {
-  return value === 'albums' || value === 'people'
-}
 
 export default function SearchPage({
   searchParams,
@@ -21,59 +13,21 @@ export default function SearchPage({
 }) {
   const initialParams = use(searchParams)
 
-  const [mode, setMode] = useState<Mode>(isMode(initialParams.mode) ? initialParams.mode : 'albums')
-  const [query, setQuery] = useState(initialParams.q ?? '')
-  const [albumResults, setAlbumResults] = useState<AlbumSearchResult[]>([])
-  const [peopleResults, setPeopleResults] = useState<ProfileSearchResult[]>([])
-  const [loading, setLoading] = useState(false)
-  const [hasSearched, setHasSearched] = useState(false)
-
-  useEffect(() => {
-    const trimmed = query.trim()
-
-    if (!trimmed) {
-      return
-    }
-
-    let cancelled = false
-
-    Promise.resolve().then(() => {
-      if (!cancelled) setLoading(true)
-    })
-
-    const timeout = setTimeout(() => {
-      const run = async () => {
-        try {
-          if (mode === 'albums') {
-            const results = await searchAlbums(trimmed)
-            if (!cancelled) setAlbumResults(results)
-          } else {
-            const results = await searchProfiles(trimmed)
-            if (!cancelled) setPeopleResults(results)
-          }
-        } finally {
-          if (!cancelled) {
-            setHasSearched(true)
-            setLoading(false)
-          }
-        }
-      }
-      run()
-    }, 250)
-
-    return () => {
-      cancelled = true
-      clearTimeout(timeout)
-    }
-  }, [query, mode])
-
-  const trimmedQuery = query.trim()
-  const showEmptyPrompt = !trimmedQuery
-  const showNoResults =
-    !showEmptyPrompt &&
-    hasSearched &&
-    !loading &&
-    (mode === 'albums' ? albumResults.length === 0 : peopleResults.length === 0)
+  const {
+    mode,
+    setMode,
+    query,
+    setQuery,
+    albumResults,
+    peopleResults,
+    loading,
+    trimmedQuery,
+    showEmptyPrompt,
+    showNoResults,
+  } = useSearch({
+    mode: isSearchMode(initialParams.mode) ? initialParams.mode : 'albums',
+    query: initialParams.q ?? '',
+  })
 
   return (
     <div className="mx-auto max-w-2xl space-y-8">
