@@ -152,7 +152,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => switchTab('sign-in')}
               className={cn(
-                'flex-1 border-punk border-black py-[10px] font-display text-xs tracking-wide cursor-pointer transition-transform',
+                'flex-1 border-punk border-black py-[10px] font-display text-xs tracking-wide cursor-pointer transition-transform hover:scale-105',
                 !isSignUp
                   ? '-rotate-1 bg-brand-yellow text-ink shadow-hard-3-red'
                   : 'bg-ink-900 text-ink-500 shadow-hard-3-blue',
@@ -165,7 +165,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => switchTab('sign-up')}
               className={cn(
-                'flex-1 border-punk border-black py-[10px] font-display text-xs tracking-wide cursor-pointer transition-transform',
+                'flex-1 border-punk border-black py-[10px] font-display text-xs tracking-wide cursor-pointer transition-transform hover:scale-105',
                 isSignUp
                   ? 'rotate-1 bg-brand-yellow text-ink shadow-hard-3-cyan'
                   : 'bg-ink-900 text-ink-500 shadow-hard-3-blue',
@@ -217,7 +217,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-[9px] bg-ink border border-ink-600 text-ink-500 font-display text-[9px] tracking-wide cursor-pointer px-[7px] py-[5px]"
+                className="absolute right-[9px] bg-ink border border-ink-600 text-ink-500 font-display text-[9px] tracking-wide cursor-pointer px-[7px] py-[5px] transition-transform hover:scale-105"
               >
                 {showPassword ? 'HIDE' : 'SHOW'}
               </button>
@@ -264,7 +264,7 @@ export default function LoginPage() {
             id="auth-submit"
             type="submit"
             disabled={loading}
-            className="-rotate-[0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-[15px] tracking-wide cursor-pointer shadow-hard-5-red disabled:opacity-60"
+            className="-rotate-[0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-[15px] tracking-wide cursor-pointer shadow-hard-5-red transition-transform hover:scale-105 disabled:opacity-60"
           >
             {loading ? 'LOADING…' : isSignUp ? '＋ CREATE ACCOUNT' : '▶ LOG IN'}
           </button>
@@ -298,7 +298,7 @@ export default function LoginPage() {
             id="google-auth"
             type="button"
             onClick={handleGoogleAuth}
-            className="flex items-center justify-center gap-2 bg-ink border-punk border-paper text-paper py-3 font-display text-xs tracking-wide cursor-pointer"
+            className="flex items-center justify-center gap-2 bg-ink border-punk border-paper text-paper py-3 font-display text-xs tracking-wide cursor-pointer transition-transform hover:scale-105"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24">
               <path

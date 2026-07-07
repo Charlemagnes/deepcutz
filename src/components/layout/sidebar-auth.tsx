@@ -26,7 +26,7 @@ export function SidebarAuth({
   if (!user) {
     return (
       <Link href="/login" className="w-full">
-        <Button className="w-full">Sign in</Button>
+        <Button className="w-full transition-transform hover:scale-105">Sign in</Button>
       </Link>
     )
   }
@@ -54,7 +54,7 @@ export function SidebarAuth({
         id="sign-out-button"
         type="button"
         onClick={handleSignOut}
-        className="p-1.5 text-ink-500 transition-colors hover:text-paper"
+        className="p-1.5 text-ink-500 transition-all hover:text-paper hover:scale-110"
         aria-label="Sign out"
       >
         <LogOut className="h-4 w-4" />

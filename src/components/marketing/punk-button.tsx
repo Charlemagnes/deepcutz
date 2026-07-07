@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import type { Accent } from "./types"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center font-display whitespace-nowrap transition-transform",
+  "inline-flex items-center justify-center font-display whitespace-nowrap transition-transform hover:scale-105",
   {
     variants: {
       variant: {
