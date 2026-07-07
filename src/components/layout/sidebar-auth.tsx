@@ -32,28 +32,29 @@ export function SidebarAuth({
   }
 
   return (
-    <div className="flex items-center justify-between gap-2">
-      <div className="flex items-center gap-2 truncate">
-        {profile?.avatar_url ? (
-          <img
-            src={profile.avatar_url}
-            alt=""
-            className="h-8 w-8 rounded-full object-cover"
-          />
-        ) : (
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-sm font-medium">
-            {(profile?.username ?? user.email ?? '?')[0].toUpperCase()}
-          </div>
-        )}
-        <span className="truncate text-sm font-medium">
-          {profile?.username ?? user.email}
-        </span>
+    <div className="flex items-center gap-2.5 pt-3.5 border-t-2 border-dashed border-[#555]">
+      {profile?.avatar_url ? (
+        <img
+          src={profile.avatar_url}
+          alt=""
+          className="h-8 w-8 border-2 border-black object-cover"
+        />
+      ) : (
+        <div className="flex h-8 w-8 items-center justify-center border-2 border-black bg-[#2b6bff] text-sm font-medium text-white">
+          {(profile?.username ?? user.email ?? '?')[0].toUpperCase()}
+        </div>
+      )}
+      <div className="flex-1 truncate leading-tight">
+        <div className="font-[family-name:var(--font-bungee)] text-[11px]">YOU</div>
+        <div className="truncate text-[#9a9a9a] font-[family-name:var(--font-space-mono)] text-[10px]">
+          {profile?.username ? `@${profile.username}` : user.email}
+        </div>
       </div>
       <button
         id="sign-out-button"
         type="button"
         onClick={handleSignOut}
-        className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        className="p-1.5 text-[#9a9a9a] transition-colors hover:text-[#f2f2f2]"
         aria-label="Sign out"
       >
         <LogOut className="h-4 w-4" />

@@ -1,5 +1,5 @@
 import type { TablesInsert } from '@/lib/database.types'
-import type { AlbumSearchResult, SpotifyAlbum } from './types'
+import type { AlbumSearchResult, AlbumTrack, SpotifyAlbum, SpotifyAlbumTracksResponse } from './types'
 
 export function normalizeSpotifyAlbum(raw: SpotifyAlbum): AlbumSearchResult {
   return {
@@ -16,6 +16,16 @@ function padReleaseDate(releaseDate: string, precision: SpotifyAlbum['release_da
   if (precision === 'day') return releaseDate
   if (precision === 'month') return `${releaseDate}-01`
   return `${releaseDate}-01-01`
+}
+
+export function normalizeSpotifyAlbumTracks(raw: SpotifyAlbumTracksResponse): AlbumTrack[] {
+  return raw.items
+    .map((track) => ({
+      trackNumber: track.track_number,
+      title: track.name,
+      durationMs: track.duration_ms,
+    }))
+    .sort((a, b) => a.trackNumber - b.trackNumber)
 }
 
 export function toAlbumInsert(raw: SpotifyAlbum): TablesInsert<'albums'> {

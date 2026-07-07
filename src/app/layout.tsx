@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Bungee, Archivo, Space_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Sidebar } from "@/components/layout/sidebar";
+import { LoggingModalProvider } from "@/components/logging/logging-modal-provider";
+import { getCurrentUser } from "@/lib/auth/current-user";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,27 +16,47 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const bungee = Bungee({ weight: "400", subsets: ["latin"], variable: "--font-bungee" });
+const archivo = Archivo({
+  weight: ["400", "500", "600", "700", "800"],
+  subsets: ["latin"],
+  variable: "--font-archivo",
+});
+const spaceMono = Space_Mono({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-space-mono",
+});
+
 export const metadata: Metadata = {
   title: "deepcutz",
   description: "Letterboxd for music",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getCurrentUser();
+
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${bungee.variable} ${archivo.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <TooltipProvider>
-          <div className="mx-auto flex max-w-6xl">
-            <Sidebar />
-            <main className="flex-1 border-r px-8 py-6">{children}</main>
-          </div>
+          {user ? (
+            <LoggingModalProvider>
+              <div className="flex min-h-screen bg-[#0a0a0a]">
+                <Sidebar />
+                <div className="flex-1 min-w-0">{children}</div>
+              </div>
+            </LoggingModalProvider>
+          ) : (
+            children
+          )}
         </TooltipProvider>
       </body>
     </html>

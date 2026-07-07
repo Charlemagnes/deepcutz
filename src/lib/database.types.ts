@@ -296,6 +296,41 @@ export type Database = {
           },
         ]
       }
+      track_ratings: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          rating: number | null
+          review_id: string
+          track_number: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          rating?: number | null
+          review_id: string
+          track_number: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          rating?: number | null
+          review_id?: string
+          track_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "track_ratings_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

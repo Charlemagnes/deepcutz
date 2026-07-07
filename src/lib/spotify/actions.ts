@@ -1,8 +1,8 @@
 'use server'
 
-import { getSpotifyAlbum, searchAlbums as searchAlbumsClient } from './client'
-import { normalizeSpotifyAlbum } from './normalize'
-import type { AlbumSearchResult } from './types'
+import { getSpotifyAlbum, getSpotifyAlbumTracks, searchAlbums as searchAlbumsClient } from './client'
+import { normalizeSpotifyAlbum, normalizeSpotifyAlbumTracks } from './normalize'
+import type { AlbumSearchResult, AlbumTrack } from './types'
 
 export async function searchAlbums(query: string): Promise<AlbumSearchResult[]> {
   const trimmed = query.trim()
@@ -22,5 +22,14 @@ export async function getAlbumDetails(spotifyId: string): Promise<AlbumSearchRes
   } catch (error) {
     console.error('[spotify] getAlbumDetails action failed:', error)
     return null
+  }
+}
+
+export async function getAlbumTracks(spotifyId: string): Promise<AlbumTrack[]> {
+  try {
+    return normalizeSpotifyAlbumTracks(await getSpotifyAlbumTracks(spotifyId))
+  } catch (error) {
+    console.error('[spotify] getAlbumTracks action failed:', error)
+    return []
   }
 }

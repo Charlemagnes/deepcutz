@@ -37,3 +37,24 @@ export interface AlbumSearchResult {
   coverUrl: string | null
   releaseDate: string | null
 }
+
+export interface SpotifyTrack {
+  track_number: number
+  name: string
+  duration_ms: number
+}
+
+export interface SpotifyAlbumTracksResponse {
+  items: SpotifyTrack[]
+  limit: number
+  offset: number
+  total: number
+  next: string | null
+}
+
+/** UI-facing shape for a single track, returned by getAlbumTracks. */
+export interface AlbumTrack {
+  trackNumber: number
+  title: string
+  durationMs: number
+}
