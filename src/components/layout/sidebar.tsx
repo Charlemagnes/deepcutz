@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { Home, Search, Bell, User } from 'lucide-react'
-import { Show, SignInButton, UserButton } from '@clerk/nextjs'
-import { Button } from '@/components/ui/button'
+import { createClient } from '@/lib/supabase/server'
 import { SidebarNavLink } from './sidebar-nav-link'
+import { SidebarAuth } from './sidebar-auth'
 
 const NAV_ITEMS = [
   { href: '/', label: 'Home', icon: Home },
@@ -11,7 +11,20 @@ const NAV_ITEMS = [
   { href: '/profile', label: 'Profile', icon: User },
 ]
 
-export function Sidebar() {
+export async function Sidebar() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  let profile: { username: string | null; avatar_url: string | null } | null = null
+  if (user) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('username, avatar_url')
+      .eq('id', user.id)
+      .single()
+    profile = data
+  }
+
   return (
     <aside className="sticky top-0 flex h-screen w-64 flex-col justify-between border-r px-4 py-6">
       <div className="flex flex-col gap-6">
@@ -23,14 +36,7 @@ export function Sidebar() {
         </nav>
       </div>
       <div className="px-2">
-        <Show
-          when="signed-in"
-          fallback={
-            <SignInButton mode="modal"><Button className="w-full">Sign in</Button></SignInButton>
-          }
-        >
-          <UserButton showName />
-        </Show>
+        <SidebarAuth user={user} profile={profile} />
       </div>
     </aside>
   )

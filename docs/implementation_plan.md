@@ -7,8 +7,8 @@ This document outlines the architecture, database design, and step-by-step roadm
 *   **Framework**: Next.js (App Router) + TypeScript.
 *   **Styling**: TailwindCSS + **shadcn/ui** for UI primitives.
 *   **Database**: Supabase (PostgreSQL) using `@supabase/ssr`.
-*   **Authentication**: Clerk for Next.js.
-*   **User Syncing**: Clerk Webhooks (`/api/webhooks/clerk`) to sync Clerk users directly to the Supabase `profiles` table.
+*   **Authentication**: Supabase Auth (email/password + Google OAuth) via `@supabase/ssr`.
+*   **User Syncing**: Postgres trigger on `auth.users` auto-creates a `profiles` row on signup. Username is set during an onboarding step at `/onboarding`.
 *   **External API**: Spotify API for search, metadata, and high-quality artwork.
 *   **Metadata Caching**: **Cache-on-write** (store Spotify album data in the Supabase `albums` table only when a user creates a review, rating, or list item), for **performance** rather than as permanent storage — refreshed opportunistically (re-fetch from Spotify if a cached row is older than N days) to stay closer to Spotify's "temporary caching" ToS language.
 *   **Known risk**: Spotify's Feb 2026 API changes restrict Development Mode (Premium-gated test users, reduced search pagination, Client Credentials being phased out for metadata endpoints). MVP proceeds under Development Mode; revisit Extended Quota Mode application once the app has real usage.
@@ -34,7 +34,7 @@ erDiagram
     reviews ||--o{ comments : receives
 
     profiles {
-        text id PK "Clerk User ID, e.g. user_xxx"
+        uuid id PK "Supabase Auth user UUID, references auth.users(id)"
         string username
         string display_name
         string avatar_url
@@ -54,7 +54,7 @@ erDiagram
 
     reviews {
         uuid id PK
-        text profile_id FK
+        uuid profile_id FK
         string album_id FK
         float rating "0.5 to 5.0 stars"
         text content
@@ -65,7 +65,7 @@ erDiagram
 
     diary_entries {
         uuid id PK
-        text profile_id FK
+        uuid profile_id FK
         string album_id FK
         date listened_date
         float rating "Optional, can differ per relisten"
@@ -75,7 +75,7 @@ erDiagram
 
     likes {
         uuid id PK
-        text profile_id FK
+        uuid profile_id FK
         uuid target_id "Can be review_id or album_id; not FK-enforced, validate at app layer"
         string target_type "'review' or 'album'"
         timestamp created_at
@@ -83,14 +83,14 @@ erDiagram
 
     follows {
         uuid id PK
-        text follower_id FK "References profiles.id"
-        text following_id FK "References profiles.id"
+        uuid follower_id FK "References profiles.id"
+        uuid following_id FK "References profiles.id"
         timestamp created_at
     }
 
     comments {
         uuid id PK
-        text profile_id FK
+        uuid profile_id FK
         uuid review_id FK
         text content
         timestamp created_at
@@ -112,15 +112,17 @@ erDiagram
 ### Phase 1: Setup & Infrastructure *(MVP)*
 1. Initialize a Next.js application using `create-next-app` with TypeScript, TailwindCSS, and ESLint.
 2. Initialize `shadcn/ui` in the project.
-3. Create a `.env.example` file documenting all required environment variables (`NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `CLERK_WEBHOOK_SECRET`, `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`).
+3. Create a `.env.example` file documenting all required environment variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`).
 4. Configure **Supabase** schemas and create migration scripts for all tables (`profiles`, `albums`, `reviews`, `diary_entries`, `likes`, `follows`, `comments`).
-5. **Configure Supabase Row Level Security (RLS)** policies using the native Clerk Third-Party Auth integration (not the deprecated JWT template): public read access for albums and reviews; write/update/delete restricted to the owning user for reviews, diary_entries, likes, comments, and profile. Policies reference `auth.jwt() ->> 'sub'` for the Clerk user ID rather than `auth.uid()`, since Clerk IDs are strings, not Supabase UUIDs.
-6. Integrate `@clerk/nextjs` for user auth.
-7. Set up the Next.js Route Handler `/api/webhooks/clerk` to receive Clerk webhooks for `user.created` (create profile), `user.updated` (sync username/avatar changes), and `user.deleted` (remove/deactivate profile).
-8. **Build the app shell layout**: Twitter/X-style sidebar (logo, Home, Search, Activity, Profile links, auth controls) with a main content area.
-9. Configure `next.config.js` `images.remotePatterns` to allow Spotify's cover art CDN domain (`i.scdn.co`).
-10. **Set up Vitest and React Testing Library** with `jsdom` for client-side and unit testing.
-11. **Configure CI/CD**: Create a GitHub Actions workflow (`.github/workflows/ci.yml`) to automatically run linting (`next lint`), run tests (`vitest run`), and verify builds (`next build`) on every push and pull request. Set up Vercel integration for CD.
+5. **Configure Supabase Row Level Security (RLS)** policies using `auth.uid()`: public read access for albums and reviews; write/update/delete restricted to the owning user for reviews, diary_entries, likes, comments, and profile.
+6. Integrate `@supabase/ssr` for cookie-based session management in Next.js (server components, middleware, and client components).
+7. Create a Postgres trigger on `auth.users` that auto-creates a `profiles` row on signup.
+8. Build a custom login page at `/login` with sign-in/sign-up tabs and Google OAuth. Create auth callback routes (`/auth/callback`, `/auth/confirm`) for OAuth and email verification.
+9. **Build an onboarding page** at `/onboarding` that prompts new users to choose a unique username after their first login. The middleware redirects authenticated users without a username to this page.
+10. **Build the app shell layout**: Twitter/X-style sidebar (logo, Home, Search, Activity, Profile links, auth controls) with a main content area.
+11. Configure `next.config.js` `images.remotePatterns` to allow Spotify's cover art CDN domain (`i.scdn.co`).
+12. **Set up Vitest and React Testing Library** with `jsdom` for client-side and unit testing.
+13. **Configure CI/CD**: Create a GitHub Actions workflow (`.github/workflows/ci.yml`) to automatically run linting (`next lint`), run tests (`vitest run`), and verify builds (`next build`) on every push and pull request. Set up Vercel integration for CD.
 
 ### Phase 2: Metadata Integration (Spotify) *(MVP)*
 > Known risk: Development Mode restricts test accounts to Premium members and limits search pagination; Client Credentials is being phased out for some metadata endpoints. Proceed under Development Mode for MVP (see Architecture section).
@@ -133,7 +135,7 @@ erDiagram
 1. **Landing Page**: Create a visually stunning landing page with a hero section, popular/trending albums showcase, reviews activity ticker, and compelling CTAs to prompt user signup.
 2. **Global Search Bar + Search Results Page**: Add a search bar in the sidebar that queries the Spotify API, with a dedicated `/search` results page. This search is also reused in the logging flow to select the exact album.
 3. **Album Page**: Show album details, overall community rating average (from `albums.avg_rating`/`rating_count`), and recent reviews.
-4. **Logging Modal**: Allow users to rate (0.5 to 5 stars), specify if it's a spoiler, and select a "listened date". Always writes a `diary_entries` row on log; optionally upserts the canonical `reviews` row (unique per user/album) when the user is writing "their review" for the album, distinct from just logging a relisten.
+4. **Logging Modal**: Allow users to rate (0 to 5 stars, by increments of 0.5), specify if it's a spoiler, and select a "listened date". Always writes a `diary_entries` row on log; optionally upserts the canonical `reviews` row (unique per user/album) when the user is writing "their review" for the album, distinct from just logging a relisten.
 5. **User Profile**: Show user's recent activity, diary/history (reads from `diary_entries`), top albums, and reviews (reads from `reviews`).
 6. **Global user search**: search bar supports a "People" mode alongside album search, so users can discover people to follow ahead of Phase 4.
 7. Add component tests using React Testing Library to verify rating state changes and form submission in the Logging Modal.
@@ -157,10 +159,10 @@ erDiagram
 - Run `npm run test` (Vitest) to verify unit and component tests.
 - Run `npm run build` to verify production Next.js compilation.
 - Ensure the GitHub Actions pipeline runs successfully.
-- Introduce Playwright for at least one E2E smoke test (sign up via Clerk → search album → log/review it) before considering Phase 4 complete, since the Clerk + Supabase + Spotify integration is hard to unit-test in isolation.
+- Introduce Playwright for at least one E2E smoke test (sign up via Supabase Auth → search album → log/review it) before considering Phase 4 complete, since the Supabase Auth + Spotify integration is hard to unit-test in isolation.
 
 ### Manual Verification
-- Verify successful Clerk authentication redirection and Supabase user syncing, including profile updates/deletion via the expanded webhook.
+- Verify successful Supabase Auth login/signup flow, email confirmation, Google OAuth, onboarding username selection, and auto-profile creation via the Postgres trigger.
 - Test album search auto-completion using Spotify API keys.
 - Check database constraints for duplicate reviews (unique `(profile_id, album_id)` upserts rather than duplicates), self-following prevention, duplicate follows, and rating limits.
 - Verify `diary_entries` allows multiple relistens/relogs of the same album by the same user.
