@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Bungee, Archivo, Space_Mono, Anton } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Sidebar } from "@/components/layout/sidebar";
+import { GrainOverlay } from "@/components/layout/grain-overlay";
 import { LoggingModalProvider } from "@/components/logging/logging-modal-provider";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import "./globals.css";
@@ -47,6 +48,7 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${bungee.variable} ${archivo.variable} ${spaceMono.variable} ${anton.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <GrainOverlay />
         <TooltipProvider>
           {user ? (
             <LoggingModalProvider>

@@ -113,13 +113,6 @@ export default function LoginPage() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: 'radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px)',
-            backgroundSize: '3px 3px',
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
             background:
               'linear-gradient(180deg, rgba(10,10,10,.55) 0%, rgba(10,10,10,.35) 40%, rgba(10,10,10,.95) 100%)',
           }}
