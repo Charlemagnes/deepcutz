@@ -170,7 +170,7 @@ export function MarketingLanding() {
           <PunkButton href="/login" variant="ghost" size="sm">
             LOG IN
           </PunkButton>
-          <PunkButton href="/login" variant="solid" size="sm" accent="red" rotate={-1}>
+          <PunkButton href="/sign-up" variant="solid" size="sm" accent="red" rotate={-1}>
             SIGN UP
           </PunkButton>
         </div>
