@@ -3,8 +3,14 @@
 import { useState, useTransition } from 'react'
 import { toggleFollow } from '@/lib/follows/actions'
 
-export function FollowButton({ profileId }: { profileId: string }) {
-  const [following, setFollowing] = useState(false)
+export function FollowButton({
+  profileId,
+  initialIsFollowing,
+}: {
+  profileId: string
+  initialIsFollowing: boolean
+}) {
+  const [following, setFollowing] = useState(initialIsFollowing)
   const [isPending, startTransition] = useTransition()
 
   function handleClick() {
