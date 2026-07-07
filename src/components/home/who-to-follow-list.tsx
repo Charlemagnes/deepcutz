@@ -31,8 +31,8 @@ export function WhoToFollowList({
           <div key={profile.id} className="flex items-center gap-2.5">
             <span className="w-7.5 h-7.5 bg-brand-red border-2 border-black shrink-0" />
             <div className="flex-1 leading-tight min-w-0">
-              <div className="font-punk-mono font-bold text-[11.5px] truncate text-ink-200">{profile.username ?? 'listener'}</div>
-              <div className="text-paper font-punk-mono text-[10px]">{profile.reviewCount} reviews</div>
+              <div className="font-punk-mono font-bold text-[11.5px] text-paper truncate">{profile.username ?? 'listener'}</div>
+              <div className="text-ink-500 font-punk-mono text-[10px]">{profile.reviewCount} reviews</div>
             </div>
             <FollowButton profileId={profile.id} initialIsFollowing={false} />
           </div>
