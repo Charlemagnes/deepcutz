@@ -1,13 +1,14 @@
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { getAlbumDetails } from '@/lib/spotify/actions'
+import { getCurrentUser } from '@/lib/auth/current-user'
 import { LogButton } from './log-button'
 import { ReviewItem } from './review-item'
 
 export default async function AlbumPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
 
-  const [album, supabase] = await Promise.all([getAlbumDetails(id), createClient()])
+  const [album, supabase, user] = await Promise.all([getAlbumDetails(id), createClient(), getCurrentUser()])
 
   if (!album) {
     return (
@@ -31,7 +32,9 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
     supabase.from('albums').select('avg_rating, rating_count').eq('id', id).maybeSingle(),
     supabase
       .from('reviews')
-      .select('id, rating, content, is_spoiler, created_at, profiles(username, avatar_url)')
+      .select(
+        'id, rating, content, is_spoiler, created_at, like_count, comment_count, profiles(username, avatar_url)'
+      )
       .eq('album_id', id)
       .order('created_at', { ascending: false })
       .limit(15),
@@ -39,6 +42,20 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
 
   const reviewList = reviews ?? []
   const year = album.releaseDate ? album.releaseDate.slice(0, 4) : null
+
+  let likedIds = new Set<string>()
+  if (user && reviewList.length > 0) {
+    const { data: likes } = await supabase
+      .from('likes')
+      .select('target_id')
+      .eq('profile_id', user.id)
+      .eq('target_type', 'review')
+      .in(
+        'target_id',
+        reviewList.map((review) => review.id)
+      )
+    likedIds = new Set((likes ?? []).map((like) => like.target_id))
+  }
 
   return (
     <div className="min-h-screen px-6 sm:px-9 py-8">
@@ -101,14 +118,19 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
             {reviewList.map((review) => {
               const profile = Array.isArray(review.profiles) ? review.profiles[0] : review.profiles
               return (
-                <ReviewItem
-                  key={review.id}
-                  username={profile?.username ?? 'someone'}
-                  rating={review.rating}
-                  content={review.content}
-                  isSpoiler={review.is_spoiler}
-                  createdAt={review.created_at}
-                />
+                <div key={review.id} id={`review-${review.id}`}>
+                  <ReviewItem
+                    reviewId={review.id}
+                    username={profile?.username ?? 'someone'}
+                    rating={review.rating}
+                    content={review.content}
+                    isSpoiler={review.is_spoiler}
+                    createdAt={review.created_at}
+                    likeCount={review.like_count}
+                    commentCount={review.comment_count}
+                    initialLiked={likedIds.has(review.id)}
+                  />
+                </div>
               )
             })}
           </div>

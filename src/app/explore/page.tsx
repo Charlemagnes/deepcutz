@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
+import { getCurrentUser } from '@/lib/auth/current-user'
 import { StarRating } from '@/components/marketing/star-rating'
+import { LikeButton } from '@/components/likes/like-button'
 
 type Accent = 'red' | 'blue' | 'yellow' | 'cyan'
 
@@ -59,7 +61,7 @@ function SectionHeading({
 export default async function ExplorePage() {
   const supabase = await createClient()
 
-  const [{ data: trendingAlbums }, { data: recentReviews }] = await Promise.all([
+  const [{ data: trendingAlbums }, { data: recentReviews }, user] = await Promise.all([
     supabase
       .from('albums')
       .select('id, title, artist, cover_url, avg_rating, rating_count')
@@ -68,14 +70,27 @@ export default async function ExplorePage() {
     supabase
       .from('reviews')
       .select(
-        'id, rating, content, created_at, profiles(username, avatar_url), albums(id, title, artist, cover_url)',
+        'id, rating, content, created_at, like_count, comment_count, profiles(username, avatar_url), albums(id, title, artist, cover_url)',
       )
       .order('created_at', { ascending: false })
       .limit(8),
+    getCurrentUser(),
   ])
 
   const albums = trendingAlbums ?? []
   const reviews = recentReviews ?? []
+
+  const reviewIds = reviews.map((r) => r.id)
+  const { data: likedRows } =
+    user && reviewIds.length > 0
+      ? await supabase
+          .from('likes')
+          .select('target_id')
+          .eq('profile_id', user.id)
+          .eq('target_type', 'review')
+          .in('target_id', reviewIds)
+      : { data: [] as { target_id: string }[] }
+  const likedIds = new Set((likedRows ?? []).map((l) => l.target_id))
 
   return (
     <div className="min-h-screen bg-ink px-6 sm:px-9 py-7 flex flex-col gap-10">
@@ -151,19 +166,20 @@ export default async function ExplorePage() {
               const shadowAccent = ACCENT_CYCLE[i % ACCENT_CYCLE.length]
 
               return (
-                <Link
+                <div
                   key={review.id}
-                  href={`/album/${album.id}`}
                   className="grid grid-cols-[110px_1fr] gap-4 bg-paper text-ink border-2 border-black p-3"
                   style={{ boxShadow: `4px 4px 0 ${ACCENT_HEX[shadowAccent]}` }}
                 >
-                  <div className="relative w-27.5 h-27.5 border-2 border-black bg-ink-500 overflow-hidden shrink-0">
-                    {album.cover_url ? (
-                      <Image src={album.cover_url} alt="" fill sizes="110px" className="object-cover" />
-                    ) : (
-                      <div className="absolute inset-0 bg-ink-200" />
-                    )}
-                  </div>
+                  <Link href={`/album/${album.id}`} className="block">
+                    <div className="relative w-27.5 h-27.5 border-2 border-black bg-ink-500 overflow-hidden shrink-0">
+                      {album.cover_url ? (
+                        <Image src={album.cover_url} alt="" fill sizes="110px" className="object-cover" />
+                      ) : (
+                        <div className="absolute inset-0 bg-ink-200" />
+                      )}
+                    </div>
+                  </Link>
 
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 font-punk-mono text-[11px] text-ink-600 mb-1.5">
@@ -174,12 +190,12 @@ export default async function ExplorePage() {
                       <b className="text-ink truncate">{profile.username ?? 'someone'}</b>
                       <span className="text-ink-500">· {relativeTime(review.created_at)}</span>
                     </div>
-                    <div className="font-display text-base leading-tight truncate">
-                      {album.title}
-                    </div>
-                    <div className="font-punk-mono text-[11px] text-ink-600 truncate mt-0.5 mb-1.5">
-                      {album.artist}
-                    </div>
+                    <Link href={`/album/${album.id}`} className="block">
+                      <div className="font-display text-base leading-tight truncate">{album.title}</div>
+                      <div className="font-punk-mono text-[11px] text-ink-600 truncate mt-0.5 mb-1.5">
+                        {album.artist}
+                      </div>
+                    </Link>
                     <div className="mb-2">
                       <StarRating rating={review.rating} />
                     </div>
@@ -189,11 +205,17 @@ export default async function ExplorePage() {
                       </p>
                     )}
                     <div className="font-punk-mono text-[11px] text-ink-500 mt-2 flex items-center gap-3">
-                      <span>♡ 0</span>
-                      <span>💬 0</span>
+                      <LikeButton
+                        reviewId={review.id}
+                        initialLiked={likedIds.has(review.id)}
+                        initialCount={review.like_count}
+                      />
+                      <Link href={`/album/${album.id}#review-${review.id}`} className="text-[11px] text-ink-500 font-punk-mono">
+                        💬 {review.comment_count}
+                      </Link>
                     </div>
                   </div>
-                </Link>
+                </div>
               )
             })}
           </div>

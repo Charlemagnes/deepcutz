@@ -1,4 +1,4 @@
-export type Json =
+﻿export type Json =
   | string
   | number
   | boolean
@@ -197,6 +197,7 @@ export type Database = {
           created_at: string
           id: string
           profile_id: string
+          review_id: string | null
           target_id: string
           target_type: string
         }
@@ -204,6 +205,7 @@ export type Database = {
           created_at?: string
           id?: string
           profile_id: string
+          review_id?: string | null
           target_id: string
           target_type: string
         }
@@ -211,6 +213,7 @@ export type Database = {
           created_at?: string
           id?: string
           profile_id?: string
+          review_id?: string | null
           target_id?: string
           target_type?: string
         }
@@ -220,6 +223,75 @@ export type Database = {
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "likes_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          actor_id: string
+          comment_id: string | null
+          created_at: string
+          id: string
+          read_at: string | null
+          recipient_id: string
+          review_id: string | null
+          type: string
+        }
+        Insert: {
+          actor_id: string
+          comment_id?: string | null
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          recipient_id: string
+          review_id?: string | null
+          type: string
+        }
+        Update: {
+          actor_id?: string
+          comment_id?: string | null
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          recipient_id?: string
+          review_id?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
             referencedColumns: ["id"]
           },
         ]
@@ -251,30 +323,36 @@ export type Database = {
       reviews: {
         Row: {
           album_id: string
+          comment_count: number
           content: string | null
           created_at: string
           id: string
           is_spoiler: boolean
+          like_count: number
           profile_id: string
           rating: number
           updated_at: string
         }
         Insert: {
           album_id: string
+          comment_count?: number
           content?: string | null
           created_at?: string
           id?: string
           is_spoiler?: boolean
+          like_count?: number
           profile_id: string
           rating: number
           updated_at?: string
         }
         Update: {
           album_id?: string
+          comment_count?: number
           content?: string | null
           created_at?: string
           id?: string
           is_spoiler?: boolean
+          like_count?: number
           profile_id?: string
           rating?: number
           updated_at?: string
