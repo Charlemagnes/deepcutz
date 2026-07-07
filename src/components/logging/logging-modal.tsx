@@ -124,7 +124,7 @@ export function LoggingModal({
             type="button"
             onClick={() => onOpenChange(false)}
             aria-label="Close"
-            className="w-8 h-8 border-2 border-paper text-paper shadow-[3px_3px_0_var(--color-paper)] font-display"
+            className="w-8 h-8 border-2 border-paper text-paper shadow-[3px_3px_0_var(--color-paper)] font-display transition-transform active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
           >
             ✕
           </button>
@@ -289,7 +289,7 @@ export function LoggingModal({
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="bg-paper border-2 border-black text-ink font-display text-xs px-5 py-3 shadow-[3px_3px_0_#000]"
+            className="bg-paper border-2 border-black text-ink font-display text-xs px-5 py-3 shadow-[3px_3px_0_#000] transition-transform active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
           >
             CANCEL
           </button>
@@ -297,7 +297,7 @@ export function LoggingModal({
             type="button"
             disabled={!album || rating === 0 || submitting}
             onClick={handleSubmit}
-            className="bg-brand-yellow border-2 border-black text-ink font-display text-sm px-6 py-3 shadow-hard-4-red disabled:opacity-50"
+            className="bg-brand-yellow border-2 border-black text-ink font-display text-sm px-6 py-3 shadow-hard-4-red transition-transform active:translate-x-[4px] active:translate-y-[4px] active:shadow-none disabled:opacity-50"
           >
             {submitting ? 'SAVING…' : '▶ SAVE REVIEW'}
           </button>
