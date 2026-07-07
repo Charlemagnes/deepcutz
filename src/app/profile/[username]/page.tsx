@@ -83,12 +83,12 @@ export default async function ProfilePage({
     return (
       <div className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
         <div
-          className="font-[family-name:var(--font-bungee)] text-2xl mb-3"
-          style={{ color: '#ff2b2b', textShadow: '3px 3px 0 #2b6bff', rotate: '-1deg' }}
+          className="font-display text-2xl mb-3"
+          style={{ color: 'var(--color-brand-red)', textShadow: '3px 3px 0 var(--color-brand-blue)', rotate: '-1deg' }}
         >
           USER NOT FOUND
         </div>
-        <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a] max-w-sm">
+        <p className="font-punk-mono text-sm text-ink-500 max-w-sm">
           Nobody&apos;s logged in as @{username} — check the spelling, or they may have deleted their account.
         </p>
       </div>
@@ -209,7 +209,7 @@ export default async function ProfilePage({
   const initial = (displayName ?? '?').charAt(0).toUpperCase()
 
   return (
-    <div className="max-w-[880px] mx-auto px-6 sm:px-9 py-9 text-[#f2f2f2]">
+    <div className="max-w-220 mx-auto px-6 sm:px-9 py-9 text-paper">
       {/* Header */}
       <div className="flex items-start justify-between gap-6 flex-wrap mb-9">
         <div className="flex items-center gap-4">
@@ -218,12 +218,12 @@ export default async function ProfilePage({
             <img
               src={profile.avatar_url}
               alt=""
-              className="w-[72px] h-[72px] rounded-full object-cover border-[3px] border-black shadow-[4px_4px_0_#ffe000]"
+              className="w-72 h-72 rounded-full object-cover border-punk border-black shadow-hard-4-yellow"
             />
           ) : (
             <div
               aria-hidden="true"
-              className="w-[72px] h-[72px] rounded-full border-[3px] border-black shadow-[4px_4px_0_#ffe000] bg-[#2b6bff] flex items-center justify-center font-[family-name:var(--font-bungee)] text-2xl text-[#0a0a0a]"
+              className="w-72 h-72 rounded-full border-punk border-black shadow-hard-4-yellow bg-brand-blue flex items-center justify-center font-display text-2xl text-ink"
             >
               {initial}
             </div>
@@ -231,21 +231,21 @@ export default async function ProfilePage({
 
           <div>
             <div
-              className="font-[family-name:var(--font-bungee)] text-2xl w-fit"
-              style={{ color: '#ffe000', textShadow: '3px 3px 0 #ff2b2b', rotate: '-1deg' }}
+              className="font-display text-2xl w-fit"
+              style={{ color: 'var(--color-brand-yellow)', textShadow: '3px 3px 0 var(--color-brand-red)', rotate: '-1deg' }}
             >
               {displayName}
             </div>
-            <div className="font-[family-name:var(--font-space-mono)] text-xs text-[#9a9a9a] mt-1">
+            <div className="font-punk-mono text-xs text-ink-500 mt-1">
               @{profile.username}
-              {isOwnProfile && <span className="ml-2 text-[#2ee6ff]">(that&apos;s you)</span>}
+              {isOwnProfile && <span className="ml-2 text-brand-cyan">(that&apos;s you)</span>}
             </div>
-            <div className="flex gap-4 mt-2 font-[family-name:var(--font-space-mono)] text-xs text-[#d8d8d8]">
+            <div className="flex gap-4 mt-2 font-punk-mono text-xs text-ink-200">
               <span>
-                <b className="text-[#f2f2f2]">{followerCount ?? 0}</b> followers
+                <b className="text-paper">{followerCount ?? 0}</b> followers
               </span>
               <span>
-                <b className="text-[#f2f2f2]">{followingCount ?? 0}</b> following
+                <b className="text-paper">{followingCount ?? 0}</b> following
               </span>
             </div>
           </div>
@@ -271,21 +271,21 @@ export default async function ProfilePage({
               <Link
                 key={`${item.kind}-${item.id}`}
                 href={`/album/${item.album.id}`}
-                className="grid grid-cols-[54px_1fr] gap-3.5 bg-[#f2f2f2] border-2 border-black shadow-[4px_4px_0_#2b6bff] p-3 text-[#0a0a0a]"
+                className="grid grid-cols-[54px_1fr] gap-3.5 bg-paper border-2 border-black shadow-hard-4-blue p-3 text-ink"
               >
-                <div className="relative w-[54px] h-[54px] border-2 border-black bg-[#333] shrink-0">
+                <div className="relative w-13.5 h-13.5 border-2 border-black bg-ink-800 shrink-0">
                   {item.album.cover_url && (
                     <Image src={item.album.cover_url} alt="" fill sizes="54px" className="object-cover" />
                   )}
                 </div>
                 <div className="min-w-0">
-                  <div className="font-[family-name:var(--font-space-mono)] text-[10.5px] text-[#555] mb-0.5">
+                  <div className="font-punk-mono text-[10.5px] text-ink-600 mb-0.5">
                     {item.kind === 'review' ? 'RATED' : 'LOGGED'} · {formatDate(item.createdAt)}
                   </div>
-                  <div className="font-[family-name:var(--font-bungee)] text-[13.5px] leading-tight truncate">
+                  <div className="font-display text-[13.5px] leading-tight truncate">
                     {item.album.title}
                   </div>
-                  <div className="text-[#555] font-[family-name:var(--font-space-mono)] text-[10.5px] truncate">
+                  <div className="text-ink-600 font-punk-mono text-[10.5px] truncate">
                     {item.album.artist}
                   </div>
                   {item.rating != null && (
@@ -311,12 +311,12 @@ export default async function ProfilePage({
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-3.5">
             {topAlbums.map(({ id, rating, album }) => (
               <Link key={id} href={`/album/${album.id}`} className="group">
-                <div className="relative aspect-square border-2 border-black shadow-[3px_3px_0_#ff2b2b] bg-[#333]">
+                <div className="relative aspect-square border-2 border-black shadow-hard-3-red bg-ink-800">
                   {album.cover_url && (
                     <Image src={album.cover_url} alt="" fill sizes="120px" className="object-cover" />
                   )}
                 </div>
-                <div className="font-[family-name:var(--font-space-mono)] text-[10.5px] font-bold mt-1.5 truncate">
+                <div className="font-punk-mono text-[10.5px] font-bold mt-1.5 truncate">
                   {album.title}
                 </div>
                 <StarRating rating={rating} size="sm" />
@@ -338,16 +338,16 @@ export default async function ProfilePage({
             {reviewsWithContent.map((review) => (
               <HardShadowCard key={review.id} accent="cyan" border={2} shadow={5} className="p-4">
                 <Link href={`/album/${review.album.id}`} className="flex items-center gap-3 mb-2.5">
-                  <div className="relative w-[42px] h-[42px] border-2 border-black bg-[#333] shrink-0">
+                  <div className="relative w-10.5 h-10.5 border-2 border-black bg-ink-800 shrink-0">
                     {review.album.cover_url && (
                       <Image src={review.album.cover_url} alt="" fill sizes="42px" className="object-cover" />
                     )}
                   </div>
                   <div className="min-w-0">
-                    <div className="font-[family-name:var(--font-bungee)] text-sm leading-tight truncate">
+                    <div className="font-display text-sm leading-tight truncate">
                       {review.album.title}
                     </div>
-                    <div className="text-[#555] font-[family-name:var(--font-space-mono)] text-[10.5px] truncate">
+                    <div className="text-ink-600 font-punk-mono text-[10.5px] truncate">
                       {review.album.artist}
                     </div>
                   </div>
@@ -358,7 +358,7 @@ export default async function ProfilePage({
                 {review.isSpoiler ? (
                   <SpoilerReview content={review.content} />
                 ) : (
-                  <p className="m-0 text-[12.5px] leading-[1.5] text-[#1a1a1a] whitespace-pre-wrap">
+                  <p className="m-0 text-[12.5px] leading-normal text-ink-800 whitespace-pre-wrap">
                     {review.content}
                   </p>
                 )}
@@ -370,7 +370,7 @@ export default async function ProfilePage({
                   />
                   <Link
                     href={`/album/${review.album.id}#review-${review.id}`}
-                    className="text-[11px] text-[#888] font-[family-name:var(--font-space-mono)]"
+                    className="text-[11px] text-ink-500 font-punk-mono"
                   >
                     💬 {review.commentCount}
                   </Link>
@@ -394,23 +394,23 @@ export default async function ProfilePage({
               <Link
                 key={entry.id}
                 href={`/album/${entry.album.id}`}
-                className="flex items-center gap-3 bg-[#141414] border border-[#333] px-3 py-2"
+                className="flex items-center gap-3 bg-ink-900 border border-ink-800 px-3 py-2"
               >
-                <div className="relative w-[34px] h-[34px] border border-[#333] bg-[#333] shrink-0">
+                <div className="relative w-8.5 h-8.5 border border-ink-800 bg-ink-800 shrink-0">
                   {entry.album.cover_url && (
                     <Image src={entry.album.cover_url} alt="" fill sizes="34px" className="object-cover" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-[family-name:var(--font-space-mono)] font-bold text-[11.5px] truncate">
+                  <div className="font-punk-mono font-bold text-[11.5px] truncate">
                     {entry.album.title}
                   </div>
-                  <div className="text-[#8a8a8a] font-[family-name:var(--font-space-mono)] text-[10px] truncate">
+                  <div className="text-ink-500 font-punk-mono text-[10px] truncate">
                     {entry.album.artist}
                   </div>
                 </div>
                 {entry.rating != null && <StarRating rating={entry.rating} size="sm" />}
-                <div className="font-[family-name:var(--font-space-mono)] text-[10px] text-[#8a8a8a] shrink-0">
+                <div className="font-punk-mono text-[10px] text-ink-500 shrink-0">
                   {formatDate(entry.listenedDate)}
                 </div>
               </Link>
@@ -424,6 +424,6 @@ export default async function ProfilePage({
 
 function EmptyState({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a]">{children}</p>
+    <p className="font-punk-mono text-sm text-ink-500">{children}</p>
   )
 }

@@ -16,7 +16,7 @@ const NAV_ITEMS = [
 
 function NotificationCountBadge({ count }: { count: number }) {
   return (
-    <span className="bg-[#ff2b2b] text-white border border-black rounded-full text-[10px] px-1.5 py-0.5 leading-none">
+    <span className="bg-brand-red text-white border border-black rounded-full text-[10px] px-1.5 py-0.5 leading-none">
       {count > 9 ? '9+' : count}
     </span>
   )
@@ -38,7 +38,7 @@ export async function Sidebar() {
   }
 
   return (
-    <aside className="sticky top-0 z-20 flex h-screen w-[236px] shrink-0 flex-col gap-[22px] border-r-[3px] border-[#f2f2f2] bg-[#0a0a0a] px-[18px] py-[26px] text-[#f2f2f2]">
+    <aside className="sticky top-0 z-20 flex h-screen w-59 shrink-0 flex-col gap-[22px] border-r-punk border-paper bg-ink px-[18px] py-[26px] text-paper">
       <Link href="/" className="w-fit">
         <Wordmark />
       </Link>

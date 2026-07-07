@@ -79,15 +79,15 @@ const ACTIVITY = [
 const STEPS: { num: number; bg: string; textColor: string; rotate: number; lead: string; rest: string }[] = [
   {
     num: 1,
-    bg: "#ffe000",
-    textColor: "#0a0a0a",
+    bg: "var(--color-brand-yellow)",
+    textColor: "var(--color-ink)",
     rotate: -4,
     lead: "Log the spin.",
     rest: "Album, EP, one-off single — timestamp it the second you hit play.",
   },
   {
     num: 2,
-    bg: "#ff2b2b",
+    bg: "var(--color-brand-red)",
     textColor: "#fff",
     rotate: 3,
     lead: "Rate it out of five.",
@@ -95,8 +95,8 @@ const STEPS: { num: number; bg: string; textColor: string; rotate: number; lead:
   },
   {
     num: 3,
-    bg: "#2ee6ff",
-    textColor: "#0a0a0a",
+    bg: "var(--color-brand-cyan)",
+    textColor: "var(--color-ink)",
     rotate: -3,
     lead: "Watch the feed light up.",
     rest: "Everyone you follow, in one running tape.",
@@ -162,7 +162,7 @@ const FOOTER_COLUMNS = [
 
 export function MarketingLanding() {
   return (
-    <div className="font-[family-name:var(--font-archivo)] bg-[#0a0a0a] text-[#f2f2f2] relative">
+    <div className="font-body bg-ink text-paper relative">
       <div
         aria-hidden="true"
         className="fixed inset-0 pointer-events-none z-0"
@@ -173,7 +173,7 @@ export function MarketingLanding() {
       />
 
       {/* nav */}
-      <div className="relative z-10 flex items-center justify-between px-6 sm:px-12 py-6 border-b-[3px] border-[#f2f2f2]">
+      <div className="relative z-10 flex items-center justify-between px-6 sm:px-12 py-6 border-b-punk border-paper">
         <Wordmark />
         <div className="flex gap-3.5 items-center">
           <PunkButton href="/login" variant="ghost" size="sm">
@@ -186,15 +186,15 @@ export function MarketingLanding() {
       </div>
 
       {/* hero */}
-      <div className="relative z-10 px-6 sm:px-12 pt-[70px] pb-[60px] grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center max-w-[1280px] mx-auto">
+      <div className="relative z-10 px-6 sm:px-12 pt-[70px] pb-[60px] grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center max-w-320 mx-auto">
         <div>
           <h1
-            className="font-[family-name:var(--font-bungee)] inline-block m-0"
+            className="font-display inline-block m-0"
             style={{
               fontSize: 56,
               lineHeight: 1.08,
-              color: "#ffe000",
-              textShadow: "4px 4px 0 #ff2b2b",
+              color: "var(--color-brand-yellow)",
+              textShadow: "4px 4px 0 var(--color-brand-red)",
               rotate: "-1deg",
             }}
           >
@@ -204,7 +204,7 @@ export function MarketingLanding() {
             <br />
             SPIN.
           </h1>
-          <p className="font-[family-name:var(--font-space-mono)] text-[14.5px] leading-[1.7] text-[#d8d8d8] max-w-[440px] mt-6 bg-black/40 border-l-[3px] border-[#2b6bff] px-3.5 py-2.5">
+          <p className="font-punk-mono text-[14.5px] leading-[1.7] text-ink-200 max-w-110 mt-6 bg-black/40 border-l-punk border-brand-blue px-3.5 py-2.5">
             Log every album, rate every track, and follow the ears you trust. Deepcutz is where your
             listening habit becomes your diary.
           </p>
@@ -226,14 +226,14 @@ export function MarketingLanding() {
       </div>
 
       {/* stats strip */}
-      <div className="relative z-10 bg-[#f2f2f2] text-[#0a0a0a] border-y-[3px] border-black py-7 px-6 sm:px-12 flex justify-center gap-16 flex-wrap">
+      <div className="relative z-10 bg-paper text-ink border-y-punk border-black py-7 px-6 sm:px-12 flex justify-center gap-16 flex-wrap">
         {STATS.map((stat) => (
           <StatTile key={stat.label} {...stat} />
         ))}
       </div>
 
       {/* features */}
-      <div id="features" className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-12 py-[70px] scroll-mt-6">
+      <div id="features" className="relative z-10 max-w-320 mx-auto px-6 sm:px-12 py-[70px] scroll-mt-6">
         <div className="mb-10">
           <SectionHeading accent="yellow" rotate={-1}>
             WHAT YOU GET
@@ -245,8 +245,8 @@ export function MarketingLanding() {
               <div className="text-3xl mb-3" aria-hidden="true">
                 {feature.icon}
               </div>
-              <h3 className="font-[family-name:var(--font-bungee)] text-base mb-2">{feature.title}</h3>
-              <p className="font-[family-name:var(--font-archivo)] text-[13px] leading-[1.55] text-[#2a2a2a] m-0">
+              <h3 className="font-display text-base mb-2">{feature.title}</h3>
+              <p className="font-body text-[13px] leading-[1.55] text-ink-800 m-0">
                 {feature.description}
               </p>
             </HardShadowCard>
@@ -255,7 +255,7 @@ export function MarketingLanding() {
       </div>
 
       {/* activity ticker */}
-      <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-12 pb-[70px]">
+      <div className="relative z-10 max-w-320 mx-auto px-6 sm:px-12 pb-[70px]">
         <div className="mb-8">
           <SectionHeading accent="cyan" rotate={1}>
             RIGHT NOW ON DEEPCUTZ
@@ -269,7 +269,7 @@ export function MarketingLanding() {
       </div>
 
       {/* app showcase */}
-      <div className="relative z-10 max-w-[1280px] mx-auto px-6 sm:px-12 pt-2.5 pb-20">
+      <div className="relative z-10 max-w-320 mx-auto px-6 sm:px-12 pt-2.5 pb-20">
         <div className="mb-9">
           <SectionHeading accent="blue" rotate={1}>
             YOUR FEED, YOUR RULES
@@ -277,21 +277,21 @@ export function MarketingLanding() {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-11 items-center">
           <div>
-            <p className="font-[family-name:var(--font-space-mono)] text-[14.5px] leading-[1.75] text-[#d8d8d8] max-w-[420px] mb-6.5">
+            <p className="font-punk-mono text-[14.5px] leading-[1.75] text-ink-200 max-w-105 mb-6.5">
               A wall of what your friends spun last night. Every review, every half-star, every
               &quot;wait you HAVE to hear this&quot; — all in one scroll.
             </p>
-            <div className="flex flex-col gap-4 max-w-[420px]">
+            <div className="flex flex-col gap-4 max-w-105">
               {STEPS.map((step) => (
                 <div key={step.num} className="flex gap-3.5 items-start">
                   <span
                     aria-hidden="true"
-                    className="flex-none w-[30px] h-[30px] border-2 border-black flex items-center justify-center font-[family-name:var(--font-bungee)] text-[13px]"
+                    className="flex-none w-7.5 h-7.5 border-2 border-black flex items-center justify-center font-display text-[13px]"
                     style={{ backgroundColor: step.bg, color: step.textColor, rotate: `${step.rotate}deg` }}
                   >
                     {step.num}
                   </span>
-                  <div className="font-[family-name:var(--font-archivo)] text-[13.5px] leading-[1.5] text-[#e6e6e6]">
+                  <div className="font-body text-[13.5px] leading-[1.5] text-ink-200">
                     <b className="text-white">{step.lead}</b> {step.rest}
                   </div>
                 </div>
@@ -301,9 +301,9 @@ export function MarketingLanding() {
 
           <HardShadowCard tone="dark" accent="red" shadow={8} rotate={1} className="p-4">
             <div className="flex items-center gap-1.5 mb-3" aria-hidden="true">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#ff2b2b]" />
-              <span className="w-2.5 h-2.5 rounded-full bg-[#ffe000]" />
-              <span className="w-2.5 h-2.5 rounded-full bg-[#2ee6ff]" />
+              <span className="w-2.5 h-2.5 rounded-full bg-brand-red" />
+              <span className="w-2.5 h-2.5 rounded-full bg-brand-yellow" />
+              <span className="w-2.5 h-2.5 rounded-full bg-brand-cyan" />
             </div>
             <div className="flex flex-col gap-2.5">
               {MINI_FEED.map((row) => (
@@ -315,8 +315,8 @@ export function MarketingLanding() {
       </div>
 
       {/* testimonials */}
-      <div className="relative z-10 bg-[#f2f2f2] border-y-[3px] border-black py-16 px-6 sm:px-12">
-        <div className="max-w-[1280px] mx-auto">
+      <div className="relative z-10 bg-paper border-y-punk border-black py-16 px-6 sm:px-12">
+        <div className="max-w-320 mx-auto">
           <div className="mb-[34px]">
             <SectionHeading rotate={-1}>WHAT LISTENERS SAY</SectionHeading>
           </div>
@@ -331,10 +331,10 @@ export function MarketingLanding() {
                 className="p-[22px]"
               >
                 <StarRating rating={t.rating} />
-                <p className="italic font-[family-name:var(--font-archivo)] text-[13.5px] leading-[1.55] text-[#1a1a1a] my-2.5 mb-3.5">
+                <p className="italic font-body text-[13.5px] leading-[1.55] text-ink-800 my-2.5 mb-3.5">
                   &quot;{t.quote}&quot;
                 </p>
-                <div className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#555]">
+                <div className="font-punk-mono text-[11px] text-ink-600">
                   — {t.handle}
                 </div>
               </HardShadowCard>
@@ -358,21 +358,21 @@ export function MarketingLanding() {
       </div>
 
       {/* footer */}
-      <div className="relative z-10 border-t-[3px] border-[#f2f2f2] px-6 sm:px-12 py-10 flex justify-between items-start flex-wrap gap-8">
+      <div className="relative z-10 border-t-punk border-paper px-6 sm:px-12 py-10 flex justify-between items-start flex-wrap gap-8">
         <Wordmark size="sm" />
-        <div className="flex gap-10 flex-wrap font-[family-name:var(--font-space-mono)] text-xs text-[#9a9a9a]">
+        <div className="flex gap-10 flex-wrap font-punk-mono text-xs text-ink-500">
           {FOOTER_COLUMNS.map((column) => (
             <div key={column.title} className="flex flex-col gap-2.5">
-              <b className="text-[#f2f2f2] font-[family-name:var(--font-archivo)]">{column.title}</b>
+              <b className="text-paper font-body">{column.title}</b>
               {column.links.map((link) => (
-                <a key={link} href="#" className="hover:text-[#ffe000]">
+                <a key={link} href="#" className="hover:text-brand-yellow">
                   {link}
                 </a>
               ))}
             </div>
           ))}
         </div>
-        <div className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#666]">
+        <div className="font-punk-mono text-[11px] text-ink-600">
           © 2026 DEEPCUTZ. ALL SPINS RESERVED.
         </div>
       </div>

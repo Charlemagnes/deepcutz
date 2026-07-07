@@ -30,11 +30,11 @@ export function ReviewItem({
   const blurred = isSpoiler && !revealed
 
   return (
-    <div className="bg-[#f2f2f2] border-[3px] border-black shadow-[5px_5px_0_#2b6bff] p-4 text-[#0a0a0a]">
-      <div className="flex items-center gap-2.5 font-[family-name:var(--font-space-mono)] text-[11px] text-[#555] mb-2">
-        <span className="w-[16px] h-[16px] rounded-full bg-[#ff2b2b] border border-black shrink-0" />
-        <b className="text-[#0a0a0a]">{username}</b>
-        <span className="text-[#999]">
+    <div className="bg-paper border-punk border-black shadow-hard-5-blue p-4 text-ink">
+      <div className="flex items-center gap-2.5 font-punk-mono text-[11px] text-ink-600 mb-2">
+        <span className="w-4 h-4 rounded-full bg-brand-red border border-black shrink-0" />
+        <b className="text-ink">{username}</b>
+        <span className="text-ink-500">
           {new Date(createdAt).toLocaleDateString(undefined, {
             year: 'numeric',
             month: 'short',
@@ -50,7 +50,7 @@ export function ReviewItem({
       {content && (
         <div className="relative">
           <p
-            className={`m-0 text-[13px] leading-[1.5] max-w-[560px] whitespace-pre-wrap ${
+            className={`m-0 text-[13px] leading-[1.5] max-w-140 whitespace-pre-wrap ${
               blurred ? 'blur-sm select-none' : ''
             }`}
           >
@@ -60,7 +60,7 @@ export function ReviewItem({
             <button
               type="button"
               onClick={() => setRevealed(true)}
-              className="absolute inset-0 flex items-center justify-center bg-[#f2f2f2]/70 font-[family-name:var(--font-bungee)] text-xs text-[#0a0a0a] border-2 border-black shadow-[3px_3px_0_#ff2b2b] mx-auto my-auto w-fit h-fit px-3 py-2"
+              className="absolute inset-0 flex items-center justify-center bg-paper/70 font-display text-xs text-ink border-2 border-black shadow-hard-3-red mx-auto my-auto w-fit h-fit px-3 py-2"
             >
               ⚠ SPOILER — SHOW ANYWAY
             </button>

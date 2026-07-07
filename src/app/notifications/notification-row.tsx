@@ -33,18 +33,16 @@ export function NotificationRow({ item }: { item: NotificationItem }) {
         accent={item.isUnread ? 'red' : 'cyan'}
         border={2}
         shadow={4}
-        className={`p-3.5 flex items-center gap-3 ${item.isUnread ? 'border-l-4 border-l-[#ff2b2b]' : ''}`}
+        className={`p-3.5 flex items-center gap-3 ${item.isUnread ? 'border-l-4 border-l-brand-red' : ''}`}
       >
         {item.isUnread && (
           <span
             aria-hidden="true"
-            className="h-2 w-2 shrink-0 rounded-full bg-[#ff2b2b]"
+            className="h-2 w-2 shrink-0 rounded-full bg-brand-red"
             data-testid="unread-dot"
           />
         )}
-        <p className="m-0 text-[13px] leading-snug text-[#0a0a0a] font-[family-name:var(--font-space-mono)]">
-          {text}
-        </p>
+        <p className="m-0 text-[13px] leading-snug text-ink font-punk-mono">{text}</p>
       </HardShadowCard>
     </Link>
   )

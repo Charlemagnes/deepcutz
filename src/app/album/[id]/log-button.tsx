@@ -9,7 +9,7 @@ export function LogButton({ albumId }: { albumId: string }) {
     <button
       type="button"
       onClick={() => open(albumId)}
-      className="bg-[#ffe000] text-[#0a0a0a] border-[3px] border-black shadow-[5px_5px_0_#ff2b2b] px-6 py-3.5 font-[family-name:var(--font-bungee)] text-sm"
+      className="bg-brand-yellow text-ink border-punk border-black shadow-hard-5-red px-6 py-3.5 font-display text-sm"
       style={{ rotate: '-1deg' }}
     >
       ▶ LOG / REVIEW

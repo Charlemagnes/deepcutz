@@ -49,7 +49,7 @@ export default async function RootLayout({
         <TooltipProvider>
           {user ? (
             <LoggingModalProvider>
-              <div className="flex min-h-screen bg-[#0a0a0a]">
+              <div className="flex min-h-screen bg-ink">
                 <Sidebar />
                 <div className="flex-1 min-w-0">{children}</div>
               </div>

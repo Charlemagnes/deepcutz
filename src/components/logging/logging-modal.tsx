@@ -111,12 +111,12 @@ export function LoggingModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-none w-[860px] sm:max-w-[860px] max-h-[92vh] overflow-y-auto rounded-none bg-[#0a0a0a] p-0 border-[3px] border-black shadow-[9px_9px_0_#2b6bff] gap-0 text-[#f2f2f2]"
+        className="max-w-none w-215 sm:max-w-215 max-h-[92vh] overflow-y-auto rounded-none bg-ink p-0 border-punk border-black shadow-hard-9-blue gap-0 text-paper"
       >
-        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-5 border-b-[3px] border-black bg-[#0a0a0a]">
+        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-5 border-b-punk border-black bg-ink">
           <div
-            className="font-[family-name:var(--font-bungee)] text-xl"
-            style={{ color: '#ffe000', textShadow: '2.5px 2.5px 0 #ff2b2b', rotate: '-1deg' }}
+            className="font-display text-xl"
+            style={{ color: 'var(--color-brand-yellow)', textShadow: '2.5px 2.5px 0 var(--color-brand-red)', rotate: '-1deg' }}
           >
             LOG A LISTEN
           </div>
@@ -124,15 +124,15 @@ export function LoggingModal({
             type="button"
             onClick={() => onOpenChange(false)}
             aria-label="Close"
-            className="w-8 h-8 border-2 border-[#f2f2f2] text-[#f2f2f2] shadow-[3px_3px_0_#f2f2f2] font-[family-name:var(--font-bungee)]"
+            className="w-8 h-8 border-2 border-paper text-paper shadow-[3px_3px_0_var(--color-paper)] font-display"
           >
             ✕
           </button>
         </div>
 
         <div className="px-6 pt-5 relative">
-          <div className="flex items-center gap-2.5 bg-[#f2f2f2] border-2 border-black shadow-[4px_4px_0_#ffe000] px-3.5 py-2.5">
-            <span className="text-[#0a0a0a]">⌕</span>
+          <div className="flex items-center gap-2.5 bg-paper border-2 border-black shadow-hard-4-yellow px-3.5 py-2.5">
+            <span className="text-ink">⌕</span>
             <input
               type="text"
               value={query}
@@ -143,12 +143,12 @@ export function LoggingModal({
               onFocus={() => setShowDropdown(true)}
               onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
               placeholder="SEARCH ALBUMS, ARTISTS…"
-              className="flex-1 bg-transparent border-none outline-none text-[#0a0a0a] text-sm font-[family-name:var(--font-space-mono)]"
+              className="flex-1 bg-transparent border-none outline-none text-ink text-sm font-punk-mono"
             />
           </div>
 
           {showDropdown && results.length > 0 && (
-            <div className="absolute left-6 right-6 top-[70px] z-20 bg-[#f2f2f2] border-2 border-black shadow-[5px_5px_0_#000] overflow-hidden">
+            <div className="absolute left-6 right-6 top-17.5 z-20 bg-paper border-2 border-black shadow-[5px_5px_0_#000] overflow-hidden">
               {results.map((r) => (
                 <div
                   key={r.id}
@@ -156,14 +156,14 @@ export function LoggingModal({
                   className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b-2 border-black last:border-b-0"
                 >
                   <div
-                    className="w-[38px] h-[38px] border-2 border-black shrink-0 bg-cover bg-center"
-                    style={r.coverUrl ? { backgroundImage: `url(${r.coverUrl})` } : { background: '#ccc' }}
+                    className="w-9.5 h-9.5 border-2 border-black shrink-0 bg-cover bg-center"
+                    style={r.coverUrl ? { backgroundImage: `url(${r.coverUrl})` } : { background: 'var(--color-ink-200)' }}
                   />
                   <div className="leading-tight">
-                    <div className="font-[family-name:var(--font-space-mono)] font-bold text-sm text-[#0a0a0a]">
+                    <div className="font-punk-mono font-bold text-sm text-ink">
                       {r.title}
                     </div>
-                    <div className="text-[#666] font-[family-name:var(--font-space-mono)] text-xs">{r.artist}</div>
+                    <div className="text-ink-600 font-punk-mono text-xs">{r.artist}</div>
                   </div>
                 </div>
               ))}
@@ -176,11 +176,11 @@ export function LoggingModal({
             <div className="grid grid-cols-[220px_1fr] gap-6 px-6 py-6">
               <div>
                 <div
-                  className="w-[220px] h-[220px] border-[3px] border-black shadow-[6px_6px_0_#ff2b2b] bg-cover bg-center"
-                  style={album.coverUrl ? { backgroundImage: `url(${album.coverUrl})` } : { background: '#333' }}
+                  className="w-55 h-55 border-punk border-black shadow-hard-6-red bg-cover bg-center"
+                  style={album.coverUrl ? { backgroundImage: `url(${album.coverUrl})` } : { background: 'var(--color-ink-800)' }}
                 />
-                <div className="mt-3 font-[family-name:var(--font-bungee)] text-base">{album.title}</div>
-                <div className="font-[family-name:var(--font-space-mono)] text-[11.5px] text-[#555] mt-1">
+                <div className="mt-3 font-display text-base">{album.title}</div>
+                <div className="font-punk-mono text-[11.5px] text-ink-600 mt-1">
                   {album.artist}
                   {album.releaseDate ? ` · ${album.releaseDate.slice(0, 4)}` : ''}
                 </div>
@@ -188,21 +188,21 @@ export function LoggingModal({
 
               <div>
                 <div
-                  className="font-[family-name:var(--font-bungee)] text-[13px] mb-2.5"
-                  style={{ color: '#ffe000', textShadow: '2px 2px 0 #2b6bff' }}
+                  className="font-display text-[13px] mb-2.5"
+                  style={{ color: 'var(--color-brand-yellow)', textShadow: '2px 2px 0 var(--color-brand-blue)' }}
                 >
                   YOUR RATING
                 </div>
                 <div className="flex items-center gap-1.5 mb-5">
                   <StarRatingInput value={rating} onChange={setRating} label="Your rating" />
-                  <span className="font-[family-name:var(--font-space-mono)] font-bold text-sm ml-2">
+                  <span className="font-punk-mono font-bold text-sm ml-2">
                     {rating ? rating.toFixed(1) : '—'}
                   </span>
                 </div>
 
                 <div
-                  className="font-[family-name:var(--font-bungee)] text-[13px] mb-2.5"
-                  style={{ color: '#ffe000', textShadow: '2px 2px 0 #ff2b2b' }}
+                  className="font-display text-[13px] mb-2.5"
+                  style={{ color: 'var(--color-brand-yellow)', textShadow: '2px 2px 0 var(--color-brand-red)' }}
                 >
                   YOUR REVIEW
                 </div>
@@ -211,7 +211,7 @@ export function LoggingModal({
                   onChange={(e) => setReview(e.target.value)}
                   rows={5}
                   placeholder="What did you think? (no spoilers up top…)"
-                  className="w-full box-border bg-[#f2f2f2] border-2 border-black shadow-[4px_4px_0_#2b6bff] px-3.5 py-3 text-[#0a0a0a] text-sm leading-relaxed font-[family-name:var(--font-space-mono)]"
+                  className="w-full box-border bg-paper border-2 border-black shadow-hard-4-blue px-3.5 py-3 text-ink text-sm leading-relaxed font-punk-mono"
                 />
               </div>
             </div>
@@ -219,14 +219,14 @@ export function LoggingModal({
             {tracks.length > 0 && (
               <div className="px-6 pb-6">
                 <div
-                  className="font-[family-name:var(--font-bungee)] text-[15px] mb-3"
-                  style={{ color: '#ffe000', textShadow: '2px 2px 0 #ff2b2b' }}
+                  className="font-display text-[15px] mb-3"
+                  style={{ color: 'var(--color-brand-yellow)', textShadow: '2px 2px 0 var(--color-brand-red)' }}
                 >
                   TRACK BY TRACK
                 </div>
 
                 {tracks.map((track, i) => {
-                  const accents = ['#ff2b2b', '#2b6bff', '#ffe000']
+                  const accents = ['var(--color-brand-red)', 'var(--color-brand-blue)', 'var(--color-brand-yellow)']
                   const accent = accents[i % accents.length]
                   const expanded = expandedTrack === track.trackNumber
                   const state = trackState[track.trackNumber]
@@ -234,7 +234,7 @@ export function LoggingModal({
                   return (
                     <div
                       key={track.trackNumber}
-                      className="bg-[#0a0a0a] border-2 border-black mb-2.5 overflow-hidden"
+                      className="bg-ink border-2 border-black mb-2.5 overflow-hidden"
                       style={{ boxShadow: `4px 4px 0 ${accent}` }}
                     >
                       <div
@@ -242,13 +242,13 @@ export function LoggingModal({
                         className="flex items-center gap-3 px-3.5 py-3 cursor-pointer"
                         style={{ borderLeft: `8px solid ${accent}` }}
                       >
-                        <span className="font-[family-name:var(--font-space-mono)] font-bold text-[11.5px] text-[#777] w-[18px]">
+                        <span className="font-punk-mono font-bold text-[11.5px] text-ink-500 w-4.5">
                           {String(track.trackNumber).padStart(2, '0')}
                         </span>
-                        <span className="flex-1 font-[family-name:var(--font-archivo)] text-[13.5px] font-extrabold">
+                        <span className="flex-1 font-body text-[13.5px] font-extrabold">
                           {track.title}
                         </span>
-                        <span className="font-[family-name:var(--font-space-mono)] text-[11.5px] text-[#999]">
+                        <span className="font-punk-mono text-[11.5px] text-ink-500">
                           {formatDuration(track.durationMs)}
                         </span>
                         <span onClick={(e) => e.stopPropagation()}>
@@ -259,7 +259,7 @@ export function LoggingModal({
                             label={`Rating for ${track.title}`}
                           />
                         </span>
-                        <span className="font-[family-name:var(--font-bungee)] text-[11px] w-3.5 text-center">
+                        <span className="font-display text-[11px] w-3.5 text-center">
                           {expanded ? '▾' : '▸'}
                         </span>
                       </div>
@@ -271,7 +271,7 @@ export function LoggingModal({
                             onChange={(e) => setTrackNotes(track.trackNumber, e.target.value)}
                             rows={2}
                             placeholder="Notes on this track…"
-                            className="w-full box-border bg-[#171717] border-2 border-black px-3 py-2.5 text-[#f2f2f2] text-xs leading-relaxed font-[family-name:var(--font-space-mono)]"
+                            className="w-full box-border bg-ink-900 border-2 border-black px-3 py-2.5 text-paper text-xs leading-relaxed font-punk-mono"
                           />
                         </div>
                       )}
@@ -285,11 +285,11 @@ export function LoggingModal({
 
         {error && <p className="px-6 pb-3 text-sm text-red-400">{error}</p>}
 
-        <div className="sticky bottom-0 flex justify-end gap-3 px-6 py-4 border-t-[3px] border-black bg-[#0a0a0a]">
+        <div className="sticky bottom-0 flex justify-end gap-3 px-6 py-4 border-t-punk border-black bg-ink">
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="bg-[#f2f2f2] border-2 border-black text-[#0a0a0a] font-[family-name:var(--font-bungee)] text-xs px-5 py-3 shadow-[3px_3px_0_#000]"
+            className="bg-paper border-2 border-black text-ink font-display text-xs px-5 py-3 shadow-[3px_3px_0_#000]"
           >
             CANCEL
           </button>
@@ -297,7 +297,7 @@ export function LoggingModal({
             type="button"
             disabled={!album || rating === 0 || submitting}
             onClick={handleSubmit}
-            className="bg-[#ffe000] border-2 border-black text-[#0a0a0a] font-[family-name:var(--font-bungee)] text-sm px-6 py-3 shadow-[4px_4px_0_#ff2b2b] disabled:opacity-50"
+            className="bg-brand-yellow border-2 border-black text-ink font-display text-sm px-6 py-3 shadow-hard-4-red disabled:opacity-50"
           >
             {submitting ? 'SAVING…' : '▶ SAVE REVIEW'}
           </button>

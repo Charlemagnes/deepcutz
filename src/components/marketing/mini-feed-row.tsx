@@ -3,10 +3,10 @@ import { StarRating } from "./star-rating"
 import type { Accent } from "./types"
 
 const GRADIENTS: Record<Accent, string> = {
-  red: "linear-gradient(150deg,#ff2b2b,#3a0000)",
-  yellow: "linear-gradient(150deg,#ffe000,#7a5c00)",
-  blue: "linear-gradient(150deg,#2b6bff,#001a5c)",
-  cyan: "linear-gradient(150deg,#2ee6ff,#003c47)",
+  red: "linear-gradient(150deg,var(--color-brand-red),#3a0000)",
+  yellow: "linear-gradient(150deg,var(--color-brand-yellow),#7a5c00)",
+  blue: "linear-gradient(150deg,var(--color-brand-blue),#001a5c)",
+  cyan: "linear-gradient(150deg,var(--color-brand-cyan),#003c47)",
 }
 
 type MiniFeedRowProps = {
@@ -40,10 +40,10 @@ export function MiniFeedRow({
         style={{ backgroundImage: GRADIENTS[thumbnailAccent] }}
       />
       <div>
-        <div className="font-[family-name:var(--font-space-mono)] text-[10px] text-[#666] mb-0.5 uppercase">
+        <div className="font-punk-mono text-[10px] text-ink-600 mb-0.5 uppercase">
           {username} · {timestampLabel}
         </div>
-        <div className="font-[family-name:var(--font-bungee)] text-[13px]">{albumTitle}</div>
+        <div className="font-display text-[13px]">{albumTitle}</div>
         <StarRating rating={rating} size="sm" />
       </div>
     </HardShadowCard>

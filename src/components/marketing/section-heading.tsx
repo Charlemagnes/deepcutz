@@ -1,10 +1,10 @@
 import type { Accent } from "./types"
 
 const ACCENT_STYLES: Record<Accent, { text: string; shadow: string }> = {
-  yellow: { text: "#ffe000", shadow: "#2b6bff" },
-  cyan: { text: "#2ee6ff", shadow: "#ff2b2b" },
-  blue: { text: "#2b6bff", shadow: "#ffe000" },
-  red: { text: "#ff2b2b", shadow: "#2b6bff" },
+  yellow: { text: "var(--color-brand-yellow)", shadow: "var(--color-brand-blue)" },
+  cyan: { text: "var(--color-brand-cyan)", shadow: "var(--color-brand-red)" },
+  blue: { text: "var(--color-brand-blue)", shadow: "var(--color-brand-yellow)" },
+  red: { text: "var(--color-brand-red)", shadow: "var(--color-brand-blue)" },
 }
 
 const SIZES = {
@@ -27,11 +27,11 @@ export function SectionHeading({
   size = "md",
   as: Tag = "h2",
 }: SectionHeadingProps) {
-  const colors = accent ? ACCENT_STYLES[accent] : { text: "#0a0a0a", shadow: null }
+  const colors = accent ? ACCENT_STYLES[accent] : { text: "var(--color-ink)", shadow: null }
 
   return (
     <Tag
-      className="font-[family-name:var(--font-bungee)] inline-block m-0"
+      className="font-display inline-block m-0"
       style={{
         fontSize: SIZES[size],
         color: colors.text,

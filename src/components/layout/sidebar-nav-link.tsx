@@ -5,10 +5,10 @@ import { usePathname } from 'next/navigation'
 import type { ReactNode } from 'react'
 
 const CHIP_STYLES = {
-  light: { background: '#f2f2f2', color: '#0a0a0a' },
-  yellow: { background: '#ffe000', color: '#0a0a0a' },
-  red: { background: '#ff2b2b', color: '#fff' },
-  blue: { background: '#2b6bff', color: '#fff' },
+  light: { background: 'var(--color-paper)', color: 'var(--color-ink)' },
+  yellow: { background: 'var(--color-brand-yellow)', color: 'var(--color-ink)' },
+  red: { background: 'var(--color-brand-red)', color: '#fff' },
+  blue: { background: 'var(--color-brand-blue)', color: '#fff' },
 } as const
 
 export function SidebarNavLink({
@@ -31,7 +31,7 @@ export function SidebarNavLink({
   return (
     <Link
       href={href}
-      className="flex items-center font-[family-name:var(--font-bungee)] text-[13px] px-3 py-2.5 border-[3px] border-black"
+      className="flex items-center font-display text-[13px] px-3 py-2.5 border-punk border-black"
       style={{
         background,
         color,

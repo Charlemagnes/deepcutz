@@ -8,10 +8,10 @@ export function Wordmark({ size = "md" }: { size?: keyof typeof SIZES }) {
 
   return (
     <div
-      className="font-[family-name:var(--font-bungee)] text-white inline-flex items-center whitespace-nowrap"
+      className="font-display text-white inline-flex items-center whitespace-nowrap"
       style={{
         fontSize,
-        textShadow: "3px 3px 0 #ff2b2b, -1px -1px 0 #2b6bff",
+        textShadow: "3px 3px 0 var(--color-brand-red), -1px -1px 0 var(--color-brand-blue)",
         transform: "rotate(-2deg)",
       }}
     >
@@ -25,7 +25,7 @@ export function Wordmark({ size = "md" }: { size?: keyof typeof SIZES }) {
       >
         <polygon
           points="13,0 2,15 9,15 6,28 18,11 10,11"
-          fill="#ffe000"
+          style={{ fill: "var(--color-brand-yellow)" }}
           stroke="#000"
           strokeWidth={1.5}
         />

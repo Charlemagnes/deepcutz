@@ -29,8 +29,8 @@ export function LikeButton({
       type="button"
       onClick={handleClick}
       disabled={isPending}
-      className="font-[family-name:var(--font-space-mono)] text-[11px] flex items-center gap-1 disabled:opacity-50"
-      style={{ color: liked ? '#ff2b2b' : '#888' }}
+      className="font-punk-mono text-[11px] flex items-center gap-1 disabled:opacity-50"
+      style={{ color: liked ? 'var(--color-brand-red)' : 'var(--color-ink-500)' }}
     >
       <span>{liked ? '♥' : '♡'}</span>
       <span>{count}</span>

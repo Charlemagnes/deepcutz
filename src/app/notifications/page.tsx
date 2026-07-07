@@ -20,7 +20,7 @@ export default async function NotificationsPage() {
   await markAllNotificationsRead()
 
   return (
-    <div className="max-w-[640px] mx-auto px-6 sm:px-9 py-9 text-[#f2f2f2]">
+    <div className="max-w-160 mx-auto px-6 sm:px-9 py-9 text-paper">
       <div className="mb-7">
         <SectionHeading accent="yellow" size="lg">
           NOTIFICATIONS
@@ -28,7 +28,7 @@ export default async function NotificationsPage() {
       </div>
 
       {items.length === 0 ? (
-        <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a] max-w-sm">
+        <p className="font-punk-mono text-sm text-ink-500 max-w-sm">
           No notifications yet — go follow some people, like a review, or write one worth
           commenting on.
         </p>

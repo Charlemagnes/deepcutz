@@ -181,10 +181,10 @@ export async function HomeFeed() {
   return (
     <div className="min-h-screen grid grid-cols-1 xl:grid-cols-[1fr_300px]">
       <main className="overflow-hidden">
-        <div className="sticky top-0 z-10 px-6 sm:px-9 pt-6 pb-3.5 bg-[#0a0a0a]">
+        <div className="sticky top-0 z-10 px-6 sm:px-9 pt-6 pb-3.5 bg-ink">
           <div
-            className="font-[family-name:var(--font-bungee)] text-2xl w-fit"
-            style={{ color: '#ffe000', textShadow: '3px 3px 0 #ff2b2b', rotate: '-1deg' }}
+            className="font-display text-2xl w-fit"
+            style={{ color: 'var(--color-brand-yellow)', textShadow: '3px 3px 0 var(--color-brand-red)', rotate: '-1deg' }}
           >
             FRESH TAPES
           </div>
@@ -195,12 +195,12 @@ export async function HomeFeed() {
             <div className="flex flex-col gap-6">
               <div>
                 <div
-                  className="font-[family-name:var(--font-bungee)] text-xl w-fit mb-2"
-                  style={{ color: '#ffe000', textShadow: '3px 3px 0 #ff2b2b', rotate: '-1deg' }}
+                  className="font-display text-xl w-fit mb-2"
+                  style={{ color: 'var(--color-brand-yellow)', textShadow: '3px 3px 0 var(--color-brand-red)', rotate: '-1deg' }}
                 >
                   YOUR FEED IS EMPTY
                 </div>
-                <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a] max-w-md">
+                <p className="font-punk-mono text-sm text-ink-500 max-w-md">
                   Follow some listeners to fill this up with their reviews and logs. Here&apos;s a few to get you
                   started.
                 </p>
@@ -208,7 +208,7 @@ export async function HomeFeed() {
               <WhoToFollowList suggestions={whoToFollowData} variant="panel" />
             </div>
           ) : feedItems.length === 0 ? (
-            <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a]">
+            <p className="font-punk-mono text-sm text-ink-500">
               The people you follow haven&apos;t logged anything yet.
             </p>
           ) : (
@@ -219,10 +219,10 @@ export async function HomeFeed() {
         </div>
       </main>
 
-      <aside className="border-l-[3px] border-[#f2f2f2] px-4 py-5.5 hidden xl:flex flex-col gap-6.5">
+      <aside className="border-l-punk border-paper px-4 py-5.5 hidden xl:flex flex-col gap-6.5">
         <Link
           href="/search"
-          className="flex items-center gap-2.5 bg-[#f2f2f2] text-[#0a0a0a] border-2 border-black shadow-[3px_3px_0_#ffe000] px-3 py-2.5 font-[family-name:var(--font-space-mono)] text-xs"
+          className="flex items-center gap-2.5 bg-paper text-ink border-2 border-black shadow-hard-3-yellow px-3 py-2.5 font-punk-mono text-xs"
         >
           <span>⌕</span> SEARCH ALBUMS, PEOPLE…
         </Link>
@@ -235,24 +235,21 @@ export async function HomeFeed() {
 
 function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
   return (
-    <div className="grid grid-cols-[126px_1fr] gap-4.5 bg-[#f2f2f2] border-[3px] border-black shadow-[6px_6px_0_#2b6bff] p-3.5 text-[#0a0a0a]">
-      <Link
-        href={`/album/${item.album.id}`}
-        className="relative w-[126px] h-[126px] border-2 border-black bg-[#333] shrink-0"
-      >
+    <div className="grid grid-cols-[126px_1fr] gap-4.5 bg-paper border-punk border-black shadow-hard-6-blue p-3.5 text-ink">
+      <Link href={`/album/${item.album.id}`} className="relative w-31.5 h-31.5 border-2 border-black bg-ink-800 shrink-0">
         {item.album.cover_url && <Image src={item.album.cover_url} alt="" fill sizes="126px" className="object-cover" />}
       </Link>
       <div className="min-w-0">
-        <div className="flex items-center gap-2 font-[family-name:var(--font-space-mono)] text-[11px] text-[#555] mb-1.5">
-          <span className="w-[18px] h-[18px] rounded-full bg-[#2b6bff] border border-black shrink-0" />
-          <b className="text-[#0a0a0a]">{item.author.username ?? 'someone'}</b>
-          <span className="text-[#999]">
+        <div className="flex items-center gap-2 font-punk-mono text-[11px] text-ink-600 mb-1.5">
+          <span className="w-4.5 h-4.5 rounded-full bg-brand-blue border border-black shrink-0" />
+          <b className="text-ink">{item.author.username ?? 'someone'}</b>
+          <span className="text-ink-500">
             {item.kind === 'review' ? 'RATED' : 'LOGGED'} · {formatDate(item.createdAt)}
           </span>
         </div>
         <Link href={`/album/${item.album.id}`}>
-          <div className="font-[family-name:var(--font-bungee)] text-lg leading-none">{item.album.title}</div>
-          <div className="text-[#555] font-[family-name:var(--font-space-mono)] text-[11px] my-1">{item.album.artist}</div>
+          <div className="font-display text-lg leading-none">{item.album.title}</div>
+          <div className="text-ink-600 font-punk-mono text-[11px] my-1">{item.album.artist}</div>
         </Link>
         {item.rating != null && (
           <div className="mb-2">
@@ -263,7 +260,7 @@ function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
           item.isSpoiler ? (
             <SpoilerReview content={item.content} />
           ) : (
-            <p className="m-0 text-[12.5px] leading-[1.5] text-[#1a1a1a] max-w-[420px] line-clamp-2">{item.content}</p>
+            <p className="m-0 text-[12.5px] leading-normal text-ink-800 max-w-105 line-clamp-2">{item.content}</p>
           )
         )}
         {item.kind === 'review' && (
@@ -271,7 +268,7 @@ function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
             <LikeButton reviewId={item.id} initialLiked={liked} initialCount={item.likeCount} />
             <Link
               href={`/album/${item.album.id}#review-${item.id}`}
-              className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#888] flex items-center gap-1"
+              className="font-punk-mono text-[11px] text-ink-500 flex items-center gap-1"
             >
               💬 {item.commentCount}
             </Link>
