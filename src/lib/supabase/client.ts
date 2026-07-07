@@ -1,18 +1,10 @@
 'use client'
 
-import { createClient } from '@supabase/supabase-js'
-import { useSession } from '@clerk/nextjs'
+import { createBrowserClient } from '@supabase/ssr'
 
-export function useClerkSupabaseClient() {
-  const { session } = useSession()
-
-  return createClient(
+export function createClient() {
+  return createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      async accessToken() {
-        return session?.getToken() ?? null
-      },
-    },
   )
 }
