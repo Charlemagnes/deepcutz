@@ -157,22 +157,24 @@ export async function HomeFeed() {
           },
         ]
       }),
-      ...(diaryEntries ?? []).flatMap((d) => {
-        const album = normalizeAlbum(d.albums)
-        const author = normalizeAuthor(d.profiles)
-        if (!album || !author) return []
-        return [
-          {
-            kind: 'diary' as const,
-            id: d.id,
-            createdAt: d.created_at,
-            rating: d.rating,
-            listenedDate: d.listened_date,
-            album,
-            author,
-          },
-        ]
-      }),
+      // shows the same card twice if a user logs and reviews the same album, so hide diary entries for now
+      // todo: add a separate card component for diary entries.
+      // ...(diaryEntries ?? []).flatMap((d) => {
+      //   const album = normalizeAlbum(d.albums)
+      //   const author = normalizeAuthor(d.profiles)
+      //   if (!album || !author) return []
+      //   return [
+      //     {
+      //       kind: 'diary' as const,
+      //       id: d.id,
+      //       createdAt: d.created_at,
+      //       rating: d.rating,
+      //       listenedDate: d.listened_date,
+      //       album,
+      //       author,
+      //     },
+      //   ]
+      // }),
     ]
       .sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0))
       .slice(0, 25)
