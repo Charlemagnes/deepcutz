@@ -157,22 +157,23 @@ export async function HomeFeed() {
           },
         ]
       }),
-      ...(diaryEntries ?? []).flatMap((d) => {
-        const album = normalizeAlbum(d.albums)
-        const author = normalizeAuthor(d.profiles)
-        if (!album || !author) return []
-        return [
-          {
-            kind: 'diary' as const,
-            id: d.id,
-            createdAt: d.created_at,
-            rating: d.rating,
-            listenedDate: d.listened_date,
-            album,
-            author,
-          },
-        ]
-      }),
+      // since these look EXACTLY like reviews, we won't show them. todo: create a separate "diary" card component and re-enable this.
+      // ...(diaryEntries ?? []).flatMap((d) => {
+      //   const album = normalizeAlbum(d.albums)
+      //   const author = normalizeAuthor(d.profiles)
+      //   if (!album || !author) return []
+      //   return [
+      //     {
+      //       kind: 'diary' as const,
+      //       id: d.id,
+      //       createdAt: d.created_at,
+      //       rating: d.rating,
+      //       listenedDate: d.listened_date,
+      //       album,
+      //       author,
+      //     },
+      //   ]
+      // }),
     ]
       .sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0))
       .slice(0, 25)
