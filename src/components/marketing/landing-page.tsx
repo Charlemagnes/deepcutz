@@ -163,15 +163,6 @@ const FOOTER_COLUMNS = [
 export function MarketingLanding() {
   return (
     <div className="font-body bg-ink text-paper relative">
-      <div
-        aria-hidden="true"
-        className="fixed inset-0 pointer-events-none z-0"
-        style={{
-          backgroundImage: "radial-gradient(rgba(255,255,255,.045) 1px, transparent 1px)",
-          backgroundSize: "3px 3px",
-        }}
-      />
-
       {/* nav */}
       <div className="relative z-10 flex items-center justify-between px-6 sm:px-12 py-6 border-b-punk border-paper">
         <Wordmark />
