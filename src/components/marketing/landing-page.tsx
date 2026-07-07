@@ -203,9 +203,9 @@ export function MarketingLanding() {
             <PunkButton href="/login" variant="solid" accent="red" rotate={-0.6}>
               ▶ GET STARTED — IT&apos;S FREE
             </PunkButton>
-            <PunkButton href="#features" variant="outline-dark" accent="blue">
+            {/* <PunkButton href="#features" variant="outline-dark" accent="blue">
               SEE DEMO
-            </PunkButton>
+            </PunkButton> */}
           </div>
         </div>
 
