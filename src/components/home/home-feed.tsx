@@ -157,8 +157,7 @@ export async function HomeFeed() {
           },
         ]
       }),
-      // shows the same card twice if a user logs and reviews the same album, so hide diary entries for now
-      // todo: add a separate card component for diary entries.
+      // since these look EXACTLY like reviews, we won't show them. todo: create a separate "diary" card component and re-enable this.
       // ...(diaryEntries ?? []).flatMap((d) => {
       //   const album = normalizeAlbum(d.albums)
       //   const author = normalizeAuthor(d.profiles)
@@ -244,7 +243,13 @@ function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
       <div className="min-w-0">
         <div className="flex items-center gap-2 font-punk-mono text-[11px] text-ink-600 mb-1.5">
           <span className="w-4.5 h-4.5 rounded-full bg-brand-blue border border-black shrink-0" />
-          <b className="text-ink">{item.author.username ?? 'someone'}</b>
+          {item.author.username ? (
+            <Link href={`/profile/${item.author.username}`} className="hover:underline">
+              <b className="text-ink">{item.author.username}</b>
+            </Link>
+          ) : (
+            <b className="text-ink">someone</b>
+          )}
           <span className="text-ink-500">
             {item.kind === 'review' ? 'RATED' : 'LOGGED'} · {formatDate(item.createdAt)}
           </span>

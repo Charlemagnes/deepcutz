@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { StarRating } from '@/components/marketing/star-rating'
 import { LikeButton } from '@/components/likes/like-button'
 import { CommentSection } from '@/components/comments/comment-section'
@@ -33,7 +34,9 @@ export function ReviewItem({
     <div className="bg-paper border-punk border-black shadow-hard-5-blue p-4 text-ink">
       <div className="flex items-center gap-2.5 font-punk-mono text-[11px] text-ink-600 mb-2">
         <span className="w-4 h-4 rounded-full bg-brand-red border border-black shrink-0" />
-        <b className="text-ink">{username}</b>
+        <Link href={`/profile/${username}`} className="hover:underline">
+          <b className="text-ink">{username}</b>
+        </Link>
         <span className="text-ink-500">
           {new Date(createdAt).toLocaleDateString(undefined, {
             year: 'numeric',
