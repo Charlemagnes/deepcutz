@@ -6,6 +6,7 @@ import { StarRatingInput } from './star-rating-input'
 import { searchAlbums, getAlbumDetails, getAlbumTracks } from '@/lib/spotify/actions'
 import { submitLog, type TrackRatingInput } from '@/lib/logging/actions'
 import type { AlbumSearchResult, AlbumTrack } from '@/lib/spotify/types'
+import { cn } from '@/lib/utils'
 
 interface TrackState {
   rating: number | null
@@ -130,7 +131,7 @@ export function LoggingModal({
           </button>
         </div>
 
-        <div className="px-6 pt-5 relative">
+        <div className={cn('px-6 pt-5 relative', !album && 'min-h-70')}>
           <div className="flex items-center gap-2.5 bg-paper border-2 border-black shadow-hard-4-yellow px-3.5 py-2.5">
             <span className="text-ink">⌕</span>
             <input
