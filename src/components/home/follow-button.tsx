@@ -19,11 +19,11 @@ export function FollowButton({ profileId }: { profileId: string }) {
       type="button"
       onClick={handleClick}
       disabled={isPending}
-      className="shrink-0 font-[family-name:var(--font-bungee)] text-[10px] px-[11px] py-1.5 border-2 border-black disabled:opacity-50"
+      className="shrink-0 font-display text-[10px] px-[11px] py-1.5 border-2 border-black disabled:opacity-50"
       style={
         following
-          ? { background: 'transparent', color: '#f2f2f2', borderColor: '#f2f2f2' }
-          : { background: '#ffe000', color: '#0a0a0a' }
+          ? { background: 'transparent', color: 'var(--color-paper)', borderColor: 'var(--color-paper)' }
+          : { background: 'var(--color-brand-yellow)', color: 'var(--color-ink)' }
       }
     >
       {following ? 'FOLLOWING' : '+ FOLLOW'}

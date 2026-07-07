@@ -6,10 +6,10 @@ import { StarRating } from '@/components/marketing/star-rating'
 type Accent = 'red' | 'blue' | 'yellow' | 'cyan'
 
 const ACCENT_HEX: Record<Accent, string> = {
-  red: '#ff2b2b',
-  blue: '#2b6bff',
-  yellow: '#ffe000',
-  cyan: '#2ee6ff',
+  red: 'var(--color-brand-red)',
+  blue: 'var(--color-brand-blue)',
+  yellow: 'var(--color-brand-yellow)',
+  cyan: 'var(--color-brand-cyan)',
 }
 
 const ACCENT_CYCLE: Accent[] = ['red', 'blue', 'yellow', 'cyan']
@@ -44,7 +44,7 @@ function SectionHeading({
 }) {
   return (
     <h2
-      className="font-[family-name:var(--font-bungee)] text-xl sm:text-2xl inline-block w-fit m-0"
+      className="font-display text-xl sm:text-2xl inline-block w-fit m-0"
       style={{
         color: ACCENT_HEX[accent],
         textShadow: `3px 3px 0 ${ACCENT_HEX[shadow]}`,
@@ -78,14 +78,14 @@ export default async function ExplorePage() {
   const reviews = recentReviews ?? []
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] px-6 sm:px-9 py-7 flex flex-col gap-10">
+    <div className="min-h-screen bg-ink px-6 sm:px-9 py-7 flex flex-col gap-10">
       <section className="flex flex-col gap-4">
         <SectionHeading accent="yellow" shadow="red" rotate={-1}>
           🔥 TRENDING THIS WEEK
         </SectionHeading>
 
         {albums.length === 0 ? (
-          <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a]">
+          <p className="font-punk-mono text-sm text-ink-500">
             No albums logged yet — be the first to review one and it&apos;ll show up here.
           </p>
         ) : (
@@ -98,10 +98,10 @@ export default async function ExplorePage() {
                 <Link
                   key={album.id}
                   href={`/album/${album.id}`}
-                  className="bg-[#f2f2f2] text-[#0a0a0a] border-2 border-black p-2.5"
+                  className="bg-paper text-ink border-2 border-black p-2.5"
                   style={{ boxShadow: `4px 4px 0 ${ACCENT_HEX[accent]}`, rotate: `${rotate}deg` }}
                 >
-                  <div className="relative aspect-square border-2 border-black bg-[#999] mb-2 overflow-hidden">
+                  <div className="relative aspect-square border-2 border-black bg-ink-500 mb-2 overflow-hidden">
                     {album.cover_url ? (
                       <Image
                         src={album.cover_url}
@@ -111,19 +111,19 @@ export default async function ExplorePage() {
                         className="object-cover"
                       />
                     ) : (
-                      <div className="absolute inset-0 bg-[#ccc]" />
+                      <div className="absolute inset-0 bg-ink-200" />
                     )}
                   </div>
-                  <div className="font-[family-name:var(--font-bungee)] text-[13px] leading-tight truncate">
+                  <div className="font-display text-[13px] leading-tight truncate">
                     {album.title}
                   </div>
-                  <div className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#555] truncate mt-0.5">
+                  <div className="font-punk-mono text-[11px] text-ink-600 truncate mt-0.5">
                     {album.artist}
                   </div>
-                  <div className="font-[family-name:var(--font-space-mono)] text-[11px] mt-1.5 flex items-center gap-1 text-[#333]">
+                  <div className="font-punk-mono text-[11px] mt-1.5 flex items-center gap-1 text-ink-800">
                     <span style={{ color: '#c99a00' }}>★</span>
                     <span>{album.avg_rating.toFixed(1)}</span>
-                    <span className="text-[#888]">· {album.rating_count} LOGS</span>
+                    <span className="text-ink-500">· {album.rating_count} LOGS</span>
                   </div>
                 </Link>
               )
@@ -138,7 +138,7 @@ export default async function ExplorePage() {
         </SectionHeading>
 
         {reviews.length === 0 ? (
-          <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a]">
+          <p className="font-punk-mono text-sm text-ink-500">
             No reviews yet — once people start logging albums, their reviews will show up here.
           </p>
         ) : (
@@ -154,41 +154,41 @@ export default async function ExplorePage() {
                 <Link
                   key={review.id}
                   href={`/album/${album.id}`}
-                  className="grid grid-cols-[110px_1fr] gap-4 bg-[#f2f2f2] text-[#0a0a0a] border-2 border-black p-3"
+                  className="grid grid-cols-[110px_1fr] gap-4 bg-paper text-ink border-2 border-black p-3"
                   style={{ boxShadow: `4px 4px 0 ${ACCENT_HEX[shadowAccent]}` }}
                 >
-                  <div className="relative w-[110px] h-[110px] border-2 border-black bg-[#999] overflow-hidden shrink-0">
+                  <div className="relative w-27.5 h-27.5 border-2 border-black bg-ink-500 overflow-hidden shrink-0">
                     {album.cover_url ? (
                       <Image src={album.cover_url} alt="" fill sizes="110px" className="object-cover" />
                     ) : (
-                      <div className="absolute inset-0 bg-[#ccc]" />
+                      <div className="absolute inset-0 bg-ink-200" />
                     )}
                   </div>
 
                   <div className="min-w-0">
-                    <div className="flex items-center gap-2 font-[family-name:var(--font-space-mono)] text-[11px] text-[#555] mb-1.5">
+                    <div className="flex items-center gap-2 font-punk-mono text-[11px] text-ink-600 mb-1.5">
                       <span
-                        className="w-[16px] h-[16px] rounded-full border border-black shrink-0"
+                        className="w-4 h-4 rounded-full border border-black shrink-0"
                         style={{ backgroundColor: ACCENT_HEX[shadowAccent] }}
                       />
-                      <b className="text-[#0a0a0a] truncate">{profile.username ?? 'someone'}</b>
-                      <span className="text-[#999]">· {relativeTime(review.created_at)}</span>
+                      <b className="text-ink truncate">{profile.username ?? 'someone'}</b>
+                      <span className="text-ink-500">· {relativeTime(review.created_at)}</span>
                     </div>
-                    <div className="font-[family-name:var(--font-bungee)] text-base leading-tight truncate">
+                    <div className="font-display text-base leading-tight truncate">
                       {album.title}
                     </div>
-                    <div className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#555] truncate mt-0.5 mb-1.5">
+                    <div className="font-punk-mono text-[11px] text-ink-600 truncate mt-0.5 mb-1.5">
                       {album.artist}
                     </div>
                     <div className="mb-2">
                       <StarRating rating={review.rating} />
                     </div>
                     {review.content && (
-                      <p className="m-0 text-[12.5px] leading-[1.5] text-[#1a1a1a] max-w-[520px] line-clamp-2">
+                      <p className="m-0 text-[12.5px] leading-[1.5] text-ink-800 max-w-130 line-clamp-2">
                         {review.content}
                       </p>
                     )}
-                    <div className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#888] mt-2 flex items-center gap-3">
+                    <div className="font-punk-mono text-[11px] text-ink-500 mt-2 flex items-center gap-3">
                       <span>♡ 0</span>
                       <span>💬 0</span>
                     </div>

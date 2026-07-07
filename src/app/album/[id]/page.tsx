@@ -13,13 +13,13 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
     return (
       <div className="min-h-screen flex items-center justify-center px-6">
         <div
-          className="bg-[#f2f2f2] border-[3px] border-black shadow-[7px_7px_0_#ff2b2b] px-8 py-7 text-center"
+          className="bg-paper border-punk border-black shadow-hard-7-red px-8 py-7 text-center"
           style={{ rotate: '-1deg' }}
         >
-          <div className="font-[family-name:var(--font-bungee)] text-2xl text-[#0a0a0a] mb-2">
+          <div className="font-display text-2xl text-ink mb-2">
             ALBUM NOT FOUND
           </div>
-          <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#555] m-0">
+          <p className="font-punk-mono text-sm text-ink-600 m-0">
             We couldn&apos;t find this record on Spotify. It may have been removed.
           </p>
         </div>
@@ -44,7 +44,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
     <div className="min-h-screen px-6 sm:px-9 py-8">
       <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-7 mb-10">
         <div
-          className="relative w-[220px] h-[220px] border-[3px] border-black shadow-[7px_7px_0_#ff2b2b] bg-[#333] shrink-0"
+          className="relative w-55 h-55 border-punk border-black shadow-hard-7-red bg-ink-800 shrink-0"
           style={{ rotate: '-1deg' }}
         >
           {album.coverUrl && (
@@ -54,12 +54,12 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
 
         <div className="flex flex-col justify-center min-w-0">
           <h1
-            className="font-[family-name:var(--font-bungee)] text-3xl sm:text-4xl text-[#f2f2f2] leading-tight break-words"
-            style={{ textShadow: '3px 3px 0 #2b6bff' }}
+            className="font-display text-3xl sm:text-4xl text-paper leading-tight break-words"
+            style={{ textShadow: '3px 3px 0 var(--color-brand-blue)' }}
           >
             {album.title}
           </h1>
-          <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a] mt-2 mb-5">
+          <p className="font-punk-mono text-sm text-ink-500 mt-2 mb-5">
             {album.artist}
             {year ? ` · ${year}` : ''}
           </p>
@@ -67,14 +67,14 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
           <div className="flex items-center gap-4 flex-wrap">
             {cachedAlbum ? (
               <div
-                className="bg-[#f2f2f2] border-2 border-black shadow-[4px_4px_0_#ffe000] px-3.5 py-2.5 font-[family-name:var(--font-space-mono)] text-[#0a0a0a] text-sm"
+                className="bg-paper border-2 border-black shadow-hard-4-yellow px-3.5 py-2.5 font-punk-mono text-ink text-sm"
                 style={{ rotate: '1deg' }}
               >
                 <b>{cachedAlbum.avg_rating.toFixed(1)}</b> avg ·{' '}
                 {cachedAlbum.rating_count} {cachedAlbum.rating_count === 1 ? 'rating' : 'ratings'}
               </div>
             ) : (
-              <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a] m-0">
+              <p className="font-punk-mono text-sm text-ink-500 m-0">
                 Be the first to log this album.
               </p>
             )}
@@ -86,18 +86,18 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
 
       <div>
         <div
-          className="font-[family-name:var(--font-bungee)] text-xl w-fit mb-4"
-          style={{ color: '#ffe000', textShadow: '2.5px 2.5px 0 #ff2b2b', rotate: '-1deg' }}
+          className="font-display text-xl w-fit mb-4"
+          style={{ color: 'var(--color-brand-yellow)', textShadow: '2.5px 2.5px 0 var(--color-brand-red)', rotate: '-1deg' }}
         >
           REVIEWS
         </div>
 
         {reviewList.length === 0 ? (
-          <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a]">
+          <p className="font-punk-mono text-sm text-ink-500">
             No reviews yet — be the first to log a listen.
           </p>
         ) : (
-          <div className="flex flex-col gap-4 max-w-[640px]">
+          <div className="flex flex-col gap-4 max-w-160">
             {reviewList.map((review) => {
               const profile = Array.isArray(review.profiles) ? review.profiles[0] : review.profiles
               return (

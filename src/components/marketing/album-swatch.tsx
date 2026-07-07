@@ -2,17 +2,17 @@ import { cn } from "@/lib/utils"
 import type { Accent } from "./types"
 
 const GRADIENTS: Record<Accent, string> = {
-  red: "linear-gradient(150deg,#ff2b2b,#3a0000)",
-  yellow: "linear-gradient(150deg,#ffe000,#7a5c00)",
-  blue: "linear-gradient(150deg,#2b6bff,#001a5c)",
-  cyan: "linear-gradient(150deg,#2ee6ff,#003c47)",
+  red: "linear-gradient(150deg,var(--color-brand-red),#3a0000)",
+  yellow: "linear-gradient(150deg,var(--color-brand-yellow),#7a5c00)",
+  blue: "linear-gradient(150deg,var(--color-brand-blue),#001a5c)",
+  cyan: "linear-gradient(150deg,var(--color-brand-cyan),#003c47)",
 }
 
 const SHADOW_CLASSES: Record<Accent, string> = {
-  red: "shadow-[5px_5px_0_#ff2b2b]",
-  blue: "shadow-[5px_5px_0_#2b6bff]",
-  yellow: "shadow-[5px_5px_0_#ffe000]",
-  cyan: "shadow-[5px_5px_0_#2ee6ff]",
+  red: "shadow-hard-5-red",
+  blue: "shadow-hard-5-blue",
+  yellow: "shadow-hard-5-yellow",
+  cyan: "shadow-hard-5-cyan",
 }
 
 const OFFSET_CLASSES = {
@@ -34,7 +34,7 @@ export function AlbumSwatch({
     <div
       aria-hidden="true"
       className={cn(
-        "aspect-square border-[3px] border-black relative",
+        "aspect-square border-punk border-black relative",
         SHADOW_CLASSES[shadowAccent],
         OFFSET_CLASSES[offset]
       )}

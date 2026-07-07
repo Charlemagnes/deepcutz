@@ -24,7 +24,7 @@ export function StarRating({
       }}
     >
       {Array.from({ length: 5 }, (_, i) => (
-        <span key={i} aria-hidden="true" style={{ color: i < filled ? "#ffe000" : "#d8d8d8" }}>
+        <span key={i} aria-hidden="true" style={{ color: i < filled ? "var(--color-brand-yellow)" : "var(--color-ink-200)" }}>
           ★
         </span>
       ))}
