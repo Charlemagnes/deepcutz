@@ -3,9 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Wordmark } from '@/components/marketing/wordmark'
 
 export default function OnboardingPage() {
   const [username, setUsername] = useState('')
@@ -72,19 +70,21 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="w-full max-w-sm space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-ink px-8 py-12 font-body text-paper">
+      <div className="w-full max-w-[380px] flex flex-col items-center gap-[22px]">
+        <Wordmark />
+
         <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight">Welcome to deepcutz</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Choose a username to get started.
-          </p>
+          <div className="font-anton text-[28px] tracking-wide text-white">CHOOSE YOUR HANDLE</div>
+          <div className="text-[13px] text-ink-500 mt-1.5">
+            One last thing before you start logging.
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
-            <Input
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-[22px]">
+          <label className="flex flex-col gap-[7px]">
+            <span className="font-punk-mono text-[11px] tracking-wide text-ink-500">USERNAME</span>
+            <input
               id="username"
               type="text"
               placeholder="coolcat42"
@@ -95,19 +95,30 @@ export default function OnboardingPage() {
               maxLength={30}
               autoComplete="username"
               autoFocus
+              className="bg-ink-900 border-punk border-black px-[13px] py-3 text-paper text-[13.5px] font-punk-mono placeholder:text-ink-600 focus:outline-none"
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="font-punk-mono text-[11px] text-ink-600">
               Lowercase letters, numbers, and underscores only.
             </p>
-          </div>
+          </label>
 
           {error && (
-            <p id="onboarding-error" className="text-sm text-destructive">{error}</p>
+            <div
+              id="onboarding-error"
+              className="font-punk-mono text-xs px-3 py-[10px] rounded-lg border border-red-400/35 bg-red-400/[.08] text-red-300"
+            >
+              {error}
+            </div>
           )}
 
-          <Button id="onboarding-submit" type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Saving…' : 'Continue'}
-          </Button>
+          <button
+            id="onboarding-submit"
+            type="submit"
+            disabled={loading}
+            className="-rotate-[0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-[15px] tracking-wide cursor-pointer shadow-hard-5-red disabled:opacity-60"
+          >
+            {loading ? 'SAVING…' : '▶ CONTINUE'}
+          </button>
         </form>
       </div>
     </div>
