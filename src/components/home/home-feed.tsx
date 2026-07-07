@@ -223,7 +223,7 @@ export async function HomeFeed() {
       <aside className="border-l-punk border-paper px-4 py-5.5 hidden xl:flex flex-col gap-6.5">
         <Link
           href="/search"
-          className="flex items-center gap-2.5 bg-paper text-ink border-2 border-black shadow-hard-3-yellow px-3 py-2.5 font-punk-mono text-xs"
+          className="flex items-center gap-2.5 bg-paper text-ink border-2 border-black shadow-hard-3-yellow px-3 py-2.5 font-punk-mono text-xs transition-transform active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
         >
           <span>⌕</span> SEARCH ALBUMS, PEOPLE…
         </Link>
@@ -243,7 +243,13 @@ function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
       <div className="min-w-0">
         <div className="flex items-center gap-2 font-punk-mono text-[11px] text-ink-600 mb-1.5">
           <span className="w-4.5 h-4.5 rounded-full bg-brand-blue border border-black shrink-0" />
-          <b className="text-ink">{item.author.username ?? 'someone'}</b>
+          {item.author.username ? (
+            <Link href={`/profile/${item.author.username}`} className="hover:underline">
+              <b className="text-ink">{item.author.username}</b>
+            </Link>
+          ) : (
+            <b className="text-ink">someone</b>
+          )}
           <span className="text-ink-500">
             {item.kind === 'review' ? 'RATED' : 'LOGGED'} · {formatDate(item.createdAt)}
           </span>
