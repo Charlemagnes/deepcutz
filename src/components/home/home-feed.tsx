@@ -223,7 +223,7 @@ export async function HomeFeed() {
       <aside className="border-l-punk border-paper px-4 py-5.5 hidden xl:flex flex-col gap-6.5">
         <Link
           href="/search"
-          className="flex items-center gap-2.5 bg-paper text-ink border-2 border-black shadow-hard-3-yellow px-3 py-2.5 font-punk-mono text-xs transition-transform active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+          className="flex items-center gap-2.5 bg-paper text-ink border-2 border-black shadow-hard-3-yellow px-3 py-2.5 font-punk-mono text-xs transition-transform hover:scale-105 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
         >
           <span>⌕</span> SEARCH ALBUMS, PEOPLE…
         </Link>
@@ -275,7 +275,7 @@ function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
             <LikeButton reviewId={item.id} initialLiked={liked} initialCount={item.likeCount} />
             <Link
               href={`/album/${item.album.id}#review-${item.id}`}
-              className="font-punk-mono text-[11px] text-ink-500 flex items-center gap-1"
+              className="font-punk-mono text-[11px] text-ink-500 flex items-center gap-1 cursor-pointer"
             >
               💬 {item.commentCount}
             </Link>

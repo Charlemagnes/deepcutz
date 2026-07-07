@@ -25,7 +25,7 @@ export function FollowButton({
       type="button"
       onClick={handleClick}
       disabled={isPending}
-      className="shrink-0 font-display text-[10px] px-[11px] py-1.5 border-2 border-black shadow-hard-3-blue transition-transform active:translate-x-[3px] active:translate-y-[3px] active:shadow-none disabled:opacity-50"
+      className="shrink-0 font-display text-[10px] px-[11px] py-1.5 border-2 border-black shadow-hard-3-blue transition-transform hover:scale-105 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none disabled:opacity-50"
       style={
         following
           ? { background: 'transparent', color: 'var(--color-paper)', borderColor: 'var(--color-paper)' }
