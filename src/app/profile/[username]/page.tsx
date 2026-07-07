@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth/current-user'
 import { FollowButton } from '@/components/home/follow-button'
+import { LikeButton } from '@/components/likes/like-button'
 import { StarRating } from '@/components/marketing/star-rating'
 import { HardShadowCard } from '@/components/marketing/hard-shadow-card'
 import { SectionHeading } from '@/components/marketing/section-heading'
@@ -38,6 +39,8 @@ type ReviewWithContent = {
   content: string
   isSpoiler: boolean
   createdAt: string
+  likeCount: number
+  commentCount: number
   album: AlbumRef
 }
 
@@ -93,6 +96,7 @@ export default async function ProfilePage({
   }
 
   const isOwnProfile = currentUser?.id === profile.id
+  const shouldCheckFollowing = !!currentUser && !isOwnProfile
 
   const [
     { count: followerCount },
@@ -101,6 +105,7 @@ export default async function ProfilePage({
     { data: recentDiary },
     { data: topReviews },
     { data: contentReviews },
+    { data: followRow },
   ] = await Promise.all([
     supabase.from('follows').select('id', { count: 'exact', head: true }).eq('following_id', profile.id),
     supabase.from('follows').select('id', { count: 'exact', head: true }).eq('follower_id', profile.id),
@@ -125,11 +130,14 @@ export default async function ProfilePage({
       .limit(6),
     supabase
       .from('reviews')
-      .select('id, rating, content, is_spoiler, created_at, albums(id, title, artist, cover_url)')
+      .select('id, rating, content, is_spoiler, like_count, comment_count, created_at, albums(id, title, artist, cover_url)')
       .eq('profile_id', profile.id)
       .not('content', 'is', null)
       .order('created_at', { ascending: false })
       .limit(20),
+    shouldCheckFollowing
+      ? supabase.from('follows').select('id').eq('follower_id', currentUser!.id).eq('following_id', profile.id).maybeSingle()
+      : Promise.resolve({ data: null }),
   ])
 
   const activityItems: ActivityItem[] = [
@@ -178,10 +186,24 @@ export default async function ProfilePage({
         content: r.content,
         isSpoiler: r.is_spoiler,
         createdAt: r.created_at,
+        likeCount: r.like_count ?? 0,
+        commentCount: r.comment_count ?? 0,
         album,
       },
     ]
   })
+
+  const reviewIds = reviewsWithContent.map((r) => r.id)
+  const { data: likedRows } =
+    currentUser && reviewIds.length > 0
+      ? await supabase
+          .from('likes')
+          .select('target_id')
+          .eq('profile_id', currentUser.id)
+          .eq('target_type', 'review')
+          .in('target_id', reviewIds)
+      : { data: [] as { target_id: string }[] }
+  const likedIds = new Set((likedRows ?? []).map((l) => l.target_id))
 
   const displayName = profile.display_name || profile.username
   const initial = (displayName ?? '?').charAt(0).toUpperCase()
@@ -229,7 +251,9 @@ export default async function ProfilePage({
           </div>
         </div>
 
-        {!isOwnProfile && <FollowButton profileId={profile.id} />}
+        {!isOwnProfile && (
+          <FollowButton profileId={profile.id} initialIsFollowing={!!followRow} />
+        )}
       </div>
 
       {/* Recent activity */}
@@ -338,6 +362,19 @@ export default async function ProfilePage({
                     {review.content}
                   </p>
                 )}
+                <div className="flex items-center gap-3 mt-2.5">
+                  <LikeButton
+                    reviewId={review.id}
+                    initialLiked={likedIds.has(review.id)}
+                    initialCount={review.likeCount}
+                  />
+                  <Link
+                    href={`/album/${review.album.id}#review-${review.id}`}
+                    className="text-[11px] text-[#888] font-[family-name:var(--font-space-mono)]"
+                  >
+                    💬 {review.commentCount}
+                  </Link>
+                </div>
               </HardShadowCard>
             ))}
           </div>

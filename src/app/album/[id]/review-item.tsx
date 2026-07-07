@@ -2,19 +2,29 @@
 
 import { useState } from 'react'
 import { StarRating } from '@/components/marketing/star-rating'
+import { LikeButton } from '@/components/likes/like-button'
+import { CommentSection } from '@/components/comments/comment-section'
 
 export function ReviewItem({
+  reviewId,
   username,
   rating,
   content,
   isSpoiler,
   createdAt,
+  likeCount,
+  commentCount,
+  initialLiked,
 }: {
+  reviewId: string
   username: string
   rating: number
   content: string | null
   isSpoiler: boolean
   createdAt: string
+  likeCount: number
+  commentCount: number
+  initialLiked: boolean
 }) {
   const [revealed, setRevealed] = useState(false)
   const blurred = isSpoiler && !revealed
@@ -57,6 +67,11 @@ export function ReviewItem({
           )}
         </div>
       )}
+
+      <div className="flex items-center gap-4 mt-3">
+        <LikeButton reviewId={reviewId} initialLiked={initialLiked} initialCount={likeCount} />
+        <CommentSection reviewId={reviewId} initialCount={commentCount} />
+      </div>
     </div>
   )
 }

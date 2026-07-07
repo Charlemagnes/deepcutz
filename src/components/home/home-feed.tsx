@@ -3,30 +3,89 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth/current-user'
 import { StarRating } from '@/components/marketing/star-rating'
-import { FollowButton } from './follow-button'
+import { LikeButton } from '@/components/likes/like-button'
+import { SpoilerReview } from '@/app/profile/[username]/spoiler-review'
+import { WhoToFollowList } from './who-to-follow-list'
+
+type AlbumRef = {
+  id: string
+  title: string
+  artist: string
+  cover_url: string | null
+}
+
+type AuthorRef = {
+  username: string | null
+  avatar_url: string | null
+}
+
+type FeedItem =
+  | {
+      kind: 'review'
+      id: string
+      createdAt: string
+      rating: number
+      content: string | null
+      isSpoiler: boolean
+      likeCount: number
+      commentCount: number
+      album: AlbumRef
+      author: AuthorRef
+    }
+  | {
+      kind: 'diary'
+      id: string
+      createdAt: string
+      rating: number | null
+      listenedDate: string
+      album: AlbumRef
+      author: AuthorRef
+    }
+
+/** Reviews/diary_entries come back with `albums(...)` joined; Postgrest can shape a
+ *  many-to-one relation as either an object or a single-item array depending on
+ *  inference, so normalize defensively (same pattern as profile/[username]/page.tsx). */
+function normalizeAlbum(value: unknown): AlbumRef | null {
+  const raw = Array.isArray(value) ? value[0] : value
+  if (!raw || typeof raw !== 'object') return null
+  const album = raw as Record<string, unknown>
+  if (typeof album.id !== 'string' || typeof album.title !== 'string' || typeof album.artist !== 'string') {
+    return null
+  }
+  return {
+    id: album.id,
+    title: album.title,
+    artist: album.artist,
+    cover_url: typeof album.cover_url === 'string' ? album.cover_url : null,
+  }
+}
+
+function normalizeAuthor(value: unknown): AuthorRef | null {
+  const raw = Array.isArray(value) ? value[0] : value
+  if (!raw || typeof raw !== 'object') return null
+  const profile = raw as Record<string, unknown>
+  return {
+    username: typeof profile.username === 'string' ? profile.username : null,
+    avatar_url: typeof profile.avatar_url === 'string' ? profile.avatar_url : null,
+  }
+}
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
 
 export async function HomeFeed() {
   const user = await getCurrentUser()
   const supabase = await createClient()
 
-  const [{ data: reviews }, { data: candidates }, { data: newTapes }] = await Promise.all([
-    supabase
-      .from('reviews')
-      .select('id, rating, content, created_at, profiles(username, avatar_url), albums(id, title, artist, cover_url)')
-      .order('created_at', { ascending: false })
-      .limit(10),
-    supabase
-      .from('follows')
-      .select('following_id')
-      .eq('follower_id', user!.id),
-    supabase
-      .from('albums')
-      .select('id, title, artist, cover_url')
-      .order('cached_at', { ascending: false })
-      .limit(3),
-  ])
+  const { data: followRows } = await supabase
+    .from('follows')
+    .select('following_id')
+    .eq('follower_id', user!.id)
 
-  const followingIds = new Set((candidates ?? []).map((f) => f.following_id))
+  const followingIds = (followRows ?? []).map((f) => f.following_id)
+  const followingIdSet = new Set(followingIds)
+
   const { data: suggestions } = await supabase
     .from('profiles')
     .select('id, username, avatar_url')
@@ -34,10 +93,90 @@ export async function HomeFeed() {
     .order('created_at', { ascending: false })
     .limit(8)
 
-  const whoToFollow = (suggestions ?? []).filter((p) => !followingIds.has(p.id)).slice(0, 3)
+  const whoToFollow = (suggestions ?? []).filter((p) => !followingIdSet.has(p.id)).slice(0, 3)
   const reviewCounts = await Promise.all(
     whoToFollow.map((p) => supabase.from('reviews').select('id', { count: 'exact', head: true }).eq('profile_id', p.id)),
   )
+  const whoToFollowData = whoToFollow.map((profile, i) => ({
+    id: profile.id,
+    username: profile.username,
+    reviewCount: reviewCounts[i]?.count ?? 0,
+  }))
+
+  let feedItems: FeedItem[] = []
+  let likedReviewIds = new Set<string>()
+
+  if (followingIds.length > 0) {
+    const [{ data: reviews }, { data: diaryEntries }] = await Promise.all([
+      supabase
+        .from('reviews')
+        .select(
+          'id, rating, content, is_spoiler, created_at, like_count, comment_count, profile_id, profiles(username, avatar_url), albums(id, title, artist, cover_url)',
+        )
+        .in('profile_id', followingIds)
+        .order('created_at', { ascending: false })
+        .limit(30),
+      supabase
+        .from('diary_entries')
+        .select(
+          'id, rating, listened_date, created_at, profile_id, profiles(username, avatar_url), albums(id, title, artist, cover_url)',
+        )
+        .in('profile_id', followingIds)
+        .order('created_at', { ascending: false })
+        .limit(30),
+    ])
+
+    const reviewIds = (reviews ?? []).map((r) => r.id)
+    if (reviewIds.length > 0) {
+      const { data: likes } = await supabase
+        .from('likes')
+        .select('target_id')
+        .eq('profile_id', user!.id)
+        .eq('target_type', 'review')
+        .in('target_id', reviewIds)
+      likedReviewIds = new Set((likes ?? []).map((l) => l.target_id))
+    }
+
+    feedItems = [
+      ...(reviews ?? []).flatMap((r) => {
+        const album = normalizeAlbum(r.albums)
+        const author = normalizeAuthor(r.profiles)
+        if (!album || !author) return []
+        return [
+          {
+            kind: 'review' as const,
+            id: r.id,
+            createdAt: r.created_at,
+            rating: r.rating,
+            content: r.content,
+            isSpoiler: r.is_spoiler,
+            likeCount: r.like_count,
+            commentCount: r.comment_count,
+            album,
+            author,
+          },
+        ]
+      }),
+      ...(diaryEntries ?? []).flatMap((d) => {
+        const album = normalizeAlbum(d.albums)
+        const author = normalizeAuthor(d.profiles)
+        if (!album || !author) return []
+        return [
+          {
+            kind: 'diary' as const,
+            id: d.id,
+            createdAt: d.created_at,
+            rating: d.rating,
+            listenedDate: d.listened_date,
+            album,
+            author,
+          },
+        ]
+      }),
+    ]
+      .sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0))
+      .slice(0, 25)
+  }
 
   return (
     <div className="min-h-screen grid grid-cols-1 xl:grid-cols-[1fr_300px]">
@@ -52,48 +191,31 @@ export async function HomeFeed() {
         </div>
 
         <div className="px-6 sm:px-9 pb-9 flex flex-col gap-5">
-          {(reviews ?? []).length === 0 && (
+          {followingIds.length === 0 ? (
+            <div className="flex flex-col gap-6">
+              <div>
+                <div
+                  className="font-[family-name:var(--font-bungee)] text-xl w-fit mb-2"
+                  style={{ color: '#ffe000', textShadow: '3px 3px 0 #ff2b2b', rotate: '-1deg' }}
+                >
+                  YOUR FEED IS EMPTY
+                </div>
+                <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a] max-w-md">
+                  Follow some listeners to fill this up with their reviews and logs. Here&apos;s a few to get you
+                  started.
+                </p>
+              </div>
+              <WhoToFollowList suggestions={whoToFollowData} variant="panel" />
+            </div>
+          ) : feedItems.length === 0 ? (
             <p className="font-[family-name:var(--font-space-mono)] text-sm text-[#9a9a9a]">
-              No reviews yet — be the first to log a listen.
+              The people you follow haven&apos;t logged anything yet.
             </p>
+          ) : (
+            feedItems.map((item) => (
+              <FeedCard key={`${item.kind}-${item.id}`} item={item} liked={item.kind === 'review' && likedReviewIds.has(item.id)} />
+            ))
           )}
-          {(reviews ?? []).map((review) => {
-            const album = Array.isArray(review.albums) ? review.albums[0] : review.albums
-            const profile = Array.isArray(review.profiles) ? review.profiles[0] : review.profiles
-            if (!album || !profile) return null
-
-            return (
-              <Link
-                key={review.id}
-                href={`/album/${album.id}`}
-                className="grid grid-cols-[126px_1fr] gap-4.5 bg-[#f2f2f2] border-[3px] border-black shadow-[6px_6px_0_#2b6bff] p-3.5 text-[#0a0a0a]"
-              >
-                <div className="relative w-[126px] h-[126px] border-2 border-black bg-[#333] shrink-0">
-                  {album.cover_url && (
-                    <Image src={album.cover_url} alt="" fill sizes="126px" className="object-cover" />
-                  )}
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 font-[family-name:var(--font-space-mono)] text-[11px] text-[#555] mb-1.5">
-                    <span className="w-[18px] h-[18px] rounded-full bg-[#2b6bff] border border-black" />
-                    <b className="text-[#0a0a0a]">{profile.username ?? 'someone'}</b>
-                  </div>
-                  <div className="font-[family-name:var(--font-bungee)] text-lg leading-none">{album.title}</div>
-                  <div className="text-[#555] font-[family-name:var(--font-space-mono)] text-[11px] my-1">
-                    {album.artist}
-                  </div>
-                  <div className="mb-2">
-                    <StarRating rating={review.rating} />
-                  </div>
-                  {review.content && (
-                    <p className="m-0 text-[12.5px] leading-[1.5] text-[#1a1a1a] max-w-[420px] line-clamp-2">
-                      {review.content}
-                    </p>
-                  )}
-                </div>
-              </Link>
-            )
-          })}
         </div>
       </main>
 
@@ -105,63 +227,57 @@ export async function HomeFeed() {
           <span>⌕</span> SEARCH ALBUMS, PEOPLE…
         </Link>
 
-        {whoToFollow.length > 0 && (
-          <div>
-            <div
-              className="font-[family-name:var(--font-bungee)] text-sm mb-3.5 w-fit"
-              style={{ color: '#ffe000', textShadow: '2px 2px 0 #ff2b2b', rotate: '-1deg' }}
-            >
-              WHO 2 FOLLOW
-            </div>
-            <div className="flex flex-col gap-3.5">
-              {whoToFollow.map((profile, i) => (
-                <div key={profile.id} className="flex items-center gap-2.5">
-                  <span className="w-[30px] h-[30px] bg-[#ff2b2b] border-2 border-black shrink-0" />
-                  <div className="flex-1 leading-tight min-w-0">
-                    <div className="font-[family-name:var(--font-space-mono)] font-bold text-[11.5px] truncate">
-                      {profile.username ?? 'listener'}
-                    </div>
-                    <div className="text-[#8a8a8a] font-[family-name:var(--font-space-mono)] text-[10px]">
-                      {reviewCounts[i]?.count ?? 0} reviews
-                    </div>
-                  </div>
-                  <FollowButton profileId={profile.id} />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {(newTapes ?? []).length > 0 && (
-          <div>
-            <div
-              className="font-[family-name:var(--font-bungee)] text-sm mb-3.5 w-fit"
-              style={{ color: '#ffe000', textShadow: '2px 2px 0 #2b6bff', rotate: '1deg' }}
-            >
-              NEW TAPES
-            </div>
-            <div className="flex flex-col gap-2.5">
-              {(newTapes ?? []).map((album) => (
-                <Link key={album.id} href={`/album/${album.id}`} className="flex items-center gap-2.5">
-                  <span className="relative w-[38px] h-[38px] bg-[#333] border-2 border-black shrink-0">
-                    {album.cover_url && (
-                      <Image src={album.cover_url} alt="" fill sizes="38px" className="object-cover" />
-                    )}
-                  </span>
-                  <div className="leading-tight min-w-0">
-                    <div className="font-[family-name:var(--font-space-mono)] font-bold text-[12.5px] truncate">
-                      {album.title}
-                    </div>
-                    <div className="text-[#8a8a8a] font-[family-name:var(--font-space-mono)] text-[11px] truncate">
-                      {album.artist}
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
+        <WhoToFollowList suggestions={whoToFollowData} variant="sidebar" />
       </aside>
+    </div>
+  )
+}
+
+function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
+  return (
+    <div className="grid grid-cols-[126px_1fr] gap-4.5 bg-[#f2f2f2] border-[3px] border-black shadow-[6px_6px_0_#2b6bff] p-3.5 text-[#0a0a0a]">
+      <Link
+        href={`/album/${item.album.id}`}
+        className="relative w-[126px] h-[126px] border-2 border-black bg-[#333] shrink-0"
+      >
+        {item.album.cover_url && <Image src={item.album.cover_url} alt="" fill sizes="126px" className="object-cover" />}
+      </Link>
+      <div className="min-w-0">
+        <div className="flex items-center gap-2 font-[family-name:var(--font-space-mono)] text-[11px] text-[#555] mb-1.5">
+          <span className="w-[18px] h-[18px] rounded-full bg-[#2b6bff] border border-black shrink-0" />
+          <b className="text-[#0a0a0a]">{item.author.username ?? 'someone'}</b>
+          <span className="text-[#999]">
+            {item.kind === 'review' ? 'RATED' : 'LOGGED'} · {formatDate(item.createdAt)}
+          </span>
+        </div>
+        <Link href={`/album/${item.album.id}`}>
+          <div className="font-[family-name:var(--font-bungee)] text-lg leading-none">{item.album.title}</div>
+          <div className="text-[#555] font-[family-name:var(--font-space-mono)] text-[11px] my-1">{item.album.artist}</div>
+        </Link>
+        {item.rating != null && (
+          <div className="mb-2">
+            <StarRating rating={item.rating} />
+          </div>
+        )}
+        {item.kind === 'review' && item.content && (
+          item.isSpoiler ? (
+            <SpoilerReview content={item.content} />
+          ) : (
+            <p className="m-0 text-[12.5px] leading-[1.5] text-[#1a1a1a] max-w-[420px] line-clamp-2">{item.content}</p>
+          )
+        )}
+        {item.kind === 'review' && (
+          <div className="flex items-center gap-4 mt-2.5">
+            <LikeButton reviewId={item.id} initialLiked={liked} initialCount={item.likeCount} />
+            <Link
+              href={`/album/${item.album.id}#review-${item.id}`}
+              className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#888] flex items-center gap-1"
+            >
+              💬 {item.commentCount}
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
