@@ -222,7 +222,7 @@ export async function HomeFeed() {
       <aside className="border-l-punk border-paper px-4 py-5.5 hidden xl:flex flex-col gap-6.5">
         <Link
           href="/search"
-          className="flex items-center gap-2.5 bg-paper text-ink border-2 border-black shadow-hard-3-yellow px-3 py-2.5 font-punk-mono text-xs"
+          className="flex items-center gap-2.5 bg-paper text-ink border-2 border-black shadow-hard-3-yellow px-3 py-2.5 font-punk-mono text-xs transition-transform active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
         >
           <span>⌕</span> SEARCH ALBUMS, PEOPLE…
         </Link>
