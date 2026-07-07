@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils"
+
 const SIZES = {
   sm: 12,
   md: 14,
@@ -6,9 +8,11 @@ const SIZES = {
 export function StarRating({
   rating,
   size = "md",
+  className = "",
 }: {
   rating: number
   size?: keyof typeof SIZES
+  className?: string
 }) {
   const filled = Math.floor(rating)
 
@@ -16,7 +20,7 @@ export function StarRating({
     <div
       role="img"
       aria-label={`${rating} out of 5 stars`}
-      className="inline-flex"
+      className={cn("inline-flex", className)}
       style={{
         fontSize: SIZES[size],
         letterSpacing: 1,
