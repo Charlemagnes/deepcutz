@@ -5,6 +5,7 @@ import { getAlbumDetails } from '@/lib/spotify/actions'
 import { getCurrentUser } from '@/lib/auth/current-user'
 import { LogButton } from './log-button'
 import { ReviewItem } from './review-item'
+import { StarRating } from '@/components/marketing/star-rating'
 
 export default async function AlbumPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -88,7 +89,9 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
                 className="bg-paper border-2 border-black shadow-hard-4-yellow px-3.5 py-2.5 font-punk-mono text-ink text-sm"
                 style={{ rotate: '1deg' }}
               >
-                <b>{cachedAlbum.avg_rating.toFixed(1)}</b> <Star className="inline w-4 h-4 fill-current" /> avg ·{' '}
+                <StarRating rating={cachedAlbum.avg_rating} className="mr-2" /> 
+                <b>{cachedAlbum.avg_rating.toFixed(1)}</b> avg ·{' '}
+                {/* <Star className="leading-normal text-amber-400 mb-1 inline w-4 h-4 fill-current" /> avg ·{' '} */}
                 {cachedAlbum.rating_count} {cachedAlbum.rating_count === 1 ? 'rating' : 'ratings'}
               </div>
             ) : (
