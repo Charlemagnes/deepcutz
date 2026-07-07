@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import Link from 'next/link'
 import { listComments, type CommentWithAuthor } from '@/lib/comments/actions'
 import { CommentForm } from './comment-form'
 
@@ -46,7 +47,13 @@ export function CommentSection({ reviewId, initialCount }: { reviewId: string; i
               {comments.map((comment) => (
                 <div key={comment.id} className="border-t-2 border-black pt-2">
                   <div className="flex items-center gap-2 text-[10.5px] text-ink-600 mb-1">
-                    <b className="text-ink">{comment.username ?? 'unknown'}</b>
+                    {comment.username ? (
+                      <Link href={`/profile/${comment.username}`} className="hover:underline">
+                        <b className="text-ink">{comment.username}</b>
+                      </Link>
+                    ) : (
+                      <b className="text-ink">unknown</b>
+                    )}
                     <span className="text-ink-500">{formatDate(comment.createdAt)}</span>
                   </div>
                   <p className="m-0 text-[12px] leading-normal whitespace-pre-wrap text-ink">{comment.content}</p>
