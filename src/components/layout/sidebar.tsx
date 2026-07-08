@@ -6,6 +6,7 @@ import { Wordmark } from '@/components/marketing/wordmark'
 import { SidebarNavLink } from './sidebar-nav-link'
 import { SidebarLogButton } from './sidebar-log-button'
 import { SidebarAuth } from './sidebar-auth'
+import { NotificationBadge } from './notification-badge'
 
 const NAV_ITEMS = [
   { href: '/', label: 'HOME', accent: 'light', rotate: -1.5 },
@@ -13,14 +14,6 @@ const NAV_ITEMS = [
   { href: '/notifications', label: 'NOTIF', accent: 'red', rotate: -1 },
   { href: '/profile', label: 'PROFILE', accent: 'blue', rotate: 1.5 },
 ] as const
-
-function NotificationCountBadge({ count }: { count: number }) {
-  return (
-    <span className="bg-brand-red text-white border border-black rounded-full text-[10px] px-1.5 py-0.5 leading-none">
-      {count > 9 ? '9+' : count}
-    </span>
-  )
-}
 
 export async function Sidebar() {
   const user = await getCurrentUser()
@@ -51,7 +44,11 @@ export async function Sidebar() {
             label={label}
             accent={accent}
             rotate={rotate}
-            badge={href === '/notifications' && unreadCount > 0 ? <NotificationCountBadge count={unreadCount} /> : undefined}
+            badge={
+              href === '/notifications' && user ? (
+                <NotificationBadge initialCount={unreadCount} userId={user.id} />
+              ) : undefined
+            }
           />
         ))}
       </nav>

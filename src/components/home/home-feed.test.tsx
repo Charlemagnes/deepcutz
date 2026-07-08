@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
+import type { ReactNode } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth/current-user'
 import { HomeFeed } from './home-feed'
@@ -12,6 +13,27 @@ vi.mock('@/lib/auth/current-user', () => ({
 }))
 vi.mock('./home-search-trigger', () => ({
   HomeSearchTrigger: () => null,
+}))
+vi.mock('./live-feed', () => ({
+  LiveFeed: ({
+    initialItems,
+    emptyState,
+    followNudge,
+  }: {
+    initialItems: { album: { id: string } }[]
+    emptyState: ReactNode
+    followNudge: ReactNode
+  }) =>
+    initialItems.length === 0 ? (
+      <>{emptyState}</>
+    ) : (
+      <>
+        {followNudge}
+        {initialItems.map((item) => (
+          <div key={item.album.id}>Album {item.album.id}</div>
+        ))}
+      </>
+    ),
 }))
 
 const VIEWER_ID = 'viewer-1'
