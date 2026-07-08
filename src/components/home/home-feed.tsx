@@ -270,7 +270,7 @@ function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
           <div className="flex items-center gap-4 mt-2.5">
             <LikeButton reviewId={item.id} initialLiked={liked} initialCount={item.likeCount} />
             <Link
-              href={`/album/${item.album.id}#review-${item.id}`}
+              href={`/review/${item.id}`}
               className="font-punk-mono text-[11px] text-ink-500 flex items-center gap-1 cursor-pointer"
             >
               💬 {item.commentCount}

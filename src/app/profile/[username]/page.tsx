@@ -369,7 +369,7 @@ export default async function ProfilePage({
                     initialCount={review.likeCount}
                   />
                   <Link
-                    href={`/album/${review.album.id}#review-${review.id}`}
+                    href={`/review/${review.id}`}
                     className="text-[11px] text-ink-500 font-punk-mono"
                   >
                     💬 {review.commentCount}
