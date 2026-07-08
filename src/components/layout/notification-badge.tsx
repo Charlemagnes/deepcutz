@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { getUnreadNotificationCount } from '@/lib/notifications/actions'
 
@@ -12,6 +13,20 @@ import { getUnreadNotificationCount } from '@/lib/notifications/actions'
  *  load). */
 export function NotificationBadge({ initialCount, userId }: { initialCount: number; userId: string }) {
   const [count, setCount] = useState(initialCount)
+  const pathname = usePathname()
+
+  // Reset the badge the moment the route becomes `/notifications`, in sync with
+  // `markAllNotificationsRead()` firing server-side on that page. Adjusted during
+  // render (React's recommended pattern for state that must react to a prop/route
+  // change) rather than in an effect, since an effect would render the stale count
+  // first and only clear it a tick later.
+  const [syncedPathname, setSyncedPathname] = useState(pathname)
+  if (pathname !== syncedPathname) {
+    setSyncedPathname(pathname)
+    if (pathname === '/notifications') {
+      setCount(0)
+    }
+  }
 
   useEffect(() => {
     const supabase = createClient()
