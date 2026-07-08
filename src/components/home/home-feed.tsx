@@ -5,8 +5,9 @@ import { getCurrentUser } from '@/lib/auth/current-user'
 import { StarRating } from '@/components/marketing/star-rating'
 import { LikeButton } from '@/components/likes/like-button'
 import { SpoilerReview } from '@/app/profile/[username]/spoiler-review'
-import { WhoToFollowList } from './who-to-follow-list'
+import { WhoToFollowList, type FollowSuggestion } from './who-to-follow-list'
 import { HomeSearchTrigger } from './home-search-trigger'
+import { FollowButton } from './follow-button'
 
 type AlbumRef = {
   id: string
@@ -107,78 +108,78 @@ export async function HomeFeed() {
   let feedItems: FeedItem[] = []
   let likedReviewIds = new Set<string>()
 
-  if (followingIds.length > 0) {
-    const [{ data: reviews }, { data: diaryEntries }] = await Promise.all([
-      supabase
-        .from('reviews')
-        .select(
-          'id, rating, content, is_spoiler, created_at, like_count, comment_count, profile_id, profiles(username, avatar_url), albums(id, title, artist, cover_url)',
-        )
-        .in('profile_id', followingIds)
-        .order('created_at', { ascending: false })
-        .limit(30),
-      supabase
-        .from('diary_entries')
-        .select(
-          'id, rating, listened_date, created_at, profile_id, profiles(username, avatar_url), albums(id, title, artist, cover_url)',
-        )
-        .in('profile_id', followingIds)
-        .order('created_at', { ascending: false })
-        .limit(30),
-    ])
+  const feedProfileIds = [...followingIds, user!.id]
 
-    const reviewIds = (reviews ?? []).map((r) => r.id)
-    if (reviewIds.length > 0) {
-      const { data: likes } = await supabase
-        .from('likes')
-        .select('target_id')
-        .eq('profile_id', user!.id)
-        .eq('target_type', 'review')
-        .in('target_id', reviewIds)
-      likedReviewIds = new Set((likes ?? []).map((l) => l.target_id))
-    }
+  const [{ data: reviews }, { data: diaryEntries }] = await Promise.all([
+    supabase
+      .from('reviews')
+      .select(
+        'id, rating, content, is_spoiler, created_at, like_count, comment_count, profile_id, profiles(username, avatar_url), albums(id, title, artist, cover_url)',
+      )
+      .in('profile_id', feedProfileIds)
+      .order('created_at', { ascending: false })
+      .limit(30),
+    supabase
+      .from('diary_entries')
+      .select(
+        'id, rating, listened_date, created_at, profile_id, profiles(username, avatar_url), albums(id, title, artist, cover_url)',
+      )
+      .in('profile_id', feedProfileIds)
+      .order('created_at', { ascending: false })
+      .limit(30),
+  ])
 
-    feedItems = [
-      ...(reviews ?? []).flatMap((r) => {
-        const album = normalizeAlbum(r.albums)
-        const author = normalizeAuthor(r.profiles)
-        if (!album || !author) return []
-        return [
-          {
-            kind: 'review' as const,
-            id: r.id,
-            createdAt: r.created_at,
-            rating: r.rating,
-            content: r.content,
-            isSpoiler: r.is_spoiler,
-            likeCount: r.like_count,
-            commentCount: r.comment_count,
-            album,
-            author,
-          },
-        ]
-      }),
-      // since these look EXACTLY like reviews, we won't show them. todo: create a separate "diary" card component and re-enable this.
-      // ...(diaryEntries ?? []).flatMap((d) => {
-      //   const album = normalizeAlbum(d.albums)
-      //   const author = normalizeAuthor(d.profiles)
-      //   if (!album || !author) return []
-      //   return [
-      //     {
-      //       kind: 'diary' as const,
-      //       id: d.id,
-      //       createdAt: d.created_at,
-      //       rating: d.rating,
-      //       listenedDate: d.listened_date,
-      //       album,
-      //       author,
-      //     },
-      //   ]
-      // }),
-    ]
-      .sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0))
-      .slice(0, 25)
+  const reviewIds = (reviews ?? []).map((r) => r.id)
+  if (reviewIds.length > 0) {
+    const { data: likes } = await supabase
+      .from('likes')
+      .select('target_id')
+      .eq('profile_id', user!.id)
+      .eq('target_type', 'review')
+      .in('target_id', reviewIds)
+    likedReviewIds = new Set((likes ?? []).map((l) => l.target_id))
   }
+
+  feedItems = [
+    ...(reviews ?? []).flatMap((r) => {
+      const album = normalizeAlbum(r.albums)
+      const author = normalizeAuthor(r.profiles)
+      if (!album || !author) return []
+      return [
+        {
+          kind: 'review' as const,
+          id: r.id,
+          createdAt: r.created_at,
+          rating: r.rating,
+          content: r.content,
+          isSpoiler: r.is_spoiler,
+          likeCount: r.like_count,
+          commentCount: r.comment_count,
+          album,
+          author,
+        },
+      ]
+    }),
+    // since these look EXACTLY like reviews, we won't show them. todo: create a separate "diary" card component and re-enable this.
+    // ...(diaryEntries ?? []).flatMap((d) => {
+    //   const album = normalizeAlbum(d.albums)
+    //   const author = normalizeAuthor(d.profiles)
+    //   if (!album || !author) return []
+    //   return [
+    //     {
+    //       kind: 'diary' as const,
+    //       id: d.id,
+    //       createdAt: d.created_at,
+    //       rating: d.rating,
+    //       listenedDate: d.listened_date,
+    //       album,
+    //       author,
+    //     },
+    //   ]
+    // }),
+  ]
+    .sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0))
+    .slice(0, 25)
 
   return (
     <div className="min-h-screen grid grid-cols-1 xl:grid-cols-[1fr_300px]">
@@ -193,7 +194,7 @@ export async function HomeFeed() {
         </div>
 
         <div className="px-6 sm:px-9 pb-9 flex flex-col gap-5">
-          {followingIds.length === 0 ? (
+          {feedItems.length === 0 ? (
             <div className="flex flex-col gap-6">
               <div>
                 <div
@@ -203,20 +204,21 @@ export async function HomeFeed() {
                   YOUR FEED IS EMPTY
                 </div>
                 <p className="font-punk-mono text-sm text-ink-500 max-w-md">
-                  Follow some listeners to fill this up with their reviews and logs. Here&apos;s a few to get you
-                  started.
+                  You and the people you follow haven&apos;t logged anything yet. Here&apos;s a few listeners to get
+                  you started.
                 </p>
               </div>
               <WhoToFollowList suggestions={whoToFollowData} variant="panel" />
             </div>
-          ) : feedItems.length === 0 ? (
-            <p className="font-punk-mono text-sm text-ink-500">
-              The people you follow haven&apos;t logged anything yet.
-            </p>
           ) : (
-            feedItems.map((item) => (
-              <FeedCard key={`${item.kind}-${item.id}`} item={item} liked={item.kind === 'review' && likedReviewIds.has(item.id)} />
-            ))
+            <>
+              {followingIds.length === 0 && (
+                <FollowNudgeBanner suggestions={whoToFollowData} />
+              )}
+              {feedItems.map((item) => (
+                <FeedCard key={`${item.kind}-${item.id}`} item={item} liked={item.kind === 'review' && likedReviewIds.has(item.id)} />
+              ))}
+            </>
           )}
         </div>
       </main>
@@ -226,6 +228,31 @@ export async function HomeFeed() {
 
         <WhoToFollowList suggestions={whoToFollowData} variant="sidebar" />
       </aside>
+    </div>
+  )
+}
+
+/** Slim nudge shown above a non-empty feed when the viewer follows nobody (e.g. they
+ *  only have their own reviews so far) — distinct from the full-panel WhoToFollowList
+ *  shown when the feed has nothing at all. */
+function FollowNudgeBanner({ suggestions }: { suggestions: FollowSuggestion[] }) {
+  if (suggestions.length === 0) return null
+
+  return (
+    <div className="flex items-center gap-3 bg-paper border-punk border-black shadow-hard-3-blue px-3.5 py-2.5 text-ink overflow-x-auto">
+      <span className="font-punk-mono text-[11px] text-ink-600 shrink-0">You&apos;re not following anyone yet →</span>
+      {suggestions.map((profile) => (
+        <div key={profile.id} className="flex items-center gap-1.5 shrink-0">
+          {profile.username ? (
+            <Link href={`/profile/${profile.username}`} className="font-punk-mono font-bold text-[11.5px] hover:underline">
+              {profile.username}
+            </Link>
+          ) : (
+            <span className="font-punk-mono font-bold text-[11.5px]">listener</span>
+          )}
+          <FollowButton profileId={profile.id} initialIsFollowing={false} />
+        </div>
+      ))}
     </div>
   )
 }
