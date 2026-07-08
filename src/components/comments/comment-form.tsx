@@ -5,10 +5,18 @@ import { addComment, type CommentWithAuthor } from '@/lib/comments/actions'
 
 export function CommentForm({
   reviewId,
+  parentCommentId = null,
+  placeholder = 'Say something…',
+  autoFocus = false,
   onAdded,
+  onCancel,
 }: {
   reviewId: string
+  parentCommentId?: string | null
+  placeholder?: string
+  autoFocus?: boolean
   onAdded: (comment: CommentWithAuthor) => void
+  onCancel?: () => void
 }) {
   const [content, setContent] = useState('')
   const [isPending, startTransition] = useTransition()
@@ -19,7 +27,7 @@ export function CommentForm({
     if (disabled) return
 
     startTransition(async () => {
-      const result = await addComment(reviewId, content.trim())
+      const result = await addComment(reviewId, content.trim(), parentCommentId)
       onAdded(result)
       setContent('')
     })
@@ -30,17 +38,29 @@ export function CommentForm({
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Say something…"
+        placeholder={placeholder}
         rows={2}
+        autoFocus={autoFocus}
         className="w-full resize-none bg-paper border-2 border-black px-2.5 py-2 text-[12.5px] font-punk-mono text-ink placeholder:text-ink-500 outline-none"
       />
-      <button
-        type="submit"
-        disabled={disabled}
-        className="self-end font-display text-[10px] px-3 py-1.5 border-2 border-black bg-brand-yellow text-ink disabled:opacity-50"
-      >
-        {isPending ? 'POSTING…' : 'POST'}
-      </button>
+      <div className="flex items-center justify-end gap-2">
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="font-display text-[10px] px-3 py-1.5 border-2 border-black bg-paper text-ink"
+          >
+            CANCEL
+          </button>
+        )}
+        <button
+          type="submit"
+          disabled={disabled}
+          className="font-display text-[10px] px-3 py-1.5 border-2 border-black bg-brand-yellow text-ink disabled:opacity-50"
+        >
+          {isPending ? 'POSTING…' : 'POST'}
+        </button>
+      </div>
     </form>
   )
 }

@@ -13,6 +13,7 @@ const newComment: CommentWithAuthor = {
   content: 'Great record.',
   createdAt: '2026-07-01T00:00:00.000Z',
   profileId: 'user-1',
+  parentCommentId: null,
   username: 'listener',
   avatarUrl: null,
 }
@@ -46,7 +47,7 @@ describe('CommentForm', () => {
     expect(submit).not.toBeDisabled()
     await userEvent.click(submit)
 
-    expect(addComment).toHaveBeenCalledWith('review-1', 'Great record.')
+    expect(addComment).toHaveBeenCalledWith('review-1', 'Great record.', null)
     expect(onAdded).toHaveBeenCalledWith(newComment)
     expect(textarea).toHaveValue('')
   })
