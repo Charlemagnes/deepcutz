@@ -107,7 +107,7 @@ erDiagram
 ## Phase-by-Phase Roadmap
 
 > [!IMPORTANT]
-> **MVP scope**: Phases 1–4. **Post-MVP**: Phase 5 (mobile responsiveness, notifications).
+> **MVP scope**: Phases 1–4. **Post-MVP**: Phase 4.5 (feed & engagement enhancements), Phase 5 (mobile responsiveness, notifications).
 
 ### Phase 1: Setup & Infrastructure *(MVP)*
 1. Initialize a Next.js application using `create-next-app` with TypeScript, TailwindCSS, and ESLint.
@@ -144,6 +144,12 @@ erDiagram
 1. **Activity Feed**: Show reviews and logs from followed users (powered by the `follows` table).
 2. **Follow System**: Allow users to follow/unfollow other users from their profile page.
 3. **Likes & Comments**: Allow users to like reviews/albums and comment on reviews.
+
+### Phase 4.5: Feed & Engagement Enhancements *(Post-MVP)*
+1. **Inline Home Search**: Move the search experience from the dedicated `/search` page onto the home feed itself, so results appear in place without a page navigation. Extract the mode-toggle (albums/people), debounce, and results-list logic currently in `src/app/search/page.tsx` into a shared component, reused both inline on the home feed (triggered from the sidebar search entry point in `src/components/home/home-feed.tsx`) and at `/search`, which stays as a secondary, deep-linkable route (e.g. for direct links/bookmarks or the album-logging flow's picker). Same underlying `searchAlbums`/`searchProfiles` server actions (`src/lib/spotify/actions.ts`, `src/lib/profiles/actions.ts`) power both.
+2. **Own Reviews in Feed**: Currently the feed query in `src/components/home/home-feed.tsx` filters strictly to `profile_id in (followingIds)`, with no path for the viewer's own reviews, and falls back to an empty "who to follow" state when the user follows no one — even if they've posted reviews themselves. Include the current user's own `profile_id` alongside `followingIds` in the feed query, and adjust the empty-state gating accordingly, so users can see their own latest reviews in the feed alongside likes/comment counts (already rendered by the existing `FeedCard`), without having to visit their profile.
+3. **Live Feed Updates**: When a followed user (or the viewer) posts a new review, it should appear at the top of the feed immediately, with a fade-in transition — no manual refresh. No Supabase Realtime usage exists in the codebase today, so this is new infrastructure: enable Realtime replication on `reviews`, subscribe to `postgres_changes` INSERT events from a client component wrapping the feed list, filter to `profile_id` in (self + following), and prepend matching new rows with a fade-in (CSS-utility-based via the already-installed `tw-animate-css`, or a JS animation library if that proves insufficient — none is installed yet). A Twitter-style "N new reviews" ticker banner is a related idea with a reference design to discuss further — noted here as a follow-up, not fully speced.
+4. **Threaded Replies on Reviews**: Comments already exist end-to-end — schema (`public.comments`: `profile_id`, `review_id`, `content`, `created_at`), server actions (`src/lib/comments/actions.ts`), and components (`src/components/comments/comment-section.tsx`, `comment-form.tsx`), wired inline into `src/app/album/[id]/review-item.tsx`, with `reviews.comment_count` kept in sync via the `update_review_comment_count` trigger. What's missing is threading: add a nullable, self-referential `parent_comment_id uuid references comments(id) on delete cascade` column (null = top-level comment on the review), reply forms at each level, and recursive rendering into nested threads, matching the Twitter-style reply model. Likes on comments/replies reuse the existing polymorphic pattern from review likes: add `'comment'` to the `likes.target_type` check constraint, add a `comment_id` FK companion column (mirroring the `review_id` column already added to `likes` for review likes), a new `comments.like_count` column, and an `update_comment_like_count` trigger mirroring the existing `update_review_like_count`.
 
 ### Phase 5: Post-MVP Enhancements
 1. **Mobile Responsiveness**: Adapt the sidebar to a bottom nav or hamburger menu for mobile viewports.

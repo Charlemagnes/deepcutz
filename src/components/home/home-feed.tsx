@@ -6,6 +6,7 @@ import { StarRating } from '@/components/marketing/star-rating'
 import { LikeButton } from '@/components/likes/like-button'
 import { SpoilerReview } from '@/app/profile/[username]/spoiler-review'
 import { WhoToFollowList } from './who-to-follow-list'
+import { HomeSearchTrigger } from './home-search-trigger'
 
 type AlbumRef = {
   id: string
@@ -221,12 +222,7 @@ export async function HomeFeed() {
       </main>
 
       <aside className="border-l-punk border-paper px-4 py-5.5 hidden xl:flex flex-col gap-6.5">
-        <Link
-          href="/search"
-          className="flex items-center gap-2.5 bg-paper text-ink border-2 border-black shadow-hard-3-yellow px-3 py-2.5 font-punk-mono text-xs transition-transform hover:scale-105 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
-        >
-          <span>⌕</span> SEARCH ALBUMS, PEOPLE…
-        </Link>
+        <HomeSearchTrigger />
 
         <WhoToFollowList suggestions={whoToFollowData} variant="sidebar" />
       </aside>
