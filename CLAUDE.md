@@ -41,6 +41,10 @@ Copy `.env.example` → `.env.local` and fill in `NEXT_PUBLIC_SUPABASE_URL`, `NE
 
 **Testing**: Vitest + jsdom + React Testing Library (`vitest.config.ts`, `vitest.setup.ts` imports `@testing-library/jest-dom/vitest`). Test files live under `src/test/`.
 
+## Working in this repo as a background/parallel agent
+
+This repo is regularly worked on by multiple parallel Claude Code sessions/worktrees at once (see `.claude/worktrees/`). If you're a background session, call `EnterWorktree` **before your first file edit** — writes to the shared checkout are rejected until you isolate, so isolate proactively rather than editing first and reacting to the rejection. Phase work frequently branches off `staging` rather than `main` (features land on `staging` before being promoted) — check `git log --oneline -5` on both before assuming `main` is the right base to branch/reset from.
+
 ## Known constraints
 
 - Spotify integration runs under **Development Mode** (Client Credentials flow) for the MVP — this means test-account/Premium gating and reduced search pagination apply. This is a known, accepted limitation, not a bug; Extended Quota Mode is a post-MVP application (see `docs/implementation_plan.md` Phase 5).
