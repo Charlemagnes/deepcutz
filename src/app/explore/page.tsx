@@ -210,7 +210,7 @@ export default async function ExplorePage() {
                         initialLiked={likedIds.has(review.id)}
                         initialCount={review.like_count}
                       />
-                      <Link href={`/album/${album.id}#review-${review.id}`} className="text-[11px] text-ink-500 font-punk-mono">
+                      <Link href={`/review/${review.id}`} className="text-[11px] text-ink-500 font-punk-mono">
                         💬 {review.comment_count}
                       </Link>
                     </div>

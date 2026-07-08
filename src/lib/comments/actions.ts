@@ -8,11 +8,12 @@ export interface CommentWithAuthor {
   content: string
   createdAt: string
   profileId: string
+  parentCommentId: string | null
   username: string | null
   avatarUrl: string | null
 }
 
-const COMMENT_SELECT = 'id, content, created_at, profile_id, profiles(username, avatar_url)'
+const COMMENT_SELECT = 'id, content, created_at, profile_id, parent_comment_id, profiles(username, avatar_url)'
 
 /** profiles is a to-one embed but Postgrest can shape it as either an object or a
  *  single-item array depending on inference, so normalize defensively (same pattern
@@ -32,6 +33,7 @@ function toCommentWithAuthor(row: {
   content: string
   created_at: string
   profile_id: string
+  parent_comment_id: string | null
   profiles: unknown
 }): CommentWithAuthor {
   const profile = normalizeProfile(row.profiles)
@@ -40,6 +42,7 @@ function toCommentWithAuthor(row: {
     content: row.content,
     createdAt: row.created_at,
     profileId: row.profile_id,
+    parentCommentId: row.parent_comment_id,
     username: profile.username,
     avatarUrl: profile.avatar_url,
   }
@@ -62,7 +65,11 @@ export async function listComments(reviewId: string): Promise<CommentWithAuthor[
   return (data ?? []).map(toCommentWithAuthor)
 }
 
-export async function addComment(reviewId: string, content: string): Promise<CommentWithAuthor> {
+export async function addComment(
+  reviewId: string,
+  content: string,
+  parentCommentId?: string | null
+): Promise<CommentWithAuthor> {
   const user = await getCurrentUser()
   if (!user) throw new Error('Not authenticated')
 
@@ -74,7 +81,12 @@ export async function addComment(reviewId: string, content: string): Promise<Com
 
   const { data, error } = await supabase
     .from('comments')
-    .insert({ profile_id: user.id, review_id: reviewId, content: trimmed })
+    .insert({
+      profile_id: user.id,
+      review_id: reviewId,
+      content: trimmed,
+      parent_comment_id: parentCommentId ?? null,
+    })
     .select(COMMENT_SELECT)
     .single()
 
