@@ -24,6 +24,18 @@
   --color-ink-600: #5c5c5c;
   --color-ink-800: #262626;
   --color-ink-900: #141414;
+  --text-9: 9px;
+  --text-10: 10px;
+  --text-10-5: 10.5px;
+  --text-11: 11px;
+  --text-11-5: 11.5px;
+  --text-12-5: 12.5px;
+  --text-13: 13px;
+  --text-13-5: 13.5px;
+  --text-14-5: 14.5px;
+  --text-15: 15px;
+  --text-28: 28px;
+  --text-38: 38px;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -116,6 +128,14 @@
 @utility shadow-hard-9-blue { box-shadow: 9px 9px 0 var(--color-brand-blue); }
 @utility shadow-hard-9-yellow { box-shadow: 9px 9px 0 var(--color-brand-yellow); }
 @utility shadow-hard-9-cyan { box-shadow: 9px 9px 0 var(--color-brand-cyan); }
+
+@utility shadow-hard-3-ink { box-shadow: 3px 3px 0 var(--color-ink); }
+@utility shadow-hard-4-ink { box-shadow: 4px 4px 0 var(--color-ink); }
+@utility shadow-hard-5-ink { box-shadow: 5px 5px 0 var(--color-ink); }
+@utility shadow-hard-6-ink { box-shadow: 6px 6px 0 var(--color-ink); }
+@utility shadow-hard-7-ink { box-shadow: 7px 7px 0 var(--color-ink); }
+@utility shadow-hard-8-ink { box-shadow: 8px 8px 0 var(--color-ink); }
+@utility shadow-hard-9-ink { box-shadow: 9px 9px 0 var(--color-ink); }
 
 :root {
   --background: oklch(1 0 0);
