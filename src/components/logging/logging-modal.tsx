@@ -150,7 +150,7 @@ export function LoggingModal({
           </div>
 
           {showDropdown && results.length > 0 && (
-            <div className="absolute left-6 right-6 top-17.5 z-20 bg-paper border-2 border-black shadow-[5px_5px_0_#000] overflow-hidden">
+            <div className="absolute left-6 right-6 top-17.5 z-20 bg-paper border-2 border-black shadow-hard-5-ink overflow-hidden">
               {results.map((r) => (
                 <div
                   key={r.id}

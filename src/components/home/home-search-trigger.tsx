@@ -58,7 +58,7 @@ export function HomeSearchTrigger() {
       </PunkPressButton>
 
       {isOpen && (
-        <div className="absolute right-0 top-full z-30 mt-2 w-105 max-w-[90vw] space-y-3 border-2 border-black bg-ink p-4 shadow-[6px_6px_0_#000]">
+        <div className="absolute right-0 top-full z-30 mt-2 w-105 max-w-[90vw] space-y-3 border-2 border-black bg-ink p-4 shadow-hard-6-ink">
           <div className="flex gap-2">
             <button
               type="button"

@@ -11,22 +11,22 @@ import { InlineBanner } from '@/components/marketing/inline-banner'
 type Tab = 'sign-in' | 'sign-up'
 
 const COLLAGE_TILES = [
-  { from: '#ff2b2b', to: '#7a0000', rotate: -3 },
-  { from: '#2b6bff', to: '#001a5c', rotate: 0 },
-  { from: '#ffe000', to: '#7a5c00', rotate: 2 },
-  { from: '#2ee6ff', to: '#003c47', rotate: 0 },
-  { from: '#ff2b2b', to: '#3a0000', rotate: 0 },
-  { from: '#ffe000', to: '#4a3800', rotate: -2 },
-  { from: '#2b6bff', to: '#000f2e', rotate: 0 },
-  { from: '#ff2b2b', to: '#4a0000', rotate: 3 },
-  { from: '#ffe000', to: '#5c4600', rotate: 0 },
-  { from: '#2ee6ff', to: '#00303a', rotate: -2 },
-  { from: '#2b6bff', to: '#001433', rotate: 0 },
-  { from: '#ff2b2b', to: '#5c0000', rotate: 2 },
-  { from: '#ffe000', to: '#3a2c00', rotate: 0 },
-  { from: '#2ee6ff', to: '#002229', rotate: -3 },
-  { from: '#2b6bff', to: '#00194a', rotate: 0 },
-  { from: '#ff2b2b', to: '#330000', rotate: 3 },
+  { from: 'var(--color-brand-red)', to: '#7a0000', rotate: -3 },
+  { from: 'var(--color-brand-blue)', to: '#001a5c', rotate: 0 },
+  { from: 'var(--color-brand-yellow)', to: '#7a5c00', rotate: 2 },
+  { from: 'var(--color-brand-cyan)', to: '#003c47', rotate: 0 },
+  { from: 'var(--color-brand-red)', to: '#3a0000', rotate: 0 },
+  { from: 'var(--color-brand-yellow)', to: '#4a3800', rotate: -2 },
+  { from: 'var(--color-brand-blue)', to: '#000f2e', rotate: 0 },
+  { from: 'var(--color-brand-red)', to: '#4a0000', rotate: 3 },
+  { from: 'var(--color-brand-yellow)', to: '#5c4600', rotate: 0 },
+  { from: 'var(--color-brand-cyan)', to: '#00303a', rotate: -2 },
+  { from: 'var(--color-brand-blue)', to: '#001433', rotate: 0 },
+  { from: 'var(--color-brand-red)', to: '#5c0000', rotate: 2 },
+  { from: 'var(--color-brand-yellow)', to: '#3a2c00', rotate: 0 },
+  { from: 'var(--color-brand-cyan)', to: '#002229', rotate: -3 },
+  { from: 'var(--color-brand-blue)', to: '#00194a', rotate: 0 },
+  { from: 'var(--color-brand-red)', to: '#330000', rotate: 3 },
 ]
 
 interface AuthFormProps {
