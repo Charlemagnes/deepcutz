@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { StarRating } from '@/components/marketing/star-rating'
 import { LikeButton } from '@/components/likes/like-button'
 import { SpoilerReview } from '@/app/profile/[username]/spoiler-review'
+import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
 
 /** Shared `reviews` select shape (joined with album/author) used both by the home
  *  feed's initial server-rendered query and by `getFeedReviewById`'s per-event
@@ -80,8 +80,8 @@ function formatDate(iso: string) {
 export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
   return (
     <div className="grid grid-cols-[126px_1fr] gap-4.5 bg-paper border-punk border-black shadow-hard-6-blue p-3.5 text-ink">
-      <Link href={`/album/${item.album.id}`} className="relative w-31.5 h-31.5 border-2 border-black bg-ink-800 shrink-0">
-        {item.album.cover_url && <Image src={item.album.cover_url} alt="" fill sizes="126px" className="object-cover" />}
+      <Link href={`/album/${item.album.id}`}>
+        <AlbumCoverThumb src={item.album.cover_url} sizePx={126} sizes="126px" />
       </Link>
       <div className="min-w-0">
         <div className="flex items-center gap-2 font-punk-mono text-11 text-ink-600 mb-1.5">

@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth/current-user'
@@ -8,6 +7,7 @@ import { LikeButton } from '@/components/likes/like-button'
 import { ReplyThread } from '@/components/comments/reply-thread'
 import { WhoToFollowList } from '@/components/home/who-to-follow-list'
 import { HomeSearchTrigger } from '@/components/home/home-search-trigger'
+import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
 
 interface AlbumRef {
   id: string
@@ -125,10 +125,8 @@ export default async function ReviewThreadPage({ params }: { params: Promise<{ i
         <div className="px-6 sm:px-9 py-8 flex flex-col gap-5">
           <div className="flex items-start gap-3 bg-paper border-punk border-black shadow-hard-5-blue p-3.5 text-ink">
             {album && (
-              <Link href={`/album/${album.id}`} className="relative w-14 h-14 border-2 border-black bg-ink-800 shrink-0">
-                {album.cover_url && (
-                  <Image src={album.cover_url} alt="" fill sizes="56px" className="object-cover" />
-                )}
+              <Link href={`/album/${album.id}`}>
+                <AlbumCoverThumb src={album.cover_url} sizePx={56} sizes="56px" />
               </Link>
             )}
 
