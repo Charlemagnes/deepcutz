@@ -42,7 +42,7 @@ export function NotificationRow({ item }: { item: NotificationItem }) {
             data-testid="unread-dot"
           />
         )}
-        <p className="m-0 text-[13px] leading-snug text-ink font-punk-mono">{text}</p>
+        <p className="m-0 text-13 leading-snug text-ink font-punk-mono">{text}</p>
       </HardShadowCard>
     </Link>
   )

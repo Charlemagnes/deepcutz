@@ -29,7 +29,7 @@ export function LikeButton({
       type="button"
       onClick={handleClick}
       disabled={isPending}
-      className="font-punk-mono text-[11px] flex items-center gap-1 border-2 border-black bg-paper px-2 py-1 shadow-hard-3-red cursor-pointer transition-transform active:translate-x-[3px] active:translate-y-[3px] active:shadow-none disabled:cursor-default disabled:opacity-50"
+      className="font-punk-mono text-11 flex items-center gap-1 border-2 border-black bg-paper px-2 py-1 shadow-hard-3-red cursor-pointer transition-transform active:translate-x-[3px] active:translate-y-[3px] active:shadow-none disabled:cursor-default disabled:opacity-50"
       style={{ color: liked ? 'var(--color-brand-red)' : 'var(--color-ink-500)' }}
     >
       <span>{liked ? '♥' : '♡'}</span>

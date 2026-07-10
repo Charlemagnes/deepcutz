@@ -45,8 +45,8 @@ export function SidebarAuth({
         </div>
       )}
       <div className="flex-1 truncate leading-tight">
-        <div className="font-display text-[11px]">YOU</div>
-        <div className="truncate text-ink-500 font-punk-mono text-[10px]">
+        <div className="font-display text-11">YOU</div>
+        <div className="truncate text-ink-500 font-punk-mono text-10">
           {profile?.username ? `@${profile.username}` : user.email}
         </div>
       </div>

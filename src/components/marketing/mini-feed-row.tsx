@@ -34,10 +34,10 @@ export function MiniFeedRow({
         style={{ backgroundImage: GRADIENTS[thumbnailAccent] }}
       />
       <div>
-        <div className="font-punk-mono text-[10px] text-ink-600 mb-0.5 uppercase">
+        <div className="font-punk-mono text-10 text-ink-600 mb-0.5 uppercase">
           {username} · {timestampLabel}
         </div>
-        <div className="font-display text-[13px]">{albumTitle}</div>
+        <div className="font-display text-13">{albumTitle}</div>
         <StarRating rating={rating} size="sm" />
       </div>
     </HardShadowCard>

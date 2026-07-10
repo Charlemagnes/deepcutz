@@ -84,7 +84,7 @@ export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
         {item.album.cover_url && <Image src={item.album.cover_url} alt="" fill sizes="126px" className="object-cover" />}
       </Link>
       <div className="min-w-0">
-        <div className="flex items-center gap-2 font-punk-mono text-[11px] text-ink-600 mb-1.5">
+        <div className="flex items-center gap-2 font-punk-mono text-11 text-ink-600 mb-1.5">
           <span className="w-4.5 h-4.5 rounded-full bg-brand-blue border border-black shrink-0" />
           {item.author.username ? (
             <Link href={`/profile/${item.author.username}`} className="hover:underline">
@@ -99,7 +99,7 @@ export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
         </div>
         <Link href={`/album/${item.album.id}`}>
           <div className="font-display text-lg leading-none">{item.album.title}</div>
-          <div className="text-ink-600 font-punk-mono text-[11px] my-1">{item.album.artist}</div>
+          <div className="text-ink-600 font-punk-mono text-11 my-1">{item.album.artist}</div>
         </Link>
         {item.rating != null && (
           <div className="mb-2">
@@ -110,7 +110,7 @@ export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
           item.isSpoiler ? (
             <SpoilerReview content={item.content} />
           ) : (
-            <p className="m-0 text-[12.5px] leading-normal text-ink-800 max-w-105 line-clamp-2">{item.content}</p>
+            <p className="m-0 text-12-5 leading-normal text-ink-800 max-w-105 line-clamp-2">{item.content}</p>
           )
         )}
         {item.kind === 'review' && (
@@ -118,7 +118,7 @@ export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
             <LikeButton reviewId={item.id} initialLiked={liked} initialCount={item.likeCount} />
             <Link
               href={`/album/${item.album.id}#review-${item.id}`}
-              className="font-punk-mono text-[11px] text-ink-500 flex items-center gap-1 cursor-pointer"
+              className="font-punk-mono text-11 text-ink-500 flex items-center gap-1 cursor-pointer"
             >
               💬 {item.commentCount}
             </Link>
