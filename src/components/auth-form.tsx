@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Wordmark } from '@/components/marketing/wordmark'
 import { cn } from '@/lib/utils'
+import { PunkInput } from '@/components/marketing/punk-input'
+import { InlineBanner } from '@/components/marketing/inline-banner'
 
 type Tab = 'sign-in' | 'sign-up'
 
@@ -187,7 +189,7 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
 
           <label className="flex flex-col gap-[7px]">
             <span className="font-punk-mono text-11 tracking-wide text-ink-500">EMAIL</span>
-            <input
+            <PunkInput
               id="email"
               type="email"
               placeholder="you@email.com"
@@ -195,14 +197,13 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete="email"
-              className="bg-ink-900 border-punk border-black px-[13px] py-3 text-paper text-13-5 font-punk-mono placeholder:text-ink-600 focus:outline-none"
             />
           </label>
 
           <label className="flex flex-col gap-[7px]">
             <span className="font-punk-mono text-11 tracking-wide text-ink-500">PASSWORD</span>
             <div className="relative flex items-center">
-              <input
+              <PunkInput
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="••••••••"
@@ -211,7 +212,7 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
                 required
                 minLength={6}
                 autoComplete={isSignUp ? 'new-password' : 'current-password'}
-                className="flex-1 box-border bg-ink-900 border-punk border-black pl-[13px] pr-[54px] py-3 text-paper text-13-5 font-punk-mono placeholder:text-ink-600 focus:outline-none"
+                className="flex-1 box-border pl-3.25 pr-13.5"
               />
               <button
                 type="button"
@@ -228,7 +229,7 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
               <span className="font-punk-mono text-11 tracking-wide text-ink-500">
                 CONFIRM PASSWORD
               </span>
-              <input
+              <PunkInput
                 id="confirm-password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="••••••••"
@@ -237,26 +238,20 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
                 required
                 minLength={6}
                 autoComplete="new-password"
-                className="box-border bg-ink-900 border-punk border-black shadow-hard-3-cyan px-[13px] py-3 text-paper text-13-5 font-punk-mono placeholder:text-ink-600 focus:outline-none"
+                className="box-border shadow-hard-3-cyan"
               />
             </label>
           )}
 
           {error && (
-            <div
-              id="auth-error"
-              className="font-punk-mono text-xs px-3 py-[10px] rounded-lg border border-red-400/35 bg-red-400/[.08] text-red-300"
-            >
+            <InlineBanner id="auth-error" tone="error">
               {error}
-            </div>
+            </InlineBanner>
           )}
           {message && (
-            <div
-              id="auth-message"
-              className="font-punk-mono text-xs px-3 py-[10px] rounded-lg border border-emerald-400/35 bg-emerald-400/[.08] text-emerald-300"
-            >
+            <InlineBanner id="auth-message" tone="success">
               {message}
-            </div>
+            </InlineBanner>
           )}
 
           <button

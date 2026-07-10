@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import type { CommentWithAuthor } from '@/lib/comments/actions'
 import { CommentForm } from './comment-form'
+import { AttributionLine } from '@/components/marketing/attribution-line'
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
@@ -38,16 +39,14 @@ export function ReplyThread({
             const parent = comment.parentCommentId ? byId.get(comment.parentCommentId) : null
             return (
               <div key={comment.id} className="bg-paper border-2 border-black shadow-hard-3-blue p-3 text-ink">
-                <div className="flex items-center gap-2 text-10-5 text-ink-600 mb-1">
-                  {comment.username ? (
-                    <Link href={`/profile/${comment.username}`} className="hover:underline">
-                      <b className="text-ink">{comment.username}</b>
-                    </Link>
-                  ) : (
-                    <b className="text-ink">unknown</b>
-                  )}
-                  <span className="text-ink-500">{formatDate(comment.createdAt)}</span>
-                </div>
+                <AttributionLine
+                  username={comment.username}
+                  href={comment.username ? `/profile/${comment.username}` : undefined}
+                  timestampLabel={formatDate(comment.createdAt)}
+                  avatar={false}
+                  fallbackLabel="unknown"
+                  className="mb-1"
+                />
 
                 {parent && (
                   <p className="m-0 mb-1 text-10-5 text-ink-500">

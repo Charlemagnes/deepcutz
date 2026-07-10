@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSearch } from '@/hooks/use-search'
 import { cn } from '@/lib/utils'
+import { PunkPressButton } from '@/components/marketing/punk-press-button'
 
 export function HomeSearchTrigger() {
   const [isOpen, setIsOpen] = useState(false)
@@ -46,13 +47,15 @@ export function HomeSearchTrigger() {
 
   return (
     <div ref={containerRef} className="relative">
-      <button
-        type="button"
+      <PunkPressButton
         onClick={() => setIsOpen((v) => !v)}
-        className="flex w-full items-center gap-2.5 bg-paper text-ink border-2 border-black shadow-hard-3-yellow px-3 py-2.5 font-punk-mono text-xs transition-transform hover:scale-105 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+        accent="yellow"
+        size={3}
+        border={2}
+        className="flex w-full items-center gap-2.5 bg-paper text-ink border-black px-3 py-2.5 font-punk-mono text-xs transition-transform hover:scale-105"
       >
         <span>⌕</span> SEARCH ALBUMS, PEOPLE…
-      </button>
+      </PunkPressButton>
 
       {isOpen && (
         <div className="absolute right-0 top-full z-30 mt-2 w-105 max-w-[90vw] space-y-3 border-2 border-black bg-ink p-4 shadow-[6px_6px_0_#000]">

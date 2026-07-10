@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { StarRating } from '@/components/marketing/star-rating'
 import { LikeButton } from '@/components/likes/like-button'
 import { CommentSection } from '@/components/comments/comment-section'
+import { AttributionLine } from '@/components/marketing/attribution-line'
 
 export function ReviewItem({
   reviewId,
@@ -32,19 +32,17 @@ export function ReviewItem({
 
   return (
     <div className="bg-paper border-punk border-black shadow-hard-5-blue p-4 text-ink">
-      <div className="flex items-center gap-2.5 font-punk-mono text-11 text-ink-600 mb-2">
-        <span className="w-4 h-4 rounded-full bg-brand-red border border-black shrink-0" />
-        <Link href={`/profile/${username}`} className="hover:underline">
-          <b className="text-ink">{username}</b>
-        </Link>
-        <span className="text-ink-500">
-          {new Date(createdAt).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          })}
-        </span>
-      </div>
+      <AttributionLine
+        username={username}
+        href={`/profile/${username}`}
+        timestampLabel={new Date(createdAt).toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        })}
+        accent="red"
+        className="mb-2"
+      />
 
       <div className="mb-2">
         <StarRating rating={rating} />

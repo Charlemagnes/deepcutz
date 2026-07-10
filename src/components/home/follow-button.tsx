@@ -2,6 +2,8 @@
 
 import { useState, useTransition } from 'react'
 import { toggleFollow } from '@/lib/follows/actions'
+import { PunkPressButton } from '@/components/marketing/punk-press-button'
+import { cn } from '@/lib/utils'
 
 export function FollowButton({
   profileId,
@@ -21,18 +23,18 @@ export function FollowButton({
   }
 
   return (
-    <button
-      type="button"
+    <PunkPressButton
       onClick={handleClick}
       disabled={isPending}
-      className="shrink-0 font-display text-10 px-[11px] py-1.5 border-2 border-black shadow-hard-3-blue transition-transform hover:scale-105 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none disabled:opacity-50"
-      style={
-        following
-          ? { background: 'transparent', color: 'var(--color-paper)', borderColor: 'var(--color-paper)' }
-          : { background: 'var(--color-brand-yellow)', color: 'var(--color-ink)' }
-      }
+      accent="blue"
+      size={3}
+      border={2}
+      className={cn(
+        'shrink-0 font-display text-10 px-[11px] py-1.5 transition-transform hover:scale-105 disabled:opacity-50',
+        following ? 'bg-transparent text-paper border-paper' : 'bg-brand-yellow text-ink border-black'
+      )}
     >
       {following ? 'FOLLOWING' : '+ FOLLOW'}
-    </button>
+    </PunkPressButton>
   )
 }

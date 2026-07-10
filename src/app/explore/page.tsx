@@ -4,8 +4,10 @@ import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth/current-user'
 import { StarRating } from '@/components/marketing/star-rating'
 import { LikeButton } from '@/components/likes/like-button'
-
-type Accent = 'red' | 'blue' | 'yellow' | 'cyan'
+import { AttributionLine } from '@/components/marketing/attribution-line'
+import { HARD_SHADOW_CLASSES } from '@/components/marketing/shadow-classes'
+import type { Accent } from '@/components/marketing/types'
+import { cn } from '@/lib/utils'
 
 const ACCENT_HEX: Record<Accent, string> = {
   red: 'var(--color-brand-red)',
@@ -113,8 +115,8 @@ export default async function ExplorePage() {
                 <Link
                   key={album.id}
                   href={`/album/${album.id}`}
-                  className="bg-paper text-ink border-2 border-black p-2.5"
-                  style={{ boxShadow: `4px 4px 0 ${ACCENT_HEX[accent]}`, rotate: `${rotate}deg` }}
+                  className={cn("bg-paper text-ink border-2 border-black p-2.5", HARD_SHADOW_CLASSES[4][accent])}
+                  style={{ rotate: `${rotate}deg` }}
                 >
                   <div className="relative aspect-square border-2 border-black bg-ink-500 mb-2 overflow-hidden">
                     {album.cover_url ? (
@@ -168,8 +170,10 @@ export default async function ExplorePage() {
               return (
                 <div
                   key={review.id}
-                  className="grid grid-cols-[110px_1fr] gap-4 bg-paper text-ink border-2 border-black p-3"
-                  style={{ boxShadow: `4px 4px 0 ${ACCENT_HEX[shadowAccent]}` }}
+                  className={cn(
+                    "grid grid-cols-[110px_1fr] gap-4 bg-paper text-ink border-2 border-black p-3",
+                    HARD_SHADOW_CLASSES[4][shadowAccent]
+                  )}
                 >
                   <Link href={`/album/${album.id}`} className="block">
                     <div className="relative w-27.5 h-27.5 border-2 border-black bg-ink-500 overflow-hidden shrink-0">
@@ -182,14 +186,12 @@ export default async function ExplorePage() {
                   </Link>
 
                   <div className="min-w-0">
-                    <div className="flex items-center gap-2 font-punk-mono text-11 text-ink-600 mb-1.5">
-                      <span
-                        className="w-4 h-4 rounded-full border border-black shrink-0"
-                        style={{ backgroundColor: ACCENT_HEX[shadowAccent] }}
-                      />
-                      <b className="text-ink truncate">{profile.username ?? 'someone'}</b>
-                      <span className="text-ink-500">· {relativeTime(review.created_at)}</span>
-                    </div>
+                    <AttributionLine
+                      username={profile.username}
+                      href={profile.username ? `/profile/${profile.username}` : undefined}
+                      timestampLabel={`· ${relativeTime(review.created_at)}`}
+                      accent={shadowAccent}
+                    />
                     <Link href={`/album/${album.id}`} className="block">
                       <div className="font-display text-base leading-tight truncate">{album.title}</div>
                       <div className="font-punk-mono text-11 text-ink-600 truncate mt-0.5 mb-1.5">

@@ -7,6 +7,7 @@ import { LikeButton } from '@/components/likes/like-button'
 import { StarRating } from '@/components/marketing/star-rating'
 import { HardShadowCard } from '@/components/marketing/hard-shadow-card'
 import { SectionHeading } from '@/components/marketing/section-heading'
+import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
 import { SpoilerReview } from './spoiler-review'
 
 type AlbumRef = {
@@ -273,11 +274,7 @@ export default async function ProfilePage({
                 href={`/album/${item.album.id}`}
                 className="grid grid-cols-[54px_1fr] gap-3.5 bg-paper border-2 border-black shadow-hard-4-blue p-3 text-ink"
               >
-                <div className="relative w-13.5 h-13.5 border-2 border-black bg-ink-800 shrink-0">
-                  {item.album.cover_url && (
-                    <Image src={item.album.cover_url} alt="" fill sizes="54px" className="object-cover" />
-                  )}
-                </div>
+                <AlbumCoverThumb src={item.album.cover_url} sizePx={54} sizes="54px" />
                 <div className="min-w-0">
                   <div className="font-punk-mono text-10-5 text-ink-600 mb-0.5">
                     {item.kind === 'review' ? 'RATED' : 'LOGGED'} · {formatDate(item.createdAt)}
@@ -338,11 +335,7 @@ export default async function ProfilePage({
             {reviewsWithContent.map((review) => (
               <HardShadowCard key={review.id} accent="cyan" border={2} shadow={5} className="p-4">
                 <Link href={`/album/${review.album.id}`} className="flex items-center gap-3 mb-2.5">
-                  <div className="relative w-10.5 h-10.5 border-2 border-black bg-ink-800 shrink-0">
-                    {review.album.cover_url && (
-                      <Image src={review.album.cover_url} alt="" fill sizes="42px" className="object-cover" />
-                    )}
-                  </div>
+                  <AlbumCoverThumb src={review.album.cover_url} sizePx={42} sizes="42px" />
                   <div className="min-w-0">
                     <div className="font-display text-sm leading-tight truncate">
                       {review.album.title}
