@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react'
 import Link from 'next/link'
 import { listComments, type CommentWithAuthor } from '@/lib/comments/actions'
 import { CommentForm } from './comment-form'
+import { AttributionLine } from '@/components/marketing/attribution-line'
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
@@ -82,16 +83,14 @@ export function CommentSection({ reviewId, initialCount }: { reviewId: string; i
             <div className="flex flex-col gap-2">
               {topLevelComments.map((comment) => (
                 <div key={comment.id} className="border-t-2 border-black pt-2">
-                  <div className="flex items-center gap-2 text-10-5 text-ink-600 mb-1">
-                    {comment.username ? (
-                      <Link href={`/profile/${comment.username}`} className="hover:underline">
-                        <b className="text-ink">{comment.username}</b>
-                      </Link>
-                    ) : (
-                      <b className="text-ink">unknown</b>
-                    )}
-                    <span className="text-ink-500">{formatDate(comment.createdAt)}</span>
-                  </div>
+                  <AttributionLine
+                    username={comment.username}
+                    href={comment.username ? `/profile/${comment.username}` : undefined}
+                    timestampLabel={formatDate(comment.createdAt)}
+                    avatar={false}
+                    fallbackLabel="unknown"
+                    className="mb-1"
+                  />
                   <p className="m-0 text-xs leading-normal whitespace-pre-wrap text-ink">{comment.content}</p>
                 </div>
               ))}

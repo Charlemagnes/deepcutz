@@ -3,6 +3,7 @@ import { StarRating } from '@/components/marketing/star-rating'
 import { LikeButton } from '@/components/likes/like-button'
 import { SpoilerReview } from '@/app/profile/[username]/spoiler-review'
 import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
+import { AttributionLine } from '@/components/marketing/attribution-line'
 
 /** Shared `reviews` select shape (joined with album/author) used both by the home
  *  feed's initial server-rendered query and by `getFeedReviewById`'s per-event
@@ -84,19 +85,12 @@ export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
         <AlbumCoverThumb src={item.album.cover_url} sizePx={126} sizes="126px" />
       </Link>
       <div className="min-w-0">
-        <div className="flex items-center gap-2 font-punk-mono text-11 text-ink-600 mb-1.5">
-          <span className="w-4.5 h-4.5 rounded-full bg-brand-blue border border-black shrink-0" />
-          {item.author.username ? (
-            <Link href={`/profile/${item.author.username}`} className="hover:underline">
-              <b className="text-ink">{item.author.username}</b>
-            </Link>
-          ) : (
-            <b className="text-ink">someone</b>
-          )}
-          <span className="text-ink-500">
-            {item.kind === 'review' ? 'RATED' : 'LOGGED'} · {formatDate(item.createdAt)}
-          </span>
-        </div>
+        <AttributionLine
+          username={item.author.username}
+          href={item.author.username ? `/profile/${item.author.username}` : undefined}
+          timestampLabel={`${item.kind === 'review' ? 'RATED' : 'LOGGED'} · ${formatDate(item.createdAt)}`}
+          accent="blue"
+        />
         <Link href={`/album/${item.album.id}`}>
           <div className="font-display text-lg leading-none">{item.album.title}</div>
           <div className="text-ink-600 font-punk-mono text-11 my-1">{item.album.artist}</div>
