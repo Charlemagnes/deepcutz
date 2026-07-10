@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Wordmark } from '@/components/marketing/wordmark'
+import { PunkInput } from '@/components/marketing/punk-input'
+import { InlineBanner } from '@/components/marketing/inline-banner'
 
 export default function OnboardingPage() {
   const [username, setUsername] = useState('')
@@ -84,7 +86,7 @@ export default function OnboardingPage() {
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-[22px]">
           <label className="flex flex-col gap-[7px]">
             <span className="font-punk-mono text-11 tracking-wide text-ink-500">USERNAME</span>
-            <input
+            <PunkInput
               id="username"
               type="text"
               placeholder="coolcat42"
@@ -95,7 +97,6 @@ export default function OnboardingPage() {
               maxLength={30}
               autoComplete="username"
               autoFocus
-              className="bg-ink-900 border-punk border-black px-[13px] py-3 text-paper text-13-5 font-punk-mono placeholder:text-ink-600 focus:outline-none"
             />
             <p className="font-punk-mono text-11 text-ink-600">
               Lowercase letters, numbers, and underscores only.
@@ -103,12 +104,9 @@ export default function OnboardingPage() {
           </label>
 
           {error && (
-            <div
-              id="onboarding-error"
-              className="font-punk-mono text-xs px-3 py-[10px] rounded-lg border border-red-400/35 bg-red-400/[.08] text-red-300"
-            >
+            <InlineBanner id="onboarding-error" tone="error">
               {error}
-            </div>
+            </InlineBanner>
           )}
 
           <button
