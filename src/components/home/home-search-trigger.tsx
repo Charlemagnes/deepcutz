@@ -123,7 +123,7 @@ export function HomeSearchTrigger() {
                       onClick={() => setIsOpen(false)}
                       className="flex items-center gap-3 border-2 border-black bg-paper p-2 shadow-hard-3-yellow transition-transform hover:-translate-y-0.5"
                     >
-                      <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden border-2 border-black bg-ink">
+                      <div className="relative h-10 w-10 shrink-0 overflow-hidden border-2 border-black bg-ink">
                         {album.coverUrl ? (
                           <Image
                             src={album.coverUrl}
@@ -161,10 +161,10 @@ export function HomeSearchTrigger() {
                         <img
                           src={profile.avatar_url}
                           alt=""
-                          className="h-9 w-9 flex-shrink-0 rounded-full border-2 border-black object-cover"
+                          className="h-9 w-9 shrink-0 rounded-full border-2 border-black object-cover"
                         />
                       ) : (
-                        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border-2 border-black bg-brand-yellow font-display text-ink">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-black bg-brand-yellow font-display text-ink">
                           {(profile.username ?? '?')[0]?.toUpperCase() ?? '?'}
                         </div>
                       )}

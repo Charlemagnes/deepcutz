@@ -177,7 +177,7 @@ export function MarketingLanding() {
       </div>
 
       {/* hero */}
-      <div className="relative z-10 px-6 sm:px-12 pt-[70px] pb-[60px] grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center max-w-320 mx-auto">
+      <div className="relative z-10 px-6 sm:px-12 pt-[70px] pb-[60px] grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center max-w-7xl mx-auto">
         <div>
           <h1
             className="font-display inline-block m-0"
@@ -224,7 +224,7 @@ export function MarketingLanding() {
       </div>
 
       {/* features */}
-      <div id="features" className="relative z-10 max-w-320 mx-auto px-6 sm:px-12 py-[70px] scroll-mt-6">
+      <div id="features" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 py-[70px] scroll-mt-6">
         <div className="mb-10">
           <SectionHeading accent="yellow" rotate={-1}>
             WHAT YOU GET
@@ -246,7 +246,7 @@ export function MarketingLanding() {
       </div>
 
       {/* activity ticker */}
-      <div className="relative z-10 max-w-320 mx-auto px-6 sm:px-12 pb-[70px]">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 pb-[70px]">
         <div className="mb-8">
           <SectionHeading accent="cyan" rotate={1}>
             RIGHT NOW ON DEEPCUTZ
@@ -260,7 +260,7 @@ export function MarketingLanding() {
       </div>
 
       {/* app showcase */}
-      <div className="relative z-10 max-w-320 mx-auto px-6 sm:px-12 pt-2.5 pb-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 pt-2.5 pb-20">
         <div className="mb-9">
           <SectionHeading accent="blue" rotate={1}>
             YOUR FEED, YOUR RULES
@@ -307,7 +307,7 @@ export function MarketingLanding() {
 
       {/* testimonials */}
       <div className="relative z-10 bg-paper border-y-punk border-black py-16 px-6 sm:px-12">
-        <div className="max-w-320 mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="mb-[34px]">
             <SectionHeading rotate={-1}>WHAT LISTENERS SAY</SectionHeading>
           </div>

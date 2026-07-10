@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils"
 
 const TONE_CLASSES = {
-  error: "border-red-400/35 bg-red-400/[.08] text-red-300",
-  success: "border-emerald-400/35 bg-emerald-400/[.08] text-emerald-300",
+  error: "border-red-400/35 bg-red-400/8 text-red-300",
+  success: "border-emerald-400/35 bg-emerald-400/8 text-emerald-300",
 } as const
 
 type InlineBannerProps = {

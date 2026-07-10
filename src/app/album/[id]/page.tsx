@@ -73,7 +73,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
 
         <div className="flex flex-col justify-center min-w-0">
           <h1
-            className="font-display text-3xl sm:text-4xl text-paper leading-tight break-words"
+            className="font-display text-3xl sm:text-4xl text-paper leading-tight wrap-break-word"
             style={{ textShadow: '3px 3px 0 var(--color-brand-blue)' }}
           >
             {album.title}

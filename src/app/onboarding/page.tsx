@@ -113,7 +113,7 @@ export default function OnboardingPage() {
             id="onboarding-submit"
             type="submit"
             disabled={loading}
-            className="-rotate-[0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-15 tracking-wide cursor-pointer shadow-hard-5-red disabled:opacity-60"
+            className="rotate-[-0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-15 tracking-wide cursor-pointer shadow-hard-5-red disabled:opacity-60"
           >
             {loading ? 'SAVING…' : '▶ CONTINUE'}
           </button>

@@ -35,7 +35,7 @@ export function AlbumSwatch({
       style={{ backgroundImage: GRADIENTS[accent] }}
     >
       <div
-        className="absolute inset-0 opacity-40 [mix-blend-mode:multiply]"
+        className="absolute inset-0 opacity-40 mix-blend-multiply"
         style={{
           backgroundImage: "radial-gradient(var(--color-ink) 1px, transparent 1px)",
           backgroundSize: "6px 6px",

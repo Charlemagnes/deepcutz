@@ -258,7 +258,7 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
             id="auth-submit"
             type="submit"
             disabled={loading}
-            className="-rotate-[0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-15 tracking-wide cursor-pointer shadow-hard-5-red transition-transform hover:scale-105 disabled:opacity-60"
+            className="rotate-[-0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-15 tracking-wide cursor-pointer shadow-hard-5-red transition-transform hover:scale-105 disabled:opacity-60"
           >
             {loading ? 'LOADING…' : isSignUp ? '＋ CREATE ACCOUNT' : '▶ LOG IN'}
           </button>

@@ -104,7 +104,7 @@ export default function SearchPage({
                   className="flex items-center gap-4 border-2 border-black bg-paper p-3 shadow-hard-4-yellow transition-transform hover:-translate-y-0.5"
                   style={{ rotate: index % 2 === 0 ? '-0.5deg' : '0.5deg' }}
                 >
-                  <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden border-2 border-black bg-ink">
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden border-2 border-black bg-ink">
                     {album.coverUrl ? (
                       <Image
                         src={album.coverUrl}
@@ -142,10 +142,10 @@ export default function SearchPage({
                     <img
                       src={profile.avatar_url}
                       alt=""
-                      className="h-12 w-12 flex-shrink-0 rounded-full border-2 border-black object-cover"
+                      className="h-12 w-12 shrink-0 rounded-full border-2 border-black object-cover"
                     />
                   ) : (
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-2 border-black bg-brand-yellow font-display text-ink">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-black bg-brand-yellow font-display text-ink">
                       {(profile.username ?? '?')[0]?.toUpperCase() ?? '?'}
                     </div>
                   )}
