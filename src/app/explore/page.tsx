@@ -129,13 +129,13 @@ export default async function ExplorePage() {
                       <div className="absolute inset-0 bg-ink-200" />
                     )}
                   </div>
-                  <div className="font-display text-[13px] leading-tight truncate">
+                  <div className="font-display text-13 leading-tight truncate">
                     {album.title}
                   </div>
-                  <div className="font-punk-mono text-[11px] text-ink-600 truncate mt-0.5">
+                  <div className="font-punk-mono text-11 text-ink-600 truncate mt-0.5">
                     {album.artist}
                   </div>
-                  <div className="font-punk-mono text-[11px] mt-1.5 flex items-center gap-1 text-ink-800">
+                  <div className="font-punk-mono text-11 mt-1.5 flex items-center gap-1 text-ink-800">
                     <span style={{ color: '#c99a00' }}>★</span>
                     <span>{album.avg_rating.toFixed(1)}</span>
                     <span className="text-ink-500">· {album.rating_count} LOGS</span>
@@ -182,7 +182,7 @@ export default async function ExplorePage() {
                   </Link>
 
                   <div className="min-w-0">
-                    <div className="flex items-center gap-2 font-punk-mono text-[11px] text-ink-600 mb-1.5">
+                    <div className="flex items-center gap-2 font-punk-mono text-11 text-ink-600 mb-1.5">
                       <span
                         className="w-4 h-4 rounded-full border border-black shrink-0"
                         style={{ backgroundColor: ACCENT_HEX[shadowAccent] }}
@@ -192,7 +192,7 @@ export default async function ExplorePage() {
                     </div>
                     <Link href={`/album/${album.id}`} className="block">
                       <div className="font-display text-base leading-tight truncate">{album.title}</div>
-                      <div className="font-punk-mono text-[11px] text-ink-600 truncate mt-0.5 mb-1.5">
+                      <div className="font-punk-mono text-11 text-ink-600 truncate mt-0.5 mb-1.5">
                         {album.artist}
                       </div>
                     </Link>
@@ -200,17 +200,17 @@ export default async function ExplorePage() {
                       <StarRating rating={review.rating} />
                     </div>
                     {review.content && (
-                      <p className="m-0 text-[12.5px] leading-[1.5] text-ink-800 max-w-130 line-clamp-2">
+                      <p className="m-0 text-12-5 leading-normal text-ink-800 max-w-130 line-clamp-2">
                         {review.content}
                       </p>
                     )}
-                    <div className="font-punk-mono text-[11px] text-ink-500 mt-2 flex items-center gap-3">
+                    <div className="font-punk-mono text-11 text-ink-500 mt-2 flex items-center gap-3">
                       <LikeButton
                         reviewId={review.id}
                         initialLiked={likedIds.has(review.id)}
                         initialCount={review.like_count}
                       />
-                      <Link href={`/review/${review.id}`} className="text-[11px] text-ink-500 font-punk-mono">
+                      <Link href={`/review/${review.id}`} className="text-11 text-ink-500 font-punk-mono">
                         💬 {review.comment_count}
                       </Link>
                     </div>

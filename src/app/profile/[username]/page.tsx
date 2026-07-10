@@ -279,13 +279,13 @@ export default async function ProfilePage({
                   )}
                 </div>
                 <div className="min-w-0">
-                  <div className="font-punk-mono text-[10.5px] text-ink-600 mb-0.5">
+                  <div className="font-punk-mono text-10-5 text-ink-600 mb-0.5">
                     {item.kind === 'review' ? 'RATED' : 'LOGGED'} · {formatDate(item.createdAt)}
                   </div>
-                  <div className="font-display text-[13.5px] leading-tight truncate">
+                  <div className="font-display text-13-5 leading-tight truncate">
                     {item.album.title}
                   </div>
-                  <div className="text-ink-600 font-punk-mono text-[10.5px] truncate">
+                  <div className="text-ink-600 font-punk-mono text-10-5 truncate">
                     {item.album.artist}
                   </div>
                   {item.rating != null && (
@@ -316,7 +316,7 @@ export default async function ProfilePage({
                     <Image src={album.cover_url} alt="" fill sizes="120px" className="object-cover" />
                   )}
                 </div>
-                <div className="font-punk-mono text-[10.5px] font-bold mt-1.5 truncate">
+                <div className="font-punk-mono text-10-5 font-bold mt-1.5 truncate">
                   {album.title}
                 </div>
                 <StarRating rating={rating} size="sm" />
@@ -347,7 +347,7 @@ export default async function ProfilePage({
                     <div className="font-display text-sm leading-tight truncate">
                       {review.album.title}
                     </div>
-                    <div className="text-ink-600 font-punk-mono text-[10.5px] truncate">
+                    <div className="text-ink-600 font-punk-mono text-10-5 truncate">
                       {review.album.artist}
                     </div>
                   </div>
@@ -358,7 +358,7 @@ export default async function ProfilePage({
                 {review.isSpoiler ? (
                   <SpoilerReview content={review.content} />
                 ) : (
-                  <p className="m-0 text-[12.5px] leading-normal text-ink-800 whitespace-pre-wrap">
+                  <p className="m-0 text-12-5 leading-normal text-ink-800 whitespace-pre-wrap">
                     {review.content}
                   </p>
                 )}
@@ -370,7 +370,7 @@ export default async function ProfilePage({
                   />
                   <Link
                     href={`/review/${review.id}`}
-                    className="text-[11px] text-ink-500 font-punk-mono"
+                    className="text-11 text-ink-500 font-punk-mono"
                   >
                     💬 {review.commentCount}
                   </Link>
@@ -402,15 +402,15 @@ export default async function ProfilePage({
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-punk-mono font-bold text-[11.5px] truncate">
+                  <div className="font-punk-mono font-bold text-11-5 truncate">
                     {entry.album.title}
                   </div>
-                  <div className="text-ink-500 font-punk-mono text-[10px] truncate">
+                  <div className="text-ink-500 font-punk-mono text-10 truncate">
                     {entry.album.artist}
                   </div>
                 </div>
                 {entry.rating != null && <StarRating rating={entry.rating} size="sm" />}
-                <div className="font-punk-mono text-[10px] text-ink-500 shrink-0">
+                <div className="font-punk-mono text-10 text-ink-500 shrink-0">
                   {formatDate(entry.listenedDate)}
                 </div>
               </Link>

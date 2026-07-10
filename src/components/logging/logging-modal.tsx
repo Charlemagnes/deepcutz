@@ -181,7 +181,7 @@ export function LoggingModal({
                   style={album.coverUrl ? { backgroundImage: `url(${album.coverUrl})` } : { background: 'var(--color-ink-800)' }}
                 />
                 <div className="mt-3 font-display text-base">{album.title}</div>
-                <div className="font-punk-mono text-[11.5px] text-ink-600 mt-1">
+                <div className="font-punk-mono text-11-5 text-ink-600 mt-1">
                   {album.artist}
                   {album.releaseDate ? ` · ${album.releaseDate.slice(0, 4)}` : ''}
                 </div>
@@ -189,7 +189,7 @@ export function LoggingModal({
 
               <div>
                 <div
-                  className="font-display text-[13px] mb-2.5"
+                  className="font-display text-13 mb-2.5"
                   style={{ color: 'var(--color-brand-yellow)', textShadow: '2px 2px 0 var(--color-brand-blue)' }}
                 >
                   YOUR RATING
@@ -202,7 +202,7 @@ export function LoggingModal({
                 </div>
 
                 <div
-                  className="font-display text-[13px] mb-2.5"
+                  className="font-display text-13 mb-2.5"
                   style={{ color: 'var(--color-brand-yellow)', textShadow: '2px 2px 0 var(--color-brand-red)' }}
                 >
                   YOUR REVIEW
@@ -220,7 +220,7 @@ export function LoggingModal({
             {tracks.length > 0 && (
               <div className="px-6 pb-6">
                 <div
-                  className="font-display text-[15px] mb-3"
+                  className="font-display text-15 mb-3"
                   style={{ color: 'var(--color-brand-yellow)', textShadow: '2px 2px 0 var(--color-brand-red)' }}
                 >
                   TRACK BY TRACK
@@ -243,13 +243,13 @@ export function LoggingModal({
                         className="flex items-center gap-3 px-3.5 py-3 cursor-pointer"
                         style={{ borderLeft: `8px solid ${accent}` }}
                       >
-                        <span className="font-punk-mono font-bold text-[11.5px] text-ink-500 w-4.5">
+                        <span className="font-punk-mono font-bold text-11-5 text-ink-500 w-4.5">
                           {String(track.trackNumber).padStart(2, '0')}
                         </span>
-                        <span className="flex-1 font-body text-[13.5px] font-extrabold">
+                        <span className="flex-1 font-body text-13-5 font-extrabold">
                           {track.title}
                         </span>
-                        <span className="font-punk-mono text-[11.5px] text-ink-500">
+                        <span className="font-punk-mono text-11-5 text-ink-500">
                           {formatDuration(track.durationMs)}
                         </span>
                         <span onClick={(e) => e.stopPropagation()}>
@@ -260,7 +260,7 @@ export function LoggingModal({
                             label={`Rating for ${track.title}`}
                           />
                         </span>
-                        <span className="font-display text-[11px] w-3.5 text-center">
+                        <span className="font-display text-11 w-3.5 text-center">
                           {expanded ? '▾' : '▸'}
                         </span>
                       </div>

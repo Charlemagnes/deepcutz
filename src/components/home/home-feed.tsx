@@ -167,15 +167,15 @@ function FollowNudgeBanner({ suggestions }: { suggestions: FollowSuggestion[] })
 
   return (
     <div className="flex items-center gap-3 bg-paper border-punk border-black shadow-hard-3-blue px-3.5 py-2.5 text-ink overflow-x-auto">
-      <span className="font-punk-mono text-[11px] text-ink-600 shrink-0">You&apos;re not following anyone yet →</span>
+      <span className="font-punk-mono text-11 text-ink-600 shrink-0">You&apos;re not following anyone yet →</span>
       {suggestions.map((profile) => (
         <div key={profile.id} className="flex items-center gap-1.5 shrink-0">
           {profile.username ? (
-            <Link href={`/profile/${profile.username}`} className="font-punk-mono font-bold text-[11.5px] hover:underline">
+            <Link href={`/profile/${profile.username}`} className="font-punk-mono font-bold text-11-5 hover:underline">
               {profile.username}
             </Link>
           ) : (
-            <span className="font-punk-mono font-bold text-[11.5px]">listener</span>
+            <span className="font-punk-mono font-bold text-11-5">listener</span>
           )}
           <FollowButton profileId={profile.id} initialIsFollowing={false} />
         </div>

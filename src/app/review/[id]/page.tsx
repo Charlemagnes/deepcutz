@@ -136,11 +136,11 @@ export default async function ReviewThreadPage({ params }: { params: Promise<{ i
               {album && (
                 <Link href={`/album/${album.id}`} className="block mb-1.5">
                   <div className="font-display text-sm leading-none">{album.title}</div>
-                  <div className="text-ink-600 font-punk-mono text-[10.5px] mt-0.5">{album.artist}</div>
+                  <div className="text-ink-600 font-punk-mono text-10-5 mt-0.5">{album.artist}</div>
                 </Link>
               )}
 
-              <div className="flex items-center gap-2 font-punk-mono text-[10.5px] text-ink-600 mb-1.5">
+              <div className="flex items-center gap-2 font-punk-mono text-10-5 text-ink-600 mb-1.5">
                 {author?.username ? (
                   <Link href={`/profile/${author.username}`} className="hover:underline">
                     <b className="text-ink">{author.username}</b>
@@ -162,7 +162,7 @@ export default async function ReviewThreadPage({ params }: { params: Promise<{ i
               </div>
 
               {review.content && (
-                <p className="m-0 text-[12px] leading-normal whitespace-pre-wrap text-ink-800">
+                <p className="m-0 text-xs leading-normal whitespace-pre-wrap text-ink-800">
                   {review.is_spoiler ? '⚠ Spoiler review — visit the album page to reveal.' : review.content}
                 </p>
               )}

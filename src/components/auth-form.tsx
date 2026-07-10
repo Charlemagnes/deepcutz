@@ -127,14 +127,14 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
         <div className="relative z-10 h-full flex flex-col justify-between p-11">
           <Wordmark />
           <div className="max-w-[440px]">
-            <div className="font-display text-[38px] leading-[1.15] text-brand-yellow inline-block -rotate-1 [text-shadow:3px_3px_0_var(--color-brand-red)]">
+            <div className="font-display text-38 leading-[1.15] text-brand-yellow inline-block -rotate-1 [text-shadow:3px_3px_0_var(--color-brand-red)]">
               RATE.
               <br />
               REVIEW.
               <br />
               REPEAT.
             </div>
-            <p className="font-punk-mono text-[13px] leading-relaxed text-ink-200 max-w-[360px] mt-4 bg-black/40 border-l-punk border-brand-yellow px-3 py-2">
+            <p className="font-punk-mono text-13 leading-relaxed text-ink-200 max-w-[360px] mt-4 bg-black/40 border-l-punk border-brand-yellow px-3 py-2">
               Log every album you spin, follow the ears you trust, and find your next deep cut before
               anyone else does.
             </p>
@@ -175,10 +175,10 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
           </div>
 
           <div>
-            <div className="font-anton text-[28px] tracking-wide text-white">
+            <div className="font-anton text-28 tracking-wide text-white">
               {isSignUp ? 'CREATE ACCOUNT' : 'WELCOME BACK'}
             </div>
-            <div className="text-[13px] text-ink-500 mt-1.5">
+            <div className="text-13 text-ink-500 mt-1.5">
               {isSignUp
                 ? 'Join to start logging your own listens.'
                 : 'Log in to see what your friends are spinning.'}
@@ -186,7 +186,7 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
           </div>
 
           <label className="flex flex-col gap-[7px]">
-            <span className="font-punk-mono text-[11px] tracking-wide text-ink-500">EMAIL</span>
+            <span className="font-punk-mono text-11 tracking-wide text-ink-500">EMAIL</span>
             <input
               id="email"
               type="email"
@@ -195,12 +195,12 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete="email"
-              className="bg-ink-900 border-punk border-black px-[13px] py-3 text-paper text-[13.5px] font-punk-mono placeholder:text-ink-600 focus:outline-none"
+              className="bg-ink-900 border-punk border-black px-[13px] py-3 text-paper text-13-5 font-punk-mono placeholder:text-ink-600 focus:outline-none"
             />
           </label>
 
           <label className="flex flex-col gap-[7px]">
-            <span className="font-punk-mono text-[11px] tracking-wide text-ink-500">PASSWORD</span>
+            <span className="font-punk-mono text-11 tracking-wide text-ink-500">PASSWORD</span>
             <div className="relative flex items-center">
               <input
                 id="password"
@@ -211,12 +211,12 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
                 required
                 minLength={6}
                 autoComplete={isSignUp ? 'new-password' : 'current-password'}
-                className="flex-1 box-border bg-ink-900 border-punk border-black pl-[13px] pr-[54px] py-3 text-paper text-[13.5px] font-punk-mono placeholder:text-ink-600 focus:outline-none"
+                className="flex-1 box-border bg-ink-900 border-punk border-black pl-[13px] pr-[54px] py-3 text-paper text-13-5 font-punk-mono placeholder:text-ink-600 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-[9px] bg-ink border border-ink-600 text-ink-500 font-display text-[9px] tracking-wide cursor-pointer px-[7px] py-[5px] transition-transform hover:scale-105"
+                className="absolute right-[9px] bg-ink border border-ink-600 text-ink-500 font-display text-9 tracking-wide cursor-pointer px-[7px] py-[5px] transition-transform hover:scale-105"
               >
                 {showPassword ? 'HIDE' : 'SHOW'}
               </button>
@@ -225,7 +225,7 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
 
           {isSignUp && (
             <label className="flex flex-col gap-[7px]">
-              <span className="font-punk-mono text-[11px] tracking-wide text-ink-500">
+              <span className="font-punk-mono text-11 tracking-wide text-ink-500">
                 CONFIRM PASSWORD
               </span>
               <input
@@ -237,7 +237,7 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
                 required
                 minLength={6}
                 autoComplete="new-password"
-                className="box-border bg-ink-900 border-punk border-black shadow-hard-3-cyan px-[13px] py-3 text-paper text-[13.5px] font-punk-mono placeholder:text-ink-600 focus:outline-none"
+                className="box-border bg-ink-900 border-punk border-black shadow-hard-3-cyan px-[13px] py-3 text-paper text-13-5 font-punk-mono placeholder:text-ink-600 focus:outline-none"
               />
             </label>
           )}
@@ -263,12 +263,12 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
             id="auth-submit"
             type="submit"
             disabled={loading}
-            className="-rotate-[0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-[15px] tracking-wide cursor-pointer shadow-hard-5-red transition-transform hover:scale-105 disabled:opacity-60"
+            className="-rotate-[0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-15 tracking-wide cursor-pointer shadow-hard-5-red transition-transform hover:scale-105 disabled:opacity-60"
           >
             {loading ? 'LOADING…' : isSignUp ? '＋ CREATE ACCOUNT' : '▶ LOG IN'}
           </button>
 
-          <div className="text-center text-[13px] text-ink-500">
+          <div className="text-center text-13 text-ink-500">
             {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
             <a
               href="#"
@@ -287,7 +287,7 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
               <span className="w-full border-t border-ink-600" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-ink px-2 font-punk-mono text-[10px] tracking-wide text-ink-500 uppercase">
+              <span className="bg-ink px-2 font-punk-mono text-10 tracking-wide text-ink-500 uppercase">
                 Or continue with
               </span>
             </div>

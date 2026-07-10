@@ -8,7 +8,7 @@ export function SpoilerReview({ content }: { content: string }) {
 
   if (revealed) {
     return (
-      <p className="m-0 text-[12.5px] leading-[1.5] text-ink-800 whitespace-pre-wrap">{content}</p>
+      <p className="m-0 text-12-5 leading-normal text-ink-800 whitespace-pre-wrap">{content}</p>
     )
   }
 
@@ -16,14 +16,14 @@ export function SpoilerReview({ content }: { content: string }) {
     <div className="relative">
       <p
         aria-hidden="true"
-        className="m-0 text-[12.5px] leading-[1.5] text-ink-800 whitespace-pre-wrap blur-sm select-none pointer-events-none"
+        className="m-0 text-12-5 leading-normal text-ink-800 whitespace-pre-wrap blur-sm select-none pointer-events-none"
       >
         {content}
       </p>
       <button
         type="button"
         onClick={() => setRevealed(true)}
-        className="absolute inset-0 flex items-center justify-center font-punk-mono text-[10px] font-bold bg-paper/80 border-2 border-black"
+        className="absolute inset-0 flex items-center justify-center font-punk-mono text-10 font-bold bg-paper/80 border-2 border-black"
       >
         ⚠ SPOILER — SHOW ANYWAY
       </button>
