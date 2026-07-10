@@ -1,18 +1,21 @@
 'use client'
 
 import { useLoggingModal } from '@/components/logging/logging-modal-provider'
+import { PunkPressButton } from '@/components/marketing/punk-press-button'
 
 export function LogButton({ albumId }: { albumId: string }) {
   const { open } = useLoggingModal()
 
   return (
-    <button
-      type="button"
+    <PunkPressButton
       onClick={() => open(albumId)}
-      className="bg-paper text-ink border-punk flex items-center gap-2.5 border-2 border-black shadow-hard-3-yellow px-5 py-3 font-punk-mono text-xs transition-transform hover:scale-105 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
-      style={{ rotate: '-1deg' }}
+      accent="yellow"
+      size={3}
+      border="punk"
+      rotate={-1}
+      className="bg-paper text-ink border-black flex items-center gap-2.5 px-5 py-3 font-punk-mono text-xs transition-transform hover:scale-105"
     >
       ▶ LOG / REVIEW
-    </button>
+    </PunkPressButton>
   )
 }

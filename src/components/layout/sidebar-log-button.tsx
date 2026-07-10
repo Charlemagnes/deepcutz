@@ -1,18 +1,21 @@
 'use client'
 
 import { useLoggingModal } from '@/components/logging/logging-modal-provider'
+import { PunkPressButton } from '@/components/marketing/punk-press-button'
 
 export function SidebarLogButton() {
   const { open } = useLoggingModal()
 
   return (
-    <button
-      type="button"
+    <PunkPressButton
       onClick={() => open()}
-      className="mt-auto bg-brand-yellow text-ink border-punk border-black shadow-hard-5-red px-3 py-3.5 font-display text-13 transition-transform hover:scale-105 active:translate-x-[5px] active:translate-y-[5px] active:shadow-none"
-      style={{ rotate: '-1deg' }}
+      accent="red"
+      size={5}
+      border="punk"
+      rotate={-1}
+      className="mt-auto bg-brand-yellow text-ink border-black px-3 py-3.5 font-display text-13 transition-transform hover:scale-105"
     >
       ▶ LOG A LISTEN
-    </button>
+    </PunkPressButton>
   )
 }
