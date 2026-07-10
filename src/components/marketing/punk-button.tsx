@@ -14,8 +14,8 @@ const buttonVariants = cva(
         "outline-dark": "bg-ink border-paper text-paper",
       },
       size: {
-        sm: "text-xs px-[18px] py-[10px] border-2",
-        md: "text-sm px-7 py-[15px] border-punk",
+        sm: "text-xs px-4.5 py-2.5 border-2",
+        md: "text-sm px-7 py-3.75 border-punk",
         lg: "text-15 px-8 py-4 border-punk",
       },
     },
