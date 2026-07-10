@@ -31,7 +31,7 @@ export async function Sidebar() {
   }
 
   return (
-    <aside className="sticky top-0 z-20 flex h-screen w-59 shrink-0 flex-col gap-[22px] border-r-punk border-paper bg-ink px-[18px] py-[26px] text-paper">
+    <aside className="sticky top-0 z-20 flex h-screen w-59 shrink-0 flex-col gap-5.5 border-r-punk border-paper bg-ink px-4.5 py-6.5 text-paper">
       <Link href="/" className="w-fit">
         <Wordmark />
       </Link>

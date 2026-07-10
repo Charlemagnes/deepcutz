@@ -177,7 +177,7 @@ export function MarketingLanding() {
       </div>
 
       {/* hero */}
-      <div className="relative z-10 px-6 sm:px-12 pt-[70px] pb-[60px] grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center max-w-7xl mx-auto">
+      <div className="relative z-10 px-6 sm:px-12 pt-17.5 pb-15 grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center max-w-7xl mx-auto">
         <div>
           <h1
             className="font-display inline-block m-0"
@@ -224,15 +224,15 @@ export function MarketingLanding() {
       </div>
 
       {/* features */}
-      <div id="features" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 py-[70px] scroll-mt-6">
+      <div id="features" className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 py-17.5 scroll-mt-6">
         <div className="mb-10">
           <SectionHeading accent="yellow" rotate={-1}>
             WHAT YOU GET
           </SectionHeading>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[22px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5.5">
           {FEATURES.map((feature) => (
-            <HardShadowCard key={feature.title} tone="light" accent={feature.accent} className="p-[26px]">
+            <HardShadowCard key={feature.title} tone="light" accent={feature.accent} className="p-6.5">
               <div className="text-3xl mb-3" aria-hidden="true">
                 {feature.icon}
               </div>
@@ -246,13 +246,13 @@ export function MarketingLanding() {
       </div>
 
       {/* activity ticker */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 pb-[70px]">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 pb-17.5">
         <div className="mb-8">
           <SectionHeading accent="cyan" rotate={1}>
             RIGHT NOW ON DEEPCUTZ
           </SectionHeading>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[18px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4.5">
           {ACTIVITY.map((entry) => (
             <ActivityCard key={entry.username} {...entry} />
           ))}
@@ -308,10 +308,10 @@ export function MarketingLanding() {
       {/* testimonials */}
       <div className="relative z-10 bg-paper border-y-punk border-black py-16 px-6 sm:px-12">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-[34px]">
+          <div className="mb-8.5">
             <SectionHeading rotate={-1}>WHAT LISTENERS SAY</SectionHeading>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-[22px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5.5">
             {TESTIMONIALS.map((t) => (
               <HardShadowCard
                 key={t.handle}
@@ -319,7 +319,7 @@ export function MarketingLanding() {
                 accent={t.accent}
                 shadow={5}
                 rotate={t.rotate}
-                className="p-[22px]"
+                className="p-5.5"
               >
                 <StarRating rating={t.rating} />
                 <p className="italic font-body text-13-5 leading-[1.55] text-ink-800 my-2.5 mb-3.5">
@@ -335,8 +335,8 @@ export function MarketingLanding() {
       </div>
 
       {/* final CTA */}
-      <div className="relative z-10 text-center px-6 sm:px-12 pt-[70px] pb-[90px]">
-        <div className="mb-[26px]">
+      <div className="relative z-10 text-center px-6 sm:px-12 pt-17.5 pb-22.5">
+        <div className="mb-6.5">
           <SectionHeading size="lg" accent="yellow" rotate={-1}>
             READY TO PRESS PLAY?
           </SectionHeading>

@@ -73,7 +73,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-ink px-8 py-12 font-body text-paper">
-      <div className="w-full max-w-[380px] flex flex-col items-center gap-[22px]">
+      <div className="w-full max-w-95 flex flex-col items-center gap-5.5">
         <Wordmark />
 
         <div className="text-center">
@@ -83,8 +83,8 @@ export default function OnboardingPage() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-[22px]">
-          <label className="flex flex-col gap-[7px]">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-5.5">
+          <label className="flex flex-col gap-1.75">
             <span className="font-punk-mono text-11 tracking-wide text-ink-500">USERNAME</span>
             <PunkInput
               id="username"
@@ -113,7 +113,7 @@ export default function OnboardingPage() {
             id="onboarding-submit"
             type="submit"
             disabled={loading}
-            className="rotate-[-0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-15 tracking-wide cursor-pointer shadow-hard-5-red disabled:opacity-60"
+            className="rotate-[-0.6deg] bg-brand-yellow text-ink border-punk border-black py-3.5 font-display text-15 tracking-wide cursor-pointer shadow-hard-5-red disabled:opacity-60"
           >
             {loading ? 'SAVING…' : '▶ CONTINUE'}
           </button>

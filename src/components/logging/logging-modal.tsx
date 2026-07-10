@@ -126,7 +126,7 @@ export function LoggingModal({
             type="button"
             onClick={() => onOpenChange(false)}
             aria-label="Close"
-            className="w-8 h-8 border-2 border-paper text-paper shadow-[3px_3px_0_var(--color-paper)] font-display transition-transform active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+            className="w-8 h-8 border-2 border-paper text-paper shadow-[3px_3px_0_var(--color-paper)] font-display transition-transform active:translate-x-0.75 active:translate-y-0.75 active:shadow-none"
           >
             ✕
           </button>
