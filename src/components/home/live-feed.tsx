@@ -92,7 +92,7 @@ export function LiveFeed({
         <button
           type="button"
           onClick={revealPending}
-          className="font-punk-mono text-[11px] font-bold text-ink bg-brand-yellow border-punk border-black shadow-hard-3-blue px-3.5 py-2 self-start cursor-pointer hover:scale-105 transition-transform"
+          className="font-punk-mono text-11 font-bold text-ink bg-brand-yellow border-punk border-black shadow-hard-3-blue px-3.5 py-2 self-start cursor-pointer hover:scale-105 transition-transform"
         >
           ↑ {pendingCount} NEW REVIEW{pendingCount === 1 ? '' : 'S'}
         </button>

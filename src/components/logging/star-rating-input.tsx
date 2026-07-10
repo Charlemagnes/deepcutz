@@ -62,13 +62,13 @@ export function StarRatingInput({
               height: px,
               fontSize: px,
               color: 'var(--color-ink-200)',
-              textShadow: '1.5px 1.5px 0 #000',
+              textShadow: '1.5px 1.5px 0 var(--color-ink)',
             }}
           >
             ★
             <span
               className="absolute inset-0 overflow-hidden whitespace-nowrap"
-              style={{ width: `${fill}%`, color: 'var(--color-brand-yellow)', textShadow: '1.5px 1.5px 0 #000' }}
+              style={{ width: `${fill}%`, color: 'var(--color-brand-yellow)', textShadow: '1.5px 1.5px 0 var(--color-ink)' }}
             >
               ★
             </span>

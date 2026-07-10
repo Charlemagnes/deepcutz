@@ -63,7 +63,7 @@ export function NotificationBadge({ initialCount, userId }: { initialCount: numb
   if (count === 0) return null
 
   return (
-    <span className="bg-brand-red text-white border border-black rounded-full text-[10px] px-1.5 py-0.5 leading-none">
+    <span className="bg-brand-red text-white border border-black rounded-full text-10 px-1.5 py-0.5 leading-none">
       {count > 9 ? '9+' : count}
     </span>
   )

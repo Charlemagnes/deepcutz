@@ -2,6 +2,8 @@
 
 import { useState, useTransition } from 'react'
 import { toggleLike } from '@/lib/likes/actions'
+import { PunkPressButton } from '@/components/marketing/punk-press-button'
+import { cn } from '@/lib/utils'
 
 export function LikeButton({
   reviewId,
@@ -25,15 +27,19 @@ export function LikeButton({
   }
 
   return (
-    <button
-      type="button"
+    <PunkPressButton
       onClick={handleClick}
       disabled={isPending}
-      className="font-punk-mono text-[11px] flex items-center gap-1 border-2 border-black bg-paper px-2 py-1 shadow-hard-3-red cursor-pointer transition-transform active:translate-x-[3px] active:translate-y-[3px] active:shadow-none disabled:cursor-default disabled:opacity-50"
-      style={{ color: liked ? 'var(--color-brand-red)' : 'var(--color-ink-500)' }}
+      accent="red"
+      size={3}
+      border={2}
+      className={cn(
+        'font-punk-mono text-11 flex items-center gap-1 border-black bg-paper px-2 py-1 cursor-pointer transition-transform disabled:cursor-default disabled:opacity-50',
+        liked ? 'text-brand-red' : 'text-ink-500'
+      )}
     >
       <span>{liked ? '♥' : '♡'}</span>
       <span>{count}</span>
-    </button>
+    </PunkPressButton>
   )
 }

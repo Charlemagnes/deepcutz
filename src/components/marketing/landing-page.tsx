@@ -195,7 +195,7 @@ export function MarketingLanding() {
             <br />
             SPIN.
           </h1>
-          <p className="font-punk-mono text-[14.5px] leading-[1.7] text-ink-200 max-w-110 mt-6 bg-black/40 border-l-punk border-brand-blue px-3.5 py-2.5">
+          <p className="font-punk-mono text-14-5 leading-[1.7] text-ink-200 max-w-110 mt-6 bg-black/40 border-l-punk border-brand-blue px-3.5 py-2.5">
             Log every album, rate every track, and follow the ears you trust. Deepcutz is where your
             listening habit becomes your diary.
           </p>
@@ -237,7 +237,7 @@ export function MarketingLanding() {
                 {feature.icon}
               </div>
               <h3 className="font-display text-base mb-2">{feature.title}</h3>
-              <p className="font-body text-[13px] leading-[1.55] text-ink-800 m-0">
+              <p className="font-body text-13 leading-[1.55] text-ink-800 m-0">
                 {feature.description}
               </p>
             </HardShadowCard>
@@ -268,7 +268,7 @@ export function MarketingLanding() {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-11 items-center">
           <div>
-            <p className="font-punk-mono text-[14.5px] leading-[1.75] text-ink-200 max-w-105 mb-6.5">
+            <p className="font-punk-mono text-14-5 leading-[1.75] text-ink-200 max-w-105 mb-6.5">
               A wall of what your friends spun last night. Every review, every half-star, every
               &quot;wait you HAVE to hear this&quot; — all in one scroll.
             </p>
@@ -277,12 +277,12 @@ export function MarketingLanding() {
                 <div key={step.num} className="flex gap-3.5 items-start">
                   <span
                     aria-hidden="true"
-                    className="flex-none w-7.5 h-7.5 border-2 border-black flex items-center justify-center font-display text-[13px]"
+                    className="flex-none w-7.5 h-7.5 border-2 border-black flex items-center justify-center font-display text-13"
                     style={{ backgroundColor: step.bg, color: step.textColor, rotate: `${step.rotate}deg` }}
                   >
                     {step.num}
                   </span>
-                  <div className="font-body text-[13.5px] leading-[1.5] text-ink-200">
+                  <div className="font-body text-13-5 leading-normal text-ink-200">
                     <b className="text-white">{step.lead}</b> {step.rest}
                   </div>
                 </div>
@@ -322,10 +322,10 @@ export function MarketingLanding() {
                 className="p-[22px]"
               >
                 <StarRating rating={t.rating} />
-                <p className="italic font-body text-[13.5px] leading-[1.55] text-ink-800 my-2.5 mb-3.5">
+                <p className="italic font-body text-13-5 leading-[1.55] text-ink-800 my-2.5 mb-3.5">
                   &quot;{t.quote}&quot;
                 </p>
-                <div className="font-punk-mono text-[11px] text-ink-600">
+                <div className="font-punk-mono text-11 text-ink-600">
                   — {t.handle}
                 </div>
               </HardShadowCard>
@@ -363,7 +363,7 @@ export function MarketingLanding() {
             </div>
           ))}
         </div>
-        <div className="font-punk-mono text-[11px] text-ink-600">
+        <div className="font-punk-mono text-11 text-ink-600">
           © 2026 DEEPCUTZ. ALL SPINS RESERVED.
         </div>
       </div>

@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { StarRating } from '@/components/marketing/star-rating'
 import { LikeButton } from '@/components/likes/like-button'
 import { SpoilerReview } from '@/app/profile/[username]/spoiler-review'
+import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
+import { AttributionLine } from '@/components/marketing/attribution-line'
 
 /** Shared `reviews` select shape (joined with album/author) used both by the home
  *  feed's initial server-rendered query and by `getFeedReviewById`'s per-event
@@ -80,26 +81,19 @@ function formatDate(iso: string) {
 export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
   return (
     <div className="grid grid-cols-[126px_1fr] gap-4.5 bg-paper border-punk border-black shadow-hard-6-blue p-3.5 text-ink">
-      <Link href={`/album/${item.album.id}`} className="relative w-31.5 h-31.5 border-2 border-black bg-ink-800 shrink-0">
-        {item.album.cover_url && <Image src={item.album.cover_url} alt="" fill sizes="126px" className="object-cover" />}
+      <Link href={`/album/${item.album.id}`}>
+        <AlbumCoverThumb src={item.album.cover_url} sizePx={126} sizes="126px" />
       </Link>
       <div className="min-w-0">
-        <div className="flex items-center gap-2 font-punk-mono text-[11px] text-ink-600 mb-1.5">
-          <span className="w-4.5 h-4.5 rounded-full bg-brand-blue border border-black shrink-0" />
-          {item.author.username ? (
-            <Link href={`/profile/${item.author.username}`} className="hover:underline">
-              <b className="text-ink">{item.author.username}</b>
-            </Link>
-          ) : (
-            <b className="text-ink">someone</b>
-          )}
-          <span className="text-ink-500">
-            {item.kind === 'review' ? 'RATED' : 'LOGGED'} · {formatDate(item.createdAt)}
-          </span>
-        </div>
+        <AttributionLine
+          username={item.author.username}
+          href={item.author.username ? `/profile/${item.author.username}` : undefined}
+          timestampLabel={`${item.kind === 'review' ? 'RATED' : 'LOGGED'} · ${formatDate(item.createdAt)}`}
+          accent="blue"
+        />
         <Link href={`/album/${item.album.id}`}>
           <div className="font-display text-lg leading-none">{item.album.title}</div>
-          <div className="text-ink-600 font-punk-mono text-[11px] my-1">{item.album.artist}</div>
+          <div className="text-ink-600 font-punk-mono text-11 my-1">{item.album.artist}</div>
         </Link>
         {item.rating != null && (
           <div className="mb-2">
@@ -110,7 +104,7 @@ export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
           item.isSpoiler ? (
             <SpoilerReview content={item.content} />
           ) : (
-            <p className="m-0 text-[12.5px] leading-normal text-ink-800 max-w-105 line-clamp-2">{item.content}</p>
+            <p className="m-0 text-12-5 leading-normal text-ink-800 max-w-105 line-clamp-2">{item.content}</p>
           )
         )}
         {item.kind === 'review' && (
@@ -118,7 +112,7 @@ export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
             <LikeButton reviewId={item.id} initialLiked={liked} initialCount={item.likeCount} />
             <Link
               href={`/album/${item.album.id}#review-${item.id}`}
-              className="font-punk-mono text-[11px] text-ink-500 flex items-center gap-1 cursor-pointer"
+              className="font-punk-mono text-11 text-ink-500 flex items-center gap-1 cursor-pointer"
             >
               💬 {item.commentCount}
             </Link>

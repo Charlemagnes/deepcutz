@@ -7,6 +7,7 @@ import { LikeButton } from '@/components/likes/like-button'
 import { StarRating } from '@/components/marketing/star-rating'
 import { HardShadowCard } from '@/components/marketing/hard-shadow-card'
 import { SectionHeading } from '@/components/marketing/section-heading'
+import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
 import { SpoilerReview } from './spoiler-review'
 
 type AlbumRef = {
@@ -273,19 +274,15 @@ export default async function ProfilePage({
                 href={`/album/${item.album.id}`}
                 className="grid grid-cols-[54px_1fr] gap-3.5 bg-paper border-2 border-black shadow-hard-4-blue p-3 text-ink"
               >
-                <div className="relative w-13.5 h-13.5 border-2 border-black bg-ink-800 shrink-0">
-                  {item.album.cover_url && (
-                    <Image src={item.album.cover_url} alt="" fill sizes="54px" className="object-cover" />
-                  )}
-                </div>
+                <AlbumCoverThumb src={item.album.cover_url} sizePx={54} sizes="54px" />
                 <div className="min-w-0">
-                  <div className="font-punk-mono text-[10.5px] text-ink-600 mb-0.5">
+                  <div className="font-punk-mono text-10-5 text-ink-600 mb-0.5">
                     {item.kind === 'review' ? 'RATED' : 'LOGGED'} · {formatDate(item.createdAt)}
                   </div>
-                  <div className="font-display text-[13.5px] leading-tight truncate">
+                  <div className="font-display text-13-5 leading-tight truncate">
                     {item.album.title}
                   </div>
-                  <div className="text-ink-600 font-punk-mono text-[10.5px] truncate">
+                  <div className="text-ink-600 font-punk-mono text-10-5 truncate">
                     {item.album.artist}
                   </div>
                   {item.rating != null && (
@@ -316,7 +313,7 @@ export default async function ProfilePage({
                     <Image src={album.cover_url} alt="" fill sizes="120px" className="object-cover" />
                   )}
                 </div>
-                <div className="font-punk-mono text-[10.5px] font-bold mt-1.5 truncate">
+                <div className="font-punk-mono text-10-5 font-bold mt-1.5 truncate">
                   {album.title}
                 </div>
                 <StarRating rating={rating} size="sm" />
@@ -338,16 +335,12 @@ export default async function ProfilePage({
             {reviewsWithContent.map((review) => (
               <HardShadowCard key={review.id} accent="cyan" border={2} shadow={5} className="p-4">
                 <Link href={`/album/${review.album.id}`} className="flex items-center gap-3 mb-2.5">
-                  <div className="relative w-10.5 h-10.5 border-2 border-black bg-ink-800 shrink-0">
-                    {review.album.cover_url && (
-                      <Image src={review.album.cover_url} alt="" fill sizes="42px" className="object-cover" />
-                    )}
-                  </div>
+                  <AlbumCoverThumb src={review.album.cover_url} sizePx={42} sizes="42px" />
                   <div className="min-w-0">
                     <div className="font-display text-sm leading-tight truncate">
                       {review.album.title}
                     </div>
-                    <div className="text-ink-600 font-punk-mono text-[10.5px] truncate">
+                    <div className="text-ink-600 font-punk-mono text-10-5 truncate">
                       {review.album.artist}
                     </div>
                   </div>
@@ -358,7 +351,7 @@ export default async function ProfilePage({
                 {review.isSpoiler ? (
                   <SpoilerReview content={review.content} />
                 ) : (
-                  <p className="m-0 text-[12.5px] leading-normal text-ink-800 whitespace-pre-wrap">
+                  <p className="m-0 text-12-5 leading-normal text-ink-800 whitespace-pre-wrap">
                     {review.content}
                   </p>
                 )}
@@ -370,7 +363,7 @@ export default async function ProfilePage({
                   />
                   <Link
                     href={`/review/${review.id}`}
-                    className="text-[11px] text-ink-500 font-punk-mono"
+                    className="text-11 text-ink-500 font-punk-mono"
                   >
                     💬 {review.commentCount}
                   </Link>
@@ -402,15 +395,15 @@ export default async function ProfilePage({
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-punk-mono font-bold text-[11.5px] truncate">
+                  <div className="font-punk-mono font-bold text-11-5 truncate">
                     {entry.album.title}
                   </div>
-                  <div className="text-ink-500 font-punk-mono text-[10px] truncate">
+                  <div className="text-ink-500 font-punk-mono text-10 truncate">
                     {entry.album.artist}
                   </div>
                 </div>
                 {entry.rating != null && <StarRating rating={entry.rating} size="sm" />}
-                <div className="font-punk-mono text-[10px] text-ink-500 shrink-0">
+                <div className="font-punk-mono text-10 text-ink-500 shrink-0">
                   {formatDate(entry.listenedDate)}
                 </div>
               </Link>

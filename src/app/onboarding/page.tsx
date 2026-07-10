@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Wordmark } from '@/components/marketing/wordmark'
+import { PunkInput } from '@/components/marketing/punk-input'
+import { InlineBanner } from '@/components/marketing/inline-banner'
 
 export default function OnboardingPage() {
   const [username, setUsername] = useState('')
@@ -75,16 +77,16 @@ export default function OnboardingPage() {
         <Wordmark />
 
         <div className="text-center">
-          <div className="font-anton text-[28px] tracking-wide text-white">CHOOSE YOUR HANDLE</div>
-          <div className="text-[13px] text-ink-500 mt-1.5">
+          <div className="font-anton text-28 tracking-wide text-white">CHOOSE YOUR HANDLE</div>
+          <div className="text-13 text-ink-500 mt-1.5">
             One last thing before you start logging.
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-[22px]">
           <label className="flex flex-col gap-[7px]">
-            <span className="font-punk-mono text-[11px] tracking-wide text-ink-500">USERNAME</span>
-            <input
+            <span className="font-punk-mono text-11 tracking-wide text-ink-500">USERNAME</span>
+            <PunkInput
               id="username"
               type="text"
               placeholder="coolcat42"
@@ -95,27 +97,23 @@ export default function OnboardingPage() {
               maxLength={30}
               autoComplete="username"
               autoFocus
-              className="bg-ink-900 border-punk border-black px-[13px] py-3 text-paper text-[13.5px] font-punk-mono placeholder:text-ink-600 focus:outline-none"
             />
-            <p className="font-punk-mono text-[11px] text-ink-600">
+            <p className="font-punk-mono text-11 text-ink-600">
               Lowercase letters, numbers, and underscores only.
             </p>
           </label>
 
           {error && (
-            <div
-              id="onboarding-error"
-              className="font-punk-mono text-xs px-3 py-[10px] rounded-lg border border-red-400/35 bg-red-400/[.08] text-red-300"
-            >
+            <InlineBanner id="onboarding-error" tone="error">
               {error}
-            </div>
+            </InlineBanner>
           )}
 
           <button
             id="onboarding-submit"
             type="submit"
             disabled={loading}
-            className="-rotate-[0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-[15px] tracking-wide cursor-pointer shadow-hard-5-red disabled:opacity-60"
+            className="-rotate-[0.6deg] bg-brand-yellow text-ink border-punk border-black py-[14px] font-display text-15 tracking-wide cursor-pointer shadow-hard-5-red disabled:opacity-60"
           >
             {loading ? 'SAVING…' : '▶ CONTINUE'}
           </button>

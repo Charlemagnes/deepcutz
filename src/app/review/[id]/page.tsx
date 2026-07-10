@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth/current-user'
@@ -8,6 +7,7 @@ import { LikeButton } from '@/components/likes/like-button'
 import { ReplyThread } from '@/components/comments/reply-thread'
 import { WhoToFollowList } from '@/components/home/who-to-follow-list'
 import { HomeSearchTrigger } from '@/components/home/home-search-trigger'
+import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
 
 interface AlbumRef {
   id: string
@@ -125,10 +125,8 @@ export default async function ReviewThreadPage({ params }: { params: Promise<{ i
         <div className="px-6 sm:px-9 py-8 flex flex-col gap-5">
           <div className="flex items-start gap-3 bg-paper border-punk border-black shadow-hard-5-blue p-3.5 text-ink">
             {album && (
-              <Link href={`/album/${album.id}`} className="relative w-14 h-14 border-2 border-black bg-ink-800 shrink-0">
-                {album.cover_url && (
-                  <Image src={album.cover_url} alt="" fill sizes="56px" className="object-cover" />
-                )}
+              <Link href={`/album/${album.id}`}>
+                <AlbumCoverThumb src={album.cover_url} sizePx={56} sizes="56px" />
               </Link>
             )}
 
@@ -136,11 +134,11 @@ export default async function ReviewThreadPage({ params }: { params: Promise<{ i
               {album && (
                 <Link href={`/album/${album.id}`} className="block mb-1.5">
                   <div className="font-display text-sm leading-none">{album.title}</div>
-                  <div className="text-ink-600 font-punk-mono text-[10.5px] mt-0.5">{album.artist}</div>
+                  <div className="text-ink-600 font-punk-mono text-10-5 mt-0.5">{album.artist}</div>
                 </Link>
               )}
 
-              <div className="flex items-center gap-2 font-punk-mono text-[10.5px] text-ink-600 mb-1.5">
+              <div className="flex items-center gap-2 font-punk-mono text-10-5 text-ink-600 mb-1.5">
                 {author?.username ? (
                   <Link href={`/profile/${author.username}`} className="hover:underline">
                     <b className="text-ink">{author.username}</b>
@@ -162,7 +160,7 @@ export default async function ReviewThreadPage({ params }: { params: Promise<{ i
               </div>
 
               {review.content && (
-                <p className="m-0 text-[12px] leading-normal whitespace-pre-wrap text-ink-800">
+                <p className="m-0 text-xs leading-normal whitespace-pre-wrap text-ink-800">
                   {review.is_spoiler ? '⚠ Spoiler review — visit the album page to reveal.' : review.content}
                 </p>
               )}

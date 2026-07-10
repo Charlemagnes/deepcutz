@@ -31,12 +31,12 @@ export function SidebarNavLink({
   return (
     <Link
       href={href}
-      className="flex items-center font-display text-[13px] px-3 py-2.5 border-punk border-black transition-transform hover:scale-105"
+      className="flex items-center font-display text-13 px-3 py-2.5 border-punk border-black transition-transform hover:scale-105"
       style={{
         background,
         color,
         rotate: `${rotate}deg`,
-        boxShadow: isActive ? '5px 5px 0 #000' : '4px 4px 0 #000',
+        boxShadow: isActive ? '5px 5px 0 var(--color-ink)' : '4px 4px 0 var(--color-ink)',
       }}
     >
       {label}

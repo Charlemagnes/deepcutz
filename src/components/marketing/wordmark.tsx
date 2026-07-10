@@ -26,7 +26,7 @@ export function Wordmark({ size = "md" }: { size?: keyof typeof SIZES }) {
         <polygon
           points="13,0 2,15 9,15 6,28 18,11 10,11"
           style={{ fill: "var(--color-brand-yellow)" }}
-          stroke="#000"
+          stroke="var(--color-ink)"
           strokeWidth={1.5}
         />
       </svg>

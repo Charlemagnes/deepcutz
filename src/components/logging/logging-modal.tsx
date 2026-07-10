@@ -7,6 +7,7 @@ import { searchAlbums, getAlbumDetails, getAlbumTracks } from '@/lib/spotify/act
 import { submitLog, type TrackRatingInput } from '@/lib/logging/actions'
 import type { AlbumSearchResult, AlbumTrack } from '@/lib/spotify/types'
 import { cn } from '@/lib/utils'
+import { PunkPressButton } from '@/components/marketing/punk-press-button'
 
 interface TrackState {
   rating: number | null
@@ -149,7 +150,7 @@ export function LoggingModal({
           </div>
 
           {showDropdown && results.length > 0 && (
-            <div className="absolute left-6 right-6 top-17.5 z-20 bg-paper border-2 border-black shadow-[5px_5px_0_#000] overflow-hidden">
+            <div className="absolute left-6 right-6 top-17.5 z-20 bg-paper border-2 border-black shadow-hard-5-ink overflow-hidden">
               {results.map((r) => (
                 <div
                   key={r.id}
@@ -181,7 +182,7 @@ export function LoggingModal({
                   style={album.coverUrl ? { backgroundImage: `url(${album.coverUrl})` } : { background: 'var(--color-ink-800)' }}
                 />
                 <div className="mt-3 font-display text-base">{album.title}</div>
-                <div className="font-punk-mono text-[11.5px] text-ink-600 mt-1">
+                <div className="font-punk-mono text-11-5 text-ink-600 mt-1">
                   {album.artist}
                   {album.releaseDate ? ` · ${album.releaseDate.slice(0, 4)}` : ''}
                 </div>
@@ -189,7 +190,7 @@ export function LoggingModal({
 
               <div>
                 <div
-                  className="font-display text-[13px] mb-2.5"
+                  className="font-display text-13 mb-2.5"
                   style={{ color: 'var(--color-brand-yellow)', textShadow: '2px 2px 0 var(--color-brand-blue)' }}
                 >
                   YOUR RATING
@@ -202,7 +203,7 @@ export function LoggingModal({
                 </div>
 
                 <div
-                  className="font-display text-[13px] mb-2.5"
+                  className="font-display text-13 mb-2.5"
                   style={{ color: 'var(--color-brand-yellow)', textShadow: '2px 2px 0 var(--color-brand-red)' }}
                 >
                   YOUR REVIEW
@@ -220,7 +221,7 @@ export function LoggingModal({
             {tracks.length > 0 && (
               <div className="px-6 pb-6">
                 <div
-                  className="font-display text-[15px] mb-3"
+                  className="font-display text-15 mb-3"
                   style={{ color: 'var(--color-brand-yellow)', textShadow: '2px 2px 0 var(--color-brand-red)' }}
                 >
                   TRACK BY TRACK
@@ -243,13 +244,13 @@ export function LoggingModal({
                         className="flex items-center gap-3 px-3.5 py-3 cursor-pointer"
                         style={{ borderLeft: `8px solid ${accent}` }}
                       >
-                        <span className="font-punk-mono font-bold text-[11.5px] text-ink-500 w-4.5">
+                        <span className="font-punk-mono font-bold text-11-5 text-ink-500 w-4.5">
                           {String(track.trackNumber).padStart(2, '0')}
                         </span>
-                        <span className="flex-1 font-body text-[13.5px] font-extrabold">
+                        <span className="flex-1 font-body text-13-5 font-extrabold">
                           {track.title}
                         </span>
-                        <span className="font-punk-mono text-[11.5px] text-ink-500">
+                        <span className="font-punk-mono text-11-5 text-ink-500">
                           {formatDuration(track.durationMs)}
                         </span>
                         <span onClick={(e) => e.stopPropagation()}>
@@ -260,7 +261,7 @@ export function LoggingModal({
                             label={`Rating for ${track.title}`}
                           />
                         </span>
-                        <span className="font-display text-[11px] w-3.5 text-center">
+                        <span className="font-display text-11 w-3.5 text-center">
                           {expanded ? '▾' : '▸'}
                         </span>
                       </div>
@@ -287,21 +288,25 @@ export function LoggingModal({
         {error && <p className="px-6 pb-3 text-sm text-red-400">{error}</p>}
 
         <div className="sticky bottom-0 flex justify-end gap-3 px-6 py-4 border-t-punk border-black bg-ink">
-          <button
-            type="button"
+          <PunkPressButton
             onClick={() => onOpenChange(false)}
-            className="bg-paper border-2 border-black text-ink font-display text-xs px-5 py-3 shadow-[3px_3px_0_#000] transition-transform active:translate-x-[3px] active:translate-y-[3px] active:shadow-none"
+            accent="ink"
+            size={3}
+            border={2}
+            className="bg-paper text-ink border-black font-display text-xs px-5 py-3 transition-transform"
           >
             CANCEL
-          </button>
-          <button
-            type="button"
+          </PunkPressButton>
+          <PunkPressButton
             disabled={!album || rating === 0 || submitting}
             onClick={handleSubmit}
-            className="bg-brand-yellow border-2 border-black text-ink font-display text-sm px-6 py-3 shadow-hard-4-red transition-transform active:translate-x-[4px] active:translate-y-[4px] active:shadow-none disabled:opacity-50"
+            accent="red"
+            size={4}
+            border={2}
+            className="bg-brand-yellow text-ink border-black font-display text-sm px-6 py-3 transition-transform disabled:opacity-50"
           >
             {submitting ? 'SAVING…' : '▶ SAVE REVIEW'}
-          </button>
+          </PunkPressButton>
         </div>
       </DialogContent>
     </Dialog>

@@ -24,7 +24,7 @@ export function StarRating({
       style={{
         fontSize: SIZES[size],
         letterSpacing: 1,
-        textShadow: "1px 1px 0 #000",
+        textShadow: "1px 1px 0 var(--color-ink)",
       }}
     >
       {Array.from({ length: 5 }, (_, i) => (

@@ -41,14 +41,14 @@ export function CommentForm({
         placeholder={placeholder}
         rows={2}
         autoFocus={autoFocus}
-        className="w-full resize-none bg-paper border-2 border-black px-2.5 py-2 text-[12.5px] font-punk-mono text-ink placeholder:text-ink-500 outline-none"
+        className="w-full resize-none bg-paper border-2 border-black px-2.5 py-2 text-12-5 font-punk-mono text-ink placeholder:text-ink-500 outline-none"
       />
       <div className="flex items-center justify-end gap-2">
         {onCancel && (
           <button
             type="button"
             onClick={onCancel}
-            className="font-display text-[10px] px-3 py-1.5 border-2 border-black bg-paper text-ink"
+            className="font-display text-10 px-3 py-1.5 border-2 border-black bg-paper text-ink"
           >
             CANCEL
           </button>
@@ -56,7 +56,7 @@ export function CommentForm({
         <button
           type="submit"
           disabled={disabled}
-          className="font-display text-[10px] px-3 py-1.5 border-2 border-black bg-brand-yellow text-ink disabled:opacity-50"
+          className="font-display text-10 px-3 py-1.5 border-2 border-black bg-brand-yellow text-ink disabled:opacity-50"
         >
           {isPending ? 'POSTING…' : 'POST'}
         </button>
