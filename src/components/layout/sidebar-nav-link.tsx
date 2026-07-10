@@ -36,7 +36,7 @@ export function SidebarNavLink({
         background,
         color,
         rotate: `${rotate}deg`,
-        boxShadow: isActive ? '5px 5px 0 #000' : '4px 4px 0 #000',
+        boxShadow: isActive ? '5px 5px 0 var(--color-ink)' : '4px 4px 0 var(--color-ink)',
       }}
     >
       {label}
