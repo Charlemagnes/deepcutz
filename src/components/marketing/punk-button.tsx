@@ -2,6 +2,7 @@ import Link from "next/link"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 import type { Accent } from "./types"
+import { HARD_SHADOW_CLASSES, PRESS_CLASSES } from "./shadow-classes"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center font-display whitespace-nowrap transition-transform hover:scale-105",
@@ -27,22 +28,22 @@ const buttonVariants = cva(
 
 const SHADOW_CLASSES: Record<"sm" | "md" | "lg", Record<Accent, string>> = {
   sm: {
-    red: "shadow-hard-3-red active:translate-x-[3px] active:translate-y-[3px] active:shadow-none",
-    blue: "shadow-hard-3-blue active:translate-x-[3px] active:translate-y-[3px] active:shadow-none",
-    yellow: "shadow-hard-3-yellow active:translate-x-[3px] active:translate-y-[3px] active:shadow-none",
-    cyan: "shadow-hard-3-cyan active:translate-x-[3px] active:translate-y-[3px] active:shadow-none",
+    red: cn(HARD_SHADOW_CLASSES[3].red, PRESS_CLASSES[3]),
+    blue: cn(HARD_SHADOW_CLASSES[3].blue, PRESS_CLASSES[3]),
+    yellow: cn(HARD_SHADOW_CLASSES[3].yellow, PRESS_CLASSES[3]),
+    cyan: cn(HARD_SHADOW_CLASSES[3].cyan, PRESS_CLASSES[3]),
   },
   md: {
-    red: "shadow-hard-5-red active:translate-x-[5px] active:translate-y-[5px] active:shadow-none",
-    blue: "shadow-hard-5-blue active:translate-x-[5px] active:translate-y-[5px] active:shadow-none",
-    yellow: "shadow-hard-5-yellow active:translate-x-[5px] active:translate-y-[5px] active:shadow-none",
-    cyan: "shadow-hard-5-cyan active:translate-x-[5px] active:translate-y-[5px] active:shadow-none",
+    red: cn(HARD_SHADOW_CLASSES[5].red, PRESS_CLASSES[5]),
+    blue: cn(HARD_SHADOW_CLASSES[5].blue, PRESS_CLASSES[5]),
+    yellow: cn(HARD_SHADOW_CLASSES[5].yellow, PRESS_CLASSES[5]),
+    cyan: cn(HARD_SHADOW_CLASSES[5].cyan, PRESS_CLASSES[5]),
   },
   lg: {
-    red: "shadow-hard-6-red active:translate-x-[6px] active:translate-y-[6px] active:shadow-none",
-    blue: "shadow-hard-6-blue active:translate-x-[6px] active:translate-y-[6px] active:shadow-none",
-    yellow: "shadow-hard-6-yellow active:translate-x-[6px] active:translate-y-[6px] active:shadow-none",
-    cyan: "shadow-hard-6-cyan active:translate-x-[6px] active:translate-y-[6px] active:shadow-none",
+    red: cn(HARD_SHADOW_CLASSES[6].red, PRESS_CLASSES[6]),
+    blue: cn(HARD_SHADOW_CLASSES[6].blue, PRESS_CLASSES[6]),
+    yellow: cn(HARD_SHADOW_CLASSES[6].yellow, PRESS_CLASSES[6]),
+    cyan: cn(HARD_SHADOW_CLASSES[6].cyan, PRESS_CLASSES[6]),
   },
 }
 
