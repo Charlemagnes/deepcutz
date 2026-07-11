@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useTransition } from 'react'
 import { toggleFollow } from '@/lib/follows/actions'
 import { PunkPressButton } from '@/components/marketing/punk-press-button'
 import { cn } from '@/lib/utils'
+import { useOptimisticToggle } from '@/hooks/use-optimistic-toggle'
 
 export function FollowButton({
   profileId,
@@ -12,15 +12,10 @@ export function FollowButton({
   profileId: string
   initialIsFollowing: boolean
 }) {
-  const [following, setFollowing] = useState(initialIsFollowing)
-  const [isPending, startTransition] = useTransition()
-
-  function handleClick() {
-    startTransition(async () => {
-      const result = await toggleFollow(profileId)
-      setFollowing(result.following)
-    })
-  }
+  const [{ following }, isPending, handleClick] = useOptimisticToggle(
+    () => toggleFollow(profileId),
+    { following: initialIsFollowing },
+  )
 
   return (
     <PunkPressButton
