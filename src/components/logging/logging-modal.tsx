@@ -14,6 +14,8 @@ interface TrackState {
   notes: string
 }
 
+const TRACK_ACCENTS = ['var(--color-brand-red)', 'var(--color-brand-blue)', 'var(--color-brand-yellow)']
+
 export function LoggingModal({
   open,
   onOpenChange,
@@ -228,8 +230,7 @@ export function LoggingModal({
                 </div>
 
                 {tracks.map((track, i) => {
-                  const accents = ['var(--color-brand-red)', 'var(--color-brand-blue)', 'var(--color-brand-yellow)']
-                  const accent = accents[i % accents.length]
+                  const accent = TRACK_ACCENTS[i % TRACK_ACCENTS.length]
                   const expanded = expandedTrack === track.trackNumber
                   const state = trackState[track.trackNumber]
 
