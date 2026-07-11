@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useTransition } from 'react'
 import { toggleLike } from '@/lib/likes/actions'
 import { PunkPressButton } from '@/components/marketing/punk-press-button'
 import { cn } from '@/lib/utils'
+import { useOptimisticToggle } from '@/hooks/use-optimistic-toggle'
 
 export function LikeButton({
   reviewId,
@@ -14,17 +14,10 @@ export function LikeButton({
   initialLiked: boolean
   initialCount: number
 }) {
-  const [liked, setLiked] = useState(initialLiked)
-  const [count, setCount] = useState(initialCount)
-  const [isPending, startTransition] = useTransition()
-
-  function handleClick() {
-    startTransition(async () => {
-      const result = await toggleLike(reviewId)
-      setLiked(result.liked)
-      setCount(result.likeCount)
-    })
-  }
+  const [{ liked, likeCount: count }, isPending, handleClick] = useOptimisticToggle(
+    () => toggleLike(reviewId),
+    { liked: initialLiked, likeCount: initialCount },
+  )
 
   return (
     <PunkPressButton
