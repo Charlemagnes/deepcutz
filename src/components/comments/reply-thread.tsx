@@ -5,10 +5,7 @@ import Link from 'next/link'
 import type { CommentWithAuthor } from '@/lib/comments/actions'
 import { CommentForm } from './comment-form'
 import { AttributionLine } from '@/components/marketing/attribution-line'
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
-}
+import { formatDate } from '@/lib/format'
 
 export function ReplyThread({
   reviewId,

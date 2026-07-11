@@ -1,7 +1,8 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { normalizeAlbum, normalizeAuthor, REVIEW_FEED_SELECT, type FeedItem } from '@/components/home/feed-card'
+import { REVIEW_FEED_SELECT, type FeedItem } from '@/components/home/feed-card'
+import { normalizeAlbum, normalizeAuthor } from '@/lib/supabase/normalize'
 
 /** Fetches one review, joined with its album/author, in the same shape the home
  *  feed's initial server-rendered query uses. Called client-side (from the live

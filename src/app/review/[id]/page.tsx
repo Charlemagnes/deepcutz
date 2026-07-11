@@ -8,43 +8,8 @@ import { ReplyThread } from '@/components/comments/reply-thread'
 import { WhoToFollowList } from '@/components/home/who-to-follow-list'
 import { HomeSearchTrigger } from '@/components/home/home-search-trigger'
 import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
-
-interface AlbumRef {
-  id: string
-  title: string
-  artist: string
-  cover_url: string | null
-}
-
-interface AuthorRef {
-  username: string | null
-  avatar_url: string | null
-}
-
-function normalizeAlbum(value: unknown): AlbumRef | null {
-  const raw = Array.isArray(value) ? value[0] : value
-  if (!raw || typeof raw !== 'object') return null
-  const album = raw as Record<string, unknown>
-  if (typeof album.id !== 'string' || typeof album.title !== 'string' || typeof album.artist !== 'string') {
-    return null
-  }
-  return {
-    id: album.id,
-    title: album.title,
-    artist: album.artist,
-    cover_url: typeof album.cover_url === 'string' ? album.cover_url : null,
-  }
-}
-
-function normalizeAuthor(value: unknown): AuthorRef | null {
-  const raw = Array.isArray(value) ? value[0] : value
-  if (!raw || typeof raw !== 'object') return null
-  const profile = raw as Record<string, unknown>
-  return {
-    username: typeof profile.username === 'string' ? profile.username : null,
-    avatar_url: typeof profile.avatar_url === 'string' ? profile.avatar_url : null,
-  }
-}
+import { normalizeAlbum, normalizeAuthor } from '@/lib/supabase/normalize'
+import { formatDate } from '@/lib/format'
 
 export default async function ReviewThreadPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -146,13 +111,7 @@ export default async function ReviewThreadPage({ params }: { params: Promise<{ i
                 ) : (
                   <b className="text-ink">someone</b>
                 )}
-                <span className="text-ink-500">
-                  {new Date(review.created_at).toLocaleDateString(undefined, {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  })}
-                </span>
+                <span className="text-ink-500">{formatDate(review.created_at)}</span>
               </div>
 
               <div className="mb-1.5">

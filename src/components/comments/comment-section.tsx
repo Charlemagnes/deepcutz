@@ -5,10 +5,7 @@ import Link from 'next/link'
 import { listComments, type CommentWithAuthor } from '@/lib/comments/actions'
 import { CommentForm } from './comment-form'
 import { AttributionLine } from '@/components/marketing/attribution-line'
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
-}
+import { formatDate } from '@/lib/format'
 
 export function CommentSection({ reviewId, initialCount }: { reviewId: string; initialCount: number }) {
   const [expanded, setExpanded] = useState(false)
@@ -86,7 +83,7 @@ export function CommentSection({ reviewId, initialCount }: { reviewId: string; i
                   <AttributionLine
                     username={comment.username}
                     href={comment.username ? `/profile/${comment.username}` : undefined}
-                    timestampLabel={formatDate(comment.createdAt)}
+                    timestampLabel={formatDate(comment.createdAt, { includeYear: false })}
                     avatar={false}
                     fallbackLabel="unknown"
                     className="mb-1"

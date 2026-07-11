@@ -5,6 +5,8 @@ import { SpoilerReview } from '@/app/profile/[username]/spoiler-review'
 import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
 import { AttributionLine } from '@/components/marketing/attribution-line'
 import type { Accent } from '@/components/marketing/types'
+import type { AlbumRef, AuthorRef } from '@/lib/supabase/normalize'
+import { formatDate } from '@/lib/format'
 
 const CARD_ACCENTS: Accent[] = ['red', 'blue', 'yellow', 'cyan']
 function accentForId(id: string): Accent {
@@ -17,18 +19,6 @@ function accentForId(id: string): Accent {
 
 export const REVIEW_FEED_SELECT =
   'id, rating, content, is_spoiler, created_at, like_count, comment_count, profile_id, profiles(username, avatar_url), albums(id, title, artist, cover_url)'
-
-export type AlbumRef = {
-  id: string
-  title: string
-  artist: string
-  cover_url: string | null
-}
-
-export type AuthorRef = {
-  username: string | null
-  avatar_url: string | null
-}
 
 export type FeedItem =
   | {
@@ -52,38 +42,6 @@ export type FeedItem =
       album: AlbumRef
       author: AuthorRef
     }
-
-/** Reviews/diary_entries come back with `albums(...)` joined; Postgrest can shape a
- *  many-to-one relation as either an object or a single-item array depending on
- *  inference, so normalize defensively (same pattern as profile/[username]/page.tsx). */
-export function normalizeAlbum(value: unknown): AlbumRef | null {
-  const raw = Array.isArray(value) ? value[0] : value
-  if (!raw || typeof raw !== 'object') return null
-  const album = raw as Record<string, unknown>
-  if (typeof album.id !== 'string' || typeof album.title !== 'string' || typeof album.artist !== 'string') {
-    return null
-  }
-  return {
-    id: album.id,
-    title: album.title,
-    artist: album.artist,
-    cover_url: typeof album.cover_url === 'string' ? album.cover_url : null,
-  }
-}
-
-export function normalizeAuthor(value: unknown): AuthorRef | null {
-  const raw = Array.isArray(value) ? value[0] : value
-  if (!raw || typeof raw !== 'object') return null
-  const profile = raw as Record<string, unknown>
-  return {
-    username: typeof profile.username === 'string' ? profile.username : null,
-    avatar_url: typeof profile.avatar_url === 'string' ? profile.avatar_url : null,
-  }
-}
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-}
 
 export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
   const accent = accentForId(item.id)
