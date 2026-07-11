@@ -9,13 +9,8 @@ import { HardShadowCard } from '@/components/marketing/hard-shadow-card'
 import { SectionHeading } from '@/components/marketing/section-heading'
 import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
 import { SpoilerReview } from './spoiler-review'
-
-type AlbumRef = {
-  id: string
-  title: string
-  artist: string
-  cover_url: string | null
-}
+import { normalizeAlbum, type AlbumRef } from '@/lib/supabase/normalize'
+import { formatDate } from '@/lib/format'
 
 type ActivityItem =
   | {
@@ -43,28 +38,6 @@ type ReviewWithContent = {
   likeCount: number
   commentCount: number
   album: AlbumRef
-}
-
-/** Reviews/diary_entries come back with `albums(...)` joined; Postgrest can shape a
- *  many-to-one relation as either an object or a single-item array depending on
- *  inference, so normalize defensively (same pattern as home-feed.tsx). */
-function normalizeAlbum(value: unknown): AlbumRef | null {
-  const raw = Array.isArray(value) ? value[0] : value
-  if (!raw || typeof raw !== 'object') return null
-  const album = raw as Record<string, unknown>
-  if (typeof album.id !== 'string' || typeof album.title !== 'string' || typeof album.artist !== 'string') {
-    return null
-  }
-  return {
-    id: album.id,
-    title: album.title,
-    artist: album.artist,
-    cover_url: typeof album.cover_url === 'string' ? album.cover_url : null,
-  }
-}
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
 export default async function ProfilePage({

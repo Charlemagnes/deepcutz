@@ -5,6 +5,7 @@ import { StarRating } from '@/components/marketing/star-rating'
 import { LikeButton } from '@/components/likes/like-button'
 import { CommentSection } from '@/components/comments/comment-section'
 import { AttributionLine } from '@/components/marketing/attribution-line'
+import { formatDate } from '@/lib/format'
 
 export function ReviewItem({
   reviewId,
@@ -35,11 +36,7 @@ export function ReviewItem({
       <AttributionLine
         username={username}
         href={`/profile/${username}`}
-        timestampLabel={new Date(createdAt).toLocaleDateString(undefined, {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        })}
+        timestampLabel={formatDate(createdAt)}
         accent="red"
         className="mb-2"
       />

@@ -5,7 +5,8 @@ import { WhoToFollowList, type FollowSuggestion } from './who-to-follow-list'
 import { HomeSearchTrigger } from './home-search-trigger'
 import { FollowButton } from './follow-button'
 import { LiveFeed } from './live-feed'
-import { normalizeAlbum, normalizeAuthor, REVIEW_FEED_SELECT, type FeedItem } from './feed-card'
+import { REVIEW_FEED_SELECT, type FeedItem } from './feed-card'
+import { normalizeAlbum, normalizeAuthor } from '@/lib/supabase/normalize'
 
 export async function HomeFeed() {
   const user = await getCurrentUser()
