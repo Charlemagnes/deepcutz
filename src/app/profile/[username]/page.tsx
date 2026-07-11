@@ -1,44 +1,12 @@
-import Link from 'next/link'
-import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth/current-user'
 import { FollowButton } from '@/components/home/follow-button'
-import { LikeButton } from '@/components/likes/like-button'
-import { StarRating } from '@/components/marketing/star-rating'
-import { HardShadowCard } from '@/components/marketing/hard-shadow-card'
 import { SectionHeading } from '@/components/marketing/section-heading'
-import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
-import { SpoilerReview } from './spoiler-review'
-import { normalizeAlbum, type AlbumRef } from '@/lib/supabase/normalize'
-import { formatDate } from '@/lib/format'
-
-type ActivityItem =
-  | {
-      kind: 'review'
-      id: string
-      createdAt: string
-      rating: number
-      album: AlbumRef
-    }
-  | {
-      kind: 'diary'
-      id: string
-      createdAt: string
-      rating: number | null
-      listenedDate: string
-      album: AlbumRef
-    }
-
-type ReviewWithContent = {
-  id: string
-  rating: number
-  content: string
-  isSpoiler: boolean
-  createdAt: string
-  likeCount: number
-  commentCount: number
-  album: AlbumRef
-}
+import { normalizeAlbum } from '@/lib/supabase/normalize'
+import { ActivityList, type ActivityItem } from './activity-list'
+import { TopAlbums, type TopAlbum } from './top-albums'
+import { ReviewsList, type ReviewWithContent } from './reviews-list'
+import { DiaryList, type DiaryEntry } from './diary-list'
 
 export default async function ProfilePage({
   params,
@@ -138,13 +106,13 @@ export default async function ProfilePage({
     .sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0))
     .slice(0, 15)
 
-  const diaryHistory = (recentDiary ?? []).flatMap((d) => {
+  const diaryHistory: DiaryEntry[] = (recentDiary ?? []).flatMap((d) => {
     const album = normalizeAlbum(d.albums)
     if (!album) return []
     return [{ id: d.id, createdAt: d.created_at, rating: d.rating, listenedDate: d.listened_date, album }]
   })
 
-  const topAlbums = (topReviews ?? []).flatMap((r) => {
+  const topAlbums: TopAlbum[] = (topReviews ?? []).flatMap((r) => {
     const album = normalizeAlbum(r.albums)
     if (!album) return []
     return [{ id: r.id, rating: r.rating, album }]
@@ -225,9 +193,7 @@ export default async function ProfilePage({
           </div>
         </div>
 
-        {!isOwnProfile && (
-          <FollowButton profileId={profile.id} initialIsFollowing={!!followRow} />
-        )}
+        {!isOwnProfile && <FollowButton profileId={profile.id} initialIsFollowing={!!followRow} />}
       </div>
 
       {/* Recent activity */}
@@ -235,39 +201,10 @@ export default async function ProfilePage({
         <div className="mb-4">
           <SectionHeading accent="blue">RECENT ACTIVITY</SectionHeading>
         </div>
-        {activityItems.length === 0 ? (
-          <EmptyState>
-            {isOwnProfile ? "You haven't logged anything yet — go spin a record." : 'No activity yet.'}
-          </EmptyState>
-        ) : (
-          <div className="flex flex-col gap-3.5">
-            {activityItems.map((item) => (
-              <Link
-                key={`${item.kind}-${item.id}`}
-                href={`/album/${item.album.id}`}
-                className="grid grid-cols-[54px_1fr] gap-3.5 bg-paper border-2 border-black shadow-hard-4-blue p-3 text-ink"
-              >
-                <AlbumCoverThumb src={item.album.cover_url} sizePx={54} sizes="54px" />
-                <div className="min-w-0">
-                  <div className="font-punk-mono text-10-5 text-ink-600 mb-0.5">
-                    {item.kind === 'review' ? 'RATED' : 'LOGGED'} · {formatDate(item.createdAt)}
-                  </div>
-                  <div className="font-display text-13-5 leading-tight truncate">
-                    {item.album.title}
-                  </div>
-                  <div className="text-ink-600 font-punk-mono text-10-5 truncate">
-                    {item.album.artist}
-                  </div>
-                  {item.rating != null && (
-                    <div className="mt-1">
-                      <StarRating rating={item.rating} size="sm" />
-                    </div>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+        <ActivityList
+          items={activityItems}
+          emptyMessage={isOwnProfile ? "You haven't logged anything yet — go spin a record." : 'No activity yet.'}
+        />
       </section>
 
       {/* Top albums */}
@@ -275,25 +212,7 @@ export default async function ProfilePage({
         <div className="mb-4">
           <SectionHeading accent="yellow">TOP ALBUMS</SectionHeading>
         </div>
-        {topAlbums.length === 0 ? (
-          <EmptyState>No rated albums yet.</EmptyState>
-        ) : (
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-3.5">
-            {topAlbums.map(({ id, rating, album }) => (
-              <Link key={id} href={`/album/${album.id}`} className="group">
-                <div className="relative aspect-square border-2 border-black shadow-hard-3-red bg-ink-800">
-                  {album.cover_url && (
-                    <Image src={album.cover_url} alt="" fill sizes="120px" className="object-cover" />
-                  )}
-                </div>
-                <div className="font-punk-mono text-10-5 font-bold mt-1.5 truncate">
-                  {album.title}
-                </div>
-                <StarRating rating={rating} size="sm" />
-              </Link>
-            ))}
-          </div>
-        )}
+        <TopAlbums albums={topAlbums} />
       </section>
 
       {/* Reviews */}
@@ -301,50 +220,7 @@ export default async function ProfilePage({
         <div className="mb-4">
           <SectionHeading accent="red">{isOwnProfile ? 'YOUR REVIEWS' : `${profile.username}'S REVIEWS`}</SectionHeading>
         </div>
-        {reviewsWithContent.length === 0 ? (
-          <EmptyState>No reviews written yet.</EmptyState>
-        ) : (
-          <div className="flex flex-col gap-3.5">
-            {reviewsWithContent.map((review) => (
-              <HardShadowCard key={review.id} accent="cyan" border={2} shadow={5} className="p-4">
-                <Link href={`/album/${review.album.id}`} className="flex items-center gap-3 mb-2.5">
-                  <AlbumCoverThumb src={review.album.cover_url} sizePx={42} sizes="42px" />
-                  <div className="min-w-0">
-                    <div className="font-display text-sm leading-tight truncate">
-                      {review.album.title}
-                    </div>
-                    <div className="text-ink-600 font-punk-mono text-10-5 truncate">
-                      {review.album.artist}
-                    </div>
-                  </div>
-                </Link>
-                <div className="mb-2">
-                  <StarRating rating={review.rating} />
-                </div>
-                {review.isSpoiler ? (
-                  <SpoilerReview content={review.content} />
-                ) : (
-                  <p className="m-0 text-12-5 leading-normal text-ink-800 whitespace-pre-wrap">
-                    {review.content}
-                  </p>
-                )}
-                <div className="flex items-center gap-3 mt-2.5">
-                  <LikeButton
-                    reviewId={review.id}
-                    initialLiked={likedIds.has(review.id)}
-                    initialCount={review.likeCount}
-                  />
-                  <Link
-                    href={`/review/${review.id}`}
-                    className="text-11 text-ink-500 font-punk-mono"
-                  >
-                    💬 {review.commentCount}
-                  </Link>
-                </div>
-              </HardShadowCard>
-            ))}
-          </div>
-        )}
+        <ReviewsList reviews={reviewsWithContent} likedIds={likedIds} emptyMessage="No reviews written yet." />
       </section>
 
       {/* Diary / history */}
@@ -352,44 +228,8 @@ export default async function ProfilePage({
         <div className="mb-4">
           <SectionHeading accent="cyan">DIARY</SectionHeading>
         </div>
-        {diaryHistory.length === 0 ? (
-          <EmptyState>No diary entries yet.</EmptyState>
-        ) : (
-          <div className="flex flex-col gap-2">
-            {diaryHistory.map((entry) => (
-              <Link
-                key={entry.id}
-                href={`/album/${entry.album.id}`}
-                className="flex items-center gap-3 bg-ink-900 border border-ink-800 px-3 py-2"
-              >
-                <div className="relative w-8.5 h-8.5 border border-ink-800 bg-ink-800 shrink-0">
-                  {entry.album.cover_url && (
-                    <Image src={entry.album.cover_url} alt="" fill sizes="34px" className="object-cover" />
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-punk-mono font-bold text-11-5 truncate">
-                    {entry.album.title}
-                  </div>
-                  <div className="text-ink-500 font-punk-mono text-10 truncate">
-                    {entry.album.artist}
-                  </div>
-                </div>
-                {entry.rating != null && <StarRating rating={entry.rating} size="sm" />}
-                <div className="font-punk-mono text-10 text-ink-500 shrink-0">
-                  {formatDate(entry.listenedDate)}
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+        <DiaryList entries={diaryHistory} />
       </section>
     </div>
-  )
-}
-
-function EmptyState({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="font-punk-mono text-sm text-ink-500">{children}</p>
   )
 }
