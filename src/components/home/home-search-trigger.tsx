@@ -1,11 +1,10 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 import { useSearch } from '@/hooks/use-search'
 import { cn } from '@/lib/utils'
 import { PunkPressButton } from '@/components/marketing/punk-press-button'
+import { SearchResults } from '@/components/search/search-results'
 
 export function HomeSearchTrigger() {
   const [isOpen, setIsOpen] = useState(false)
@@ -95,88 +94,17 @@ export function HomeSearchTrigger() {
             className="w-full border-2 border-black bg-paper px-3 py-2.5 font-punk-mono text-sm text-ink placeholder:text-ink/50 shadow-hard-4-blue focus:outline-none"
           />
 
-          <div className="max-h-90 space-y-2 overflow-y-auto">
-            {showEmptyPrompt && (
-              <p className="font-punk-mono text-xs text-paper/70">
-                Search for an album or a person.
-              </p>
-            )}
-
-            {!showEmptyPrompt && loading && (
-              <p className="font-punk-mono text-xs text-paper/70">
-                Searching…
-              </p>
-            )}
-
-            {showNoResults && (
-              <p className="font-punk-mono text-xs text-paper/70">
-                No matches for &lsquo;{trimmedQuery}&rsquo;.
-              </p>
-            )}
-
-            {!showEmptyPrompt && !loading && mode === 'albums' && albumResults.length > 0 && (
-              <ul className="space-y-2">
-                {albumResults.map((album) => (
-                  <li key={album.id}>
-                    <Link
-                      href={`/album/${album.id}`}
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 border-2 border-black bg-paper p-2 shadow-hard-3-yellow transition-transform hover:-translate-y-0.5"
-                    >
-                      <div className="relative h-10 w-10 shrink-0 overflow-hidden border-2 border-black bg-ink">
-                        {album.coverUrl ? (
-                          <Image
-                            src={album.coverUrl}
-                            alt={`${album.title} cover art`}
-                            fill
-                            sizes="40px"
-                            className="object-cover"
-                          />
-                        ) : null}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="truncate font-body font-bold text-sm text-ink">
-                          {album.title}
-                        </p>
-                        <p className="truncate font-punk-mono text-xs text-ink/70">
-                          {album.artist}
-                        </p>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {!showEmptyPrompt && !loading && mode === 'people' && peopleResults.length > 0 && (
-              <ul className="space-y-2">
-                {peopleResults.map((profile) => (
-                  <li key={profile.id}>
-                    <Link
-                      href={`/profile/${profile.username ?? ''}`}
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 border-2 border-black bg-paper p-2 shadow-hard-3-cyan transition-transform hover:-translate-y-0.5"
-                    >
-                      {profile.avatar_url ? (
-                        <img
-                          src={profile.avatar_url}
-                          alt=""
-                          className="h-9 w-9 shrink-0 rounded-full border-2 border-black object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-black bg-brand-yellow font-display text-ink">
-                          {(profile.username ?? '?')[0]?.toUpperCase() ?? '?'}
-                        </div>
-                      )}
-                      <p className="truncate font-body font-bold text-sm text-ink">
-                        {profile.username ?? 'Unknown'}
-                      </p>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <SearchResults
+            variant="compact"
+            mode={mode}
+            albumResults={albumResults}
+            peopleResults={peopleResults}
+            loading={loading}
+            trimmedQuery={trimmedQuery}
+            showEmptyPrompt={showEmptyPrompt}
+            showNoResults={showNoResults}
+            onSelect={() => setIsOpen(false)}
+          />
         </div>
       )}
     </div>
