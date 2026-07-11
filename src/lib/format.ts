@@ -1,6 +1,6 @@
 export function formatDate(iso: string, options?: { includeYear?: boolean }) {
   const includeYear = options?.includeYear ?? true
-  return new Date(iso).toLocaleDateString(undefined, {
+  return new Date(iso).toLocaleDateString('en-US', {
     year: includeYear ? 'numeric' : undefined,
     month: 'short',
     day: 'numeric',
