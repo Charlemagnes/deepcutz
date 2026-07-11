@@ -8,6 +8,7 @@ const ACCENT_STYLES: Record<Accent, { text: string; shadow: string }> = {
 }
 
 const SIZES = {
+  sm: 24,
   md: 30,
   lg: 38,
 } as const
@@ -15,6 +16,7 @@ const SIZES = {
 type SectionHeadingProps = {
   children: React.ReactNode
   accent?: Accent
+  shadow?: Accent
   rotate?: number
   size?: keyof typeof SIZES
   as?: "h2" | "h3"
@@ -23,11 +25,13 @@ type SectionHeadingProps = {
 export function SectionHeading({
   children,
   accent,
+  shadow,
   rotate = -1,
   size = "md",
   as: Tag = "h2",
 }: SectionHeadingProps) {
   const colors = accent ? ACCENT_STYLES[accent] : { text: "var(--color-ink)", shadow: null }
+  const shadowColor = shadow ? ACCENT_STYLES[shadow].text : colors.shadow
 
   return (
     <Tag
@@ -35,7 +39,7 @@ export function SectionHeading({
       style={{
         fontSize: SIZES[size],
         color: colors.text,
-        textShadow: colors.shadow ? `3px 3px 0 ${colors.shadow}` : undefined,
+        textShadow: shadowColor ? `3px 3px 0 ${shadowColor}` : undefined,
         rotate: `${rotate}deg`,
       }}
     >

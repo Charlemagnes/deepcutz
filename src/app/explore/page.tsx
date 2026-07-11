@@ -5,16 +5,10 @@ import { getCurrentUser } from '@/lib/auth/current-user'
 import { StarRating } from '@/components/marketing/star-rating'
 import { LikeButton } from '@/components/likes/like-button'
 import { AttributionLine } from '@/components/marketing/attribution-line'
+import { SectionHeading } from '@/components/marketing/section-heading'
 import { HARD_SHADOW_CLASSES } from '@/components/marketing/shadow-classes'
 import type { Accent } from '@/components/marketing/types'
 import { cn } from '@/lib/utils'
-
-const ACCENT_HEX: Record<Accent, string> = {
-  red: 'var(--color-brand-red)',
-  blue: 'var(--color-brand-blue)',
-  yellow: 'var(--color-brand-yellow)',
-  cyan: 'var(--color-brand-cyan)',
-}
 
 const ACCENT_CYCLE: Accent[] = ['red', 'blue', 'yellow', 'cyan']
 
@@ -33,31 +27,6 @@ function relativeTime(dateString: string) {
   const diffWeek = Math.floor(diffDay / 7)
   if (diffWeek < 5) return `${diffWeek}w ago`
   return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-}
-
-function SectionHeading({
-  children,
-  accent,
-  shadow,
-  rotate = -1,
-}: {
-  children: React.ReactNode
-  accent: Accent
-  shadow: Accent
-  rotate?: number
-}) {
-  return (
-    <h2
-      className="font-display text-xl sm:text-2xl inline-block w-fit m-0"
-      style={{
-        color: ACCENT_HEX[accent],
-        textShadow: `3px 3px 0 ${ACCENT_HEX[shadow]}`,
-        rotate: `${rotate}deg`,
-      }}
-    >
-      {children}
-    </h2>
-  )
 }
 
 export default async function ExplorePage() {
@@ -97,7 +66,7 @@ export default async function ExplorePage() {
   return (
     <div className="min-h-screen bg-ink px-6 sm:px-9 py-7 flex flex-col gap-10">
       <section className="flex flex-col gap-4">
-        <SectionHeading accent="yellow" shadow="red" rotate={-1}>
+        <SectionHeading accent="yellow" shadow="red" rotate={-1} size="sm">
           🔥 TRENDING THIS WEEK
         </SectionHeading>
 
@@ -150,7 +119,7 @@ export default async function ExplorePage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <SectionHeading accent="cyan" shadow="blue" rotate={1}>
+        <SectionHeading accent="cyan" shadow="blue" rotate={1} size="sm">
           ⚡ POPULAR REVIEWS
         </SectionHeading>
 

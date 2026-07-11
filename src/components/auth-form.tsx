@@ -53,6 +53,31 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
     setMessage(null)
   }
 
+  async function handleSignIn() {
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) {
+      setError(error.message)
+    } else {
+      router.push('/')
+      router.refresh()
+    }
+  }
+
+  async function handleSignUp() {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/confirm`,
+      },
+    })
+    if (error) {
+      setError(error.message)
+    } else {
+      setMessage('Check your email to confirm your account.')
+    }
+  }
+
   async function handleEmailAuth(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
@@ -64,30 +89,7 @@ export function AuthForm({ initialTab = 'sign-in' }: AuthFormProps) {
     }
 
     setLoading(true)
-
-    if (activeTab === 'sign-in') {
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
-      if (error) {
-        setError(error.message)
-      } else {
-        router.push('/')
-        router.refresh()
-      }
-    } else {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/confirm`,
-        },
-      })
-      if (error) {
-        setError(error.message)
-      } else {
-        setMessage('Check your email to confirm your account.')
-      }
-    }
-
+    await (isSignUp ? handleSignUp() : handleSignIn())
     setLoading(false)
   }
 
