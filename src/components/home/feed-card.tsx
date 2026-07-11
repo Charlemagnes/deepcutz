@@ -4,10 +4,17 @@ import { LikeButton } from '@/components/likes/like-button'
 import { SpoilerReview } from '@/app/profile/[username]/spoiler-review'
 import { AlbumCoverThumb } from '@/components/marketing/album-cover-thumb'
 import { AttributionLine } from '@/components/marketing/attribution-line'
+import type { Accent } from '@/components/marketing/types'
 
-/** Shared `reviews` select shape (joined with album/author) used both by the home
- *  feed's initial server-rendered query and by `getFeedReviewById`'s per-event
- *  realtime top-up fetch, so the two stay in sync as columns are added/renamed. */
+const CARD_ACCENTS: Accent[] = ['red', 'blue', 'yellow', 'cyan']
+function accentForId(id: string): Accent {
+  let hash = 0
+  for (let i = 0; i < id.length; i++) {
+    hash = (hash * 31 + id.charCodeAt(i)) | 0
+  }
+  return CARD_ACCENTS[Math.abs(hash) % CARD_ACCENTS.length]
+}
+
 export const REVIEW_FEED_SELECT =
   'id, rating, content, is_spoiler, created_at, like_count, comment_count, profile_id, profiles(username, avatar_url), albums(id, title, artist, cover_url)'
 
@@ -79,6 +86,7 @@ function formatDate(iso: string) {
 }
 
 export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
+  const accent = accentForId(item.id)
   return (
     <div className="grid grid-cols-[126px_1fr] gap-4.5 bg-paper border-punk border-black shadow-hard-6-blue p-3.5 text-ink">
       <Link href={`/album/${item.album.id}`}>
@@ -89,7 +97,7 @@ export function FeedCard({ item, liked }: { item: FeedItem; liked: boolean }) {
           username={item.author.username}
           href={item.author.username ? `/profile/${item.author.username}` : undefined}
           timestampLabel={`${item.kind === 'review' ? 'RATED' : 'LOGGED'} · ${formatDate(item.createdAt)}`}
-          accent="blue"
+          accent={accent}
         />
         <Link href={`/album/${item.album.id}`}>
           <div className="font-display text-lg leading-none">{item.album.title}</div>
