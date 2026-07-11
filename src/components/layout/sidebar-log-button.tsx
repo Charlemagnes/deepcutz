@@ -13,7 +13,7 @@ export function SidebarLogButton() {
       size={5}
       border="punk"
       rotate={-1}
-      className="mt-auto bg-brand-yellow text-ink border-black px-3 py-3.5 font-display text-13 transition-transform hover:scale-105"
+      className="mt-auto bg-brand-yellow text-black border-black px-3 py-3.5 font-display text-13 transition-transform hover:scale-105"
     >
       ▶ LOG A LISTEN
     </PunkPressButton>

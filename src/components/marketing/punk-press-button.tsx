@@ -3,8 +3,8 @@ import type { Accent } from "./types"
 import { HARD_SHADOW_CLASSES, PRESS_CLASSES } from "./shadow-classes"
 
 const BORDER_CLASSES = {
-  2: "border-2",
-  punk: "border-punk",
+  '2': "border-2",
+  'punk': "border-punk",
 } as const
 
 type PunkPressButtonProps = {
@@ -36,10 +36,10 @@ export function PunkPressButton({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        BORDER_CLASSES[border],
         accent && size && HARD_SHADOW_CLASSES[size][accent],
         accent && size && PRESS_CLASSES[size],
-        className
+        className,
+        BORDER_CLASSES[border],
       )}
       style={{ rotate: `${rotate}deg` }}
     >
